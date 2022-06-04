@@ -19,49 +19,53 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.5.Pagamentos", "2.5.Pagam
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.6.Fiscal", "2.6.Fiscal", "{55D29C16-CDEE-4F18-A100-D104447FE6D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVS.WebApp.MVC", "src\WebApp\AVS.WebApp.MVC\AVS.WebApp.MVC.csproj", "{BAF2F412-B1A5-46A7-842D-F442989764DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVS.WebApp.MVC", "src\WebApp\AVS.WebApp.MVC\AVS.WebApp.MVC.csproj", "{BAF2F412-B1A5-46A7-842D-F442989764DB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.1.MVC", "1.1.MVC", "{984FF612-4F02-4BB2-9181-2696BDD1C3D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVS.Cadastro.Domain", "src\Services\Domains\AVS.Cadastro.Domain\AVS.Cadastro.Domain.csproj", "{83C28B74-25BF-4A3D-8C0B-91493A433044}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVS.Cadastro.Domain", "src\Services\Domains\AVS.Cadastro.Domain\AVS.Cadastro.Domain.csproj", "{83C28B74-25BF-4A3D-8C0B-91493A433044}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVS.Cadastro.Application", "src\Services\Applications\AVS.Cadastro.Application\AVS.Cadastro.Application.csproj", "{C013DCF6-38C0-4451-B8A9-C1FE58C1D285}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVS.Cadastro.Application", "src\Services\Applications\AVS.Cadastro.Application\AVS.Cadastro.Application.csproj", "{C013DCF6-38C0-4451-B8A9-C1FE58C1D285}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVS.Cadastro.Data", "src\Services\Infra\Data\AVS.Cadastro.Data\AVS.Cadastro.Data.csproj", "{76F03A47-540E-44F7-9D6D-8F4245876D49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVS.Cadastro.Data", "src\Services\Infra\Data\AVS.Cadastro.Data\AVS.Cadastro.Data.csproj", "{76F03A47-540E-44F7-9D6D-8F4245876D49}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVS.Core", "src\Core\AVS.Core\AVS.Core.csproj", "{7C5FF7EE-4EB5-4D55-A745-711C9E53BBE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVS.Core", "src\Core\AVS.Core\AVS.Core.csproj", "{7C5FF7EE-4EB5-4D55-A745-711C9E53BBE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVS.Loja.Application", "src\Services\Applications\AVS.Loja.Application\AVS.Loja.Application.csproj", "{9E10BEB3-E2B0-4125-BD4C-065ED48BBCAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVS.Loja.Application", "src\Services\Applications\AVS.Loja.Application\AVS.Loja.Application.csproj", "{9E10BEB3-E2B0-4125-BD4C-065ED48BBCAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVS.Loja.Domain", "src\Services\Domains\AVS.Loja.Domain\AVS.Loja.Domain.csproj", "{1FA22FCB-F40D-4432-A823-AC6790915E95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVS.Loja.Domain", "src\Services\Domains\AVS.Loja.Domain\AVS.Loja.Domain.csproj", "{1FA22FCB-F40D-4432-A823-AC6790915E95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVS.Loja.Data", "src\Services\Infra\Data\AVS.Loja.Data\AVS.Loja.Data.csproj", "{2D9B9F2D-6024-4F25-AEFD-E5DA4F0412AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVS.Loja.Data", "src\Services\Infra\Data\AVS.Loja.Data\AVS.Loja.Data.csproj", "{2D9B9F2D-6024-4F25-AEFD-E5DA4F0412AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVS.Vendas.Application", "src\Services\Applications\AVS.Vendas.Application\AVS.Vendas.Application.csproj", "{15AB2BD0-CEDF-4E8D-8213-B5B870F4A2CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVS.Vendas.Application", "src\Services\Applications\AVS.Vendas.Application\AVS.Vendas.Application.csproj", "{15AB2BD0-CEDF-4E8D-8213-B5B870F4A2CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVS.Vendas.Domain", "src\Services\Domains\AVS.Vendas.Domain\AVS.Vendas.Domain.csproj", "{F21D5CD0-6BEC-4695-B6FE-C683D28C857B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVS.Vendas.Domain", "src\Services\Domains\AVS.Vendas.Domain\AVS.Vendas.Domain.csproj", "{F21D5CD0-6BEC-4695-B6FE-C683D28C857B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVS.Vendas.Data", "src\Services\Infra\Data\AVS.Vendas.Data\AVS.Vendas.Data.csproj", "{D532B359-FAAD-42CB-9014-7F864800A666}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVS.Vendas.Data", "src\Services\Infra\Data\AVS.Vendas.Data\AVS.Vendas.Data.csproj", "{D532B359-FAAD-42CB-9014-7F864800A666}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVS.Pagamentos.AntiCorruptions", "src\Services\Infra\AntiCorruption\AVS.Pagamentos.AntiCorruptions\AVS.Pagamentos.AntiCorruptions.csproj", "{CA041900-DAF1-4692-A117-267FC8F346FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVS.Pagamentos.AntiCorruptions", "src\Services\Infra\AntiCorruption\AVS.Pagamentos.AntiCorruptions\AVS.Pagamentos.AntiCorruptions.csproj", "{CA041900-DAF1-4692-A117-267FC8F346FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVS.Pagamentos.Business", "src\Services\Domains\AVS.Pagamentos.Business\AVS.Pagamentos.Business.csproj", "{670F9A20-50D9-445C-955D-7F9DE8395B36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVS.Pagamentos.Business", "src\Services\Domains\AVS.Pagamentos.Business\AVS.Pagamentos.Business.csproj", "{670F9A20-50D9-445C-955D-7F9DE8395B36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVS.Pagamentos.Data", "src\Services\Infra\Data\AVS.Pagamentos.Data\AVS.Pagamentos.Data.csproj", "{35A2D370-B367-41F4-8E62-4A67798A8C24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVS.Pagamentos.Data", "src\Services\Infra\Data\AVS.Pagamentos.Data\AVS.Pagamentos.Data.csproj", "{35A2D370-B367-41F4-8E62-4A67798A8C24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVS.Fiscal.Application", "src\Services\Applications\AVS.Fiscal.Application\AVS.Fiscal.Application.csproj", "{6630B28B-359E-4FC6-9EE9-C9EFCF32286E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVS.Fiscal.Application", "src\Services\Applications\AVS.Fiscal.Application\AVS.Fiscal.Application.csproj", "{6630B28B-359E-4FC6-9EE9-C9EFCF32286E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVS.Fiscal.Domain", "src\Services\Domains\AVS.Fiscal.Domain\AVS.Fiscal.Domain.csproj", "{67E46260-E960-4538-9FFB-86796E8E1741}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVS.Fiscal.Domain", "src\Services\Domains\AVS.Fiscal.Domain\AVS.Fiscal.Domain.csproj", "{67E46260-E960-4538-9FFB-86796E8E1741}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVS.Fiscal.Data", "src\Services\Infra\Data\AVS.Fiscal.Data\AVS.Fiscal.Data.csproj", "{A580EB3A-8EFE-49B1-8EE3-C0E3FF6E9FCA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVS.Fiscal.Data", "src\Services\Infra\Data\AVS.Fiscal.Data\AVS.Fiscal.Data.csproj", "{A580EB3A-8EFE-49B1-8EE3-C0E3FF6E9FCA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.Documentacao", "3.Documentacao", "{3D98E6AF-3E96-4EB6-AA5E-B732AE0C3744}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVS.Documentacao.API", "src\Documentacao\AVS.Documentacao.API\AVS.Documentacao.API.csproj", "{0DF06314-1B09-4991-938A-C4917A7C513C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVS.Documentacao.API", "src\Documentacao\AVS.Documentacao.API\AVS.Documentacao.API.csproj", "{0DF06314-1B09-4991-938A-C4917A7C513C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.7.Identidade", "2.7.Identidade", "{2633F3E0-E3EC-4701-A66D-2C188C3A84B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVS.Identidade.API", "src\Services\Identidade\AVS.Identidade.API\AVS.Identidade.API.csproj", "{CBFB4501-716D-40AA-9CEF-FCB90894A877}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVS.Identidade.API", "src\Services\Identidade\AVS.Identidade.API\AVS.Identidade.API.csproj", "{CBFB4501-716D-40AA-9CEF-FCB90894A877}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.8.Banda", "2.8.Banda", "{1C40EBFA-63B2-431F-8EDA-45209377081C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVS.Banda.Domain", "src\Services\Domains\AVS.Banda.Domain\AVS.Banda.Domain.csproj", "{158EF799-485F-4A94-982B-1B8C3CE4EDA3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -145,6 +149,10 @@ Global
 		{CBFB4501-716D-40AA-9CEF-FCB90894A877}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBFB4501-716D-40AA-9CEF-FCB90894A877}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBFB4501-716D-40AA-9CEF-FCB90894A877}.Release|Any CPU.Build.0 = Release|Any CPU
+		{158EF799-485F-4A94-982B-1B8C3CE4EDA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{158EF799-485F-4A94-982B-1B8C3CE4EDA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{158EF799-485F-4A94-982B-1B8C3CE4EDA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{158EF799-485F-4A94-982B-1B8C3CE4EDA3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -177,6 +185,8 @@ Global
 		{0DF06314-1B09-4991-938A-C4917A7C513C} = {3D98E6AF-3E96-4EB6-AA5E-B732AE0C3744}
 		{2633F3E0-E3EC-4701-A66D-2C188C3A84B7} = {B2E09202-A28B-43E2-B74D-7B35C10D160F}
 		{CBFB4501-716D-40AA-9CEF-FCB90894A877} = {2633F3E0-E3EC-4701-A66D-2C188C3A84B7}
+		{1C40EBFA-63B2-431F-8EDA-45209377081C} = {B2E09202-A28B-43E2-B74D-7B35C10D160F}
+		{158EF799-485F-4A94-982B-1B8C3CE4EDA3} = {1C40EBFA-63B2-431F-8EDA-45209377081C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1B55AC72-4D7C-4512-9350-0E8F35DE0878}

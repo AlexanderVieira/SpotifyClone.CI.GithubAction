@@ -1,9 +1,5 @@
-﻿using AVS.Core.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AVS.Core.ObjDoinio;
+using AVS.Core.Utils;
 
 namespace AVS.Core.ObjValor
 {
@@ -11,19 +7,20 @@ namespace AVS.Core.ObjValor
     {
         public const int CPF_TAM_MAXIMO = 11;
         public string Numero { get; set; }
-
-        protected Cpf()
-        {
-
-        }
-
+                
         public Cpf(string numero)
         {
-            if (!CpfValid(numero)) throw new ArgumentException("Documento inválido.");
+            Validar(numero);
+            if (!ValidarCpf(numero)) throw new DomainException("Documento inválido.");
             Numero = numero;
         }
 
-        public static bool CpfValid(string cpf)
+        private static void Validar(string numero)
+        {
+            Validacao.ValidarSeNuloVazio(numero, "Documento é obrigatório.");
+        }
+
+        public static bool ValidarCpf(string cpf)
         {
             cpf = cpf.OnlyNumbers(cpf);
 

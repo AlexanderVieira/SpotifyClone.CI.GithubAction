@@ -1,30 +1,34 @@
-﻿using AVS.Core.ObjValor;
+﻿using AVS.Core.ObjDoinio;
+using AVS.Core.ObjValor;
 using AVS.Core.Utils;
 using FluentValidation;
 using System.Text.RegularExpressions;
 
 namespace AVS.Cadastro.Domain.Entities
 {
-    public class Usuario
+    public class Usuario : Entity, IAggregateRoot
     {
-        public string Nome { get; set; }
-        public Email Email { get; set; }
-        public Cpf Cpf { get; set; }
-        public bool Excluido { get; set; }
-        public string Foto { get; set; }
-        public Senha Senha { get; set; }
-        public IList<Playlist> Playlists { get; set; }
+        public string Nome { get; private set; }
+        public Email Email { get; private set; }
+        public Cpf Cpf { get; private set; }
+        public bool Excluido { get; private set; }
+        public string Foto { get; private set; }
+        public Senha Senha { get; private set; }
+        public IList<Playlist> Playlists { get; private set; }
 
         protected Usuario()
-        {
+        {            
         }
 
-        public Usuario(string name, string email, string cpf)
+        public Usuario(string nome, string email, string cpf, string foto, bool excluido = false)
         {
-            Nome = name;
+            //Validar(nome);            
+            Nome = nome;
             Email = new Email(email);
             Cpf = new Cpf(cpf);
-            Excluido = false;
+            Foto = foto;
+            Excluido = excluido;             
+            Playlists = new List<Playlist>();
         }
 
         public void AtualizarEmail(string email)
@@ -37,37 +41,95 @@ namespace AVS.Cadastro.Domain.Entities
             this.Senha.Valor = SegurancaUtil.HashSHA1(this.Senha.Valor);
         }
 
-        public void Validate() =>
-            new UsuarioValidator().ValidateAndThrow(this);
+        public void Ativar() => Excluido = false;
+
+        public void Desativar() => Excluido = true;
+
+        public void AdicionarPlaylist(Playlist playlist)
+        {
+            Playlists.Add(playlist);
+        }
+
+        public void AtualizarPlaylist(List<Playlist> playlists)
+        {            
+            Validar(playlists);
+            Playlists = playlists;
+        }
+
+        public void RemoverPlaylist(Playlist playlist)
+        {            
+            Validar(playlist);
+            Playlists.Remove(playlist);
+            
+        }
+
+        public void RemoverPlaylists()
+        {
+            Playlists.Clear();
+        }
+
+        private static void Validar(Playlist playlist)
+        {
+            Validacao.ValidarSeNulo(playlist, "Playlist vazia.");
+        }
+
+        private static void Validar(List<Playlist> playlists)
+        {
+            var lista = playlists.Cast<Object>().ToList();
+            Validacao.ValidarSeExiste(lista, "Playlist vazia.");
+        }
+
+        private static void Validar(string param)
+        {
+            Validacao.ValidarSeNuloVazio(param, "Nome é obrigatório.");
+        }
+
+        public override bool EhValido()
+        {
+            ValidationResult = new UsuarioValidator().Validate(this);
+            return ValidationResult.IsValid;
+        }
+        
+        //public void Validate() =>
+        //    new UsuarioValidator().ValidateAndThrow(this);
     }    
 
     public class UsuarioValidator : AbstractValidator<Usuario>
     {
         public UsuarioValidator()
         {
-            RuleFor(x => x.Nome).NotEmpty();
-            RuleFor(x => x.Email).SetValidator(new EmailValidator());
-            RuleFor(x => x.Senha).SetValidator(new SenhaValidator());
+            RuleFor(x => x.Id)
+                .NotEqual(Guid.Empty)
+                .WithMessage("Id do usuário inválido.");
+
+            RuleFor(x => x.Nome)
+                .NotEmpty()
+                .WithMessage("Nome é obrigatório.");    
+                        
+            RuleFor(x => x.Cpf.Numero)
+                .NotEmpty()
+                .WithMessage("Documento é obrigatório.")
+                .Must(Cpf.ValidarCpf)
+                .WithMessage("Documento Inválido.");
+            
+            RuleFor(x => x.Email.Address)
+                .NotEmpty()
+                .WithMessage("Email é obrigatório.")
+                .Must(Email.ValidarEmail)
+                .WithMessage("E-mail Inválido.");
+
+            RuleFor(x => x.Foto)
+                .NotEmpty()
+                .WithMessage("Foto do usuário inválida.");
+
+            RuleFor(x => x.Senha)
+                //.NotEmpty()
+                //.WithMessage("Senha é obrigatória.")
+                .SetValidator(new SenhaValidator());
 
         }
         
-    }
-
-    public class EmailValidator : AbstractValidator<Email>
-    {
-        private const string Pattern = @"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*";
-
-        public EmailValidator()
-        {
-            RuleFor(x => x.Address)
-                .NotEmpty()
-                .Must(BeAEmailValid).WithMessage("Email inválido");
-        }
-
-        private bool BeAEmailValid(string valor) => Regex.IsMatch(valor, Pattern);
-
-
-    }
+    }   
 
     public class SenhaValidator : AbstractValidator<Senha>
     {
@@ -75,11 +137,13 @@ namespace AVS.Cadastro.Domain.Entities
 
         public SenhaValidator()
         {
-            RuleFor(x => x.Valor)
-                .NotEmpty()
-                .Must(BeValidPassword).WithMessage("A Senha deve ter no mínimo 8 caracteres, uma letra, um caracter especial e um número");
+            RuleFor(x => x.Valor)                
+                .Must(ValidarSeDiferente)
+                .WithMessage("A Senha deve ter no mínimo 8 caracteres, uma letra, um caracter especial e um número");
         }
 
-        private bool BeValidPassword(string valor) => Regex.IsMatch(valor, Pattern);
+        private bool ValidarSeDiferente(string valor) => Regex.IsMatch(valor, Pattern);        
+
     }
+    
 }

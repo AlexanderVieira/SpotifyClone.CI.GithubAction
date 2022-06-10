@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AVS.Core.ObjValor
+﻿namespace AVS.Core.ObjValor
 {
     public class Duracao
-    {
-        public Duracao()
+    {        
+        public Duracao(int valor)
         {
-
+            Valor = valor;
         }
 
         public int Valor { get; set; }

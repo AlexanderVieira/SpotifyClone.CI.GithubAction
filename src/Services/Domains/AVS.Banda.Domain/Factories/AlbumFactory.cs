@@ -1,36 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AVS.Core.ObjDoinio;
 
 namespace AVS.Banda.Domain.Factories
 {
     public static class AlbumFactory
     {
-        public static Album Criar(string nome, Musica musica)
+        public static Album Criar(string nome, string descricao, Musica musica)
         {
-            if (musica == null)
-            {
-                throw new ArgumentException("Para criar um album, o album deve ter no minimo uma musica");
-            }
-
-            return new Album()
-            {
-                Musicas = new List<Musica>() { musica }
-            };
+            //if (musica == null) 
+            //    throw new DomainException("Para criar um album, o album deve ter no minimo uma musica");
+            Validar(musica);
+            var album = new Album(nome, descricao);
+            album.AdicionarMusica(musica);
+            
+            return album;           
+            
         }
 
-        public static Album Criar(string nome, IEnumerable<Musica> musicas)
+        public static Album Criar(string nome, string descricao, IList<Musica> musicas)
         {
-            if (!musicas.Any())
-                throw new ArgumentNullException("Para criar um album, o album deve ter no minimo uma musica");
+            //if (!musicas.Any())
+            //    throw new DomainException("Para criar um album, o album deve ter no minimo uma musica");
 
-            return new Album()
-            {
-                Musicas = musicas.ToList()
-            };
+            Validar(musicas);
+            var album = new Album(nome, descricao);
+            album.AtualizarMusicas(musicas);
 
+            return album;
+
+            //return new Album()
+            //{
+            //    Musicas = musicas.ToList()
+            //};
+
+        }
+
+        private static void Validar(Musica musica)
+        {
+            Validacao.ValidarSeNulo(musica, "Para criar um album, o album deve ter no minimo uma musica");
+        }
+
+        private static void Validar(IList<Musica> musicas)
+        {            
+            var lista = (IList<object>)musicas;
+            Validacao.ValidarSeExiste(lista, "Para criar um album, o album deve ter no minimo uma musica");
         }
     }
 }

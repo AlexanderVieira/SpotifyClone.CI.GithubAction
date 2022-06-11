@@ -79,7 +79,7 @@ namespace AVS.Cadastro.Domain.Entities
             Validacao.ValidarSeExiste(lista, "Playlist vazia.");
         }
 
-        private static void Validar(string param)
+        public static void Validar(string param)
         {
             Validacao.ValidarSeNuloVazio(param, "Nome é obrigatório.");
         }
@@ -89,7 +89,7 @@ namespace AVS.Cadastro.Domain.Entities
             ValidationResult = new UsuarioValidator().Validate(this);
             return ValidationResult.IsValid;
         }
-        
+                
         //public void Validate() =>
         //    new UsuarioValidator().ValidateAndThrow(this);
     }    
@@ -104,7 +104,9 @@ namespace AVS.Cadastro.Domain.Entities
 
             RuleFor(x => x.Nome)
                 .NotEmpty()
-                .WithMessage("Nome é obrigatório.");    
+                .WithMessage("Nome é obrigatório.")
+                .Length(2, 150)
+                .WithMessage("O Nome deve ter entre 2 a 150 caracteres.");
                         
             RuleFor(x => x.Cpf.Numero)
                 .NotEmpty()
@@ -144,6 +146,15 @@ namespace AVS.Cadastro.Domain.Entities
 
         private bool ValidarSeDiferente(string valor) => Regex.IsMatch(valor, Pattern);        
 
+    }
+
+    public class UsuarioFactory
+    {
+        public static Usuario Criar(string nome, string email, string cpf, string foto, bool excluido)
+        {
+            Validacao.ValidarSeNuloVazio(nome, "Nome é obrigatório.");
+            return new Usuario(nome, email, cpf, foto, excluido);
+        }
     }
     
 }

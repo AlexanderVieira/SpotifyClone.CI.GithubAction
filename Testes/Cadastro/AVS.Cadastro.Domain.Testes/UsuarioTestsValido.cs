@@ -99,21 +99,21 @@ namespace AVS.Cadastro.Domain.Testes
 
         [Fact(DisplayName = "Usuario Ativo")]
         [Trait("Categoria", "Usuario Bogus Testes")]
-        public void Usuario_Ativar_DeveTerFlagExcluidoIgualFalso()
-        {
-            //Arrange
-            var usuario = _usuarioTestsFixture.CriarUsuarioValido();
+        public void Usuario_Ativar_DeveTerFlagAtivoIgualVerdadeiro()
+        {            
+               //Arrange
+               var usuario = _usuarioTestsFixture.CriarUsuarioValido();
 
             //Act
             usuario.Ativar();
 
             //Assert            
-            Assert.False(usuario.Excluido);
+            Assert.False(usuario.Ativo);
         }
 
         [Fact(DisplayName = "Usuario Inativo")]
         [Trait("Categoria", "Usuario Bogus Testes")]
-        public void Usuario_Ativar_DeveTerFlagExcluidoIgualVerdadeiro()
+        public void Usuario_Ativar_DeveTerFlagAtivoIgualFalso()
         {
             //Arrange
             var usuario = _usuarioTestsFixture.CriarUsuarioValido();
@@ -122,7 +122,7 @@ namespace AVS.Cadastro.Domain.Testes
             usuario.Desativar();
 
             //Assert            
-            Assert.True(usuario.Excluido);
+            Assert.True(usuario.Ativo);
         }
     }
     

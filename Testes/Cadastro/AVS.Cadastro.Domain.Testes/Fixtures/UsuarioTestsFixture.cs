@@ -23,7 +23,7 @@ namespace AVS.Cadastro.Domain.Testes
             return usuarios;
         }
 
-        private IEnumerable<Usuario> CriarUsuarios(int quantidade, bool excluido)
+        private IEnumerable<Usuario> CriarUsuarios(int quantidade, bool Ativo)
         {
             var genero = new Faker().PickRandom<Name.Gender>();
             var usuarios = new Faker<Usuario>("pt_BR")
@@ -32,38 +32,21 @@ namespace AVS.Cadastro.Domain.Testes
                     f.Internet.Email(),
                     f.Person.Cpf(),
                     f.Internet.Avatar(),
-                    excluido
+                    Ativo
                     ))
                 .RuleFor(f => f.Id, f => f.Random.Guid());
             return usuarios.Generate(quantidade);
         }
-
-        //public static Usuario CriarUsuarioValido()
-        //{            
-        //    var genero = new Faker().PickRandom<Name.Gender>();
-        //    var usuario = new Faker<Usuario>("pt_BR")
-        //        .CustomInstantiator(f => new Usuario(
-        //            f.Name.FullName(genero),
-        //            f.Internet.Email(),
-        //            f.Person.Cpf(),                   
-        //            f.Internet.Avatar(),
-        //            f.Random.Bool()
-        //            ))
-        //        .RuleFor(f => f.Id, f => f.Random.Guid());
-        //    return usuario;
-        //}
-
+        
         public Usuario CriarUsuarioInvalido()
         {
             var genero = new Faker().PickRandom<Name.Gender>();
             var usuario = new Faker<Usuario>("pt_BR")
                 .CustomInstantiator(f => new Usuario(
-                    //f.Name.FullName(genero),
-                    null,
-                    f.Internet.Email(),
-                    f.Person.Cpf(),
-                    //string.Empty,
-                    f.Internet.Avatar(),
+                    string.Empty,
+                    "teste",
+                    string.Empty,
+                    string.Empty,
                     f.Random.Bool()
                     ))
                 .RuleFor(f => f.Id, f => f.Random.Guid());

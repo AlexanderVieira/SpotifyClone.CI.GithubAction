@@ -11,23 +11,24 @@ namespace AVS.Cadastro.Domain.Entities
         public string Nome { get; private set; }
         public Email Email { get; private set; }
         public Cpf Cpf { get; private set; }
-        public bool Excluido { get; private set; }
+        public bool Ativo { get; private set; }
         public string Foto { get; private set; }
-        public Senha Senha { get; private set; }
+        
+        //public Senha Senha { get; private set; }
         public IList<Playlist> Playlists { get; private set; }
 
         protected Usuario()
         {            
         }
 
-        public Usuario(string nome, string email, string cpf, string foto, bool excluido = false)
+        public Usuario(string nome, string email, string cpf, string foto, bool ativo)
         {
             //Validar(nome);            
             Nome = nome;
             Email = new Email(email);
             Cpf = new Cpf(cpf);
             Foto = foto;
-            Excluido = excluido;             
+            Ativo = ativo;             
             Playlists = new List<Playlist>();
         }
 
@@ -36,14 +37,14 @@ namespace AVS.Cadastro.Domain.Entities
             Email = new Email(email);
         }
 
-        public void DefinirSenha()
-        {
-            this.Senha.Valor = SegurancaUtil.HashSHA1(this.Senha.Valor);
-        }
+        //public void DefinirSenha()
+        //{
+        //    this.Senha.Valor = SegurancaUtil.HashSHA1(this.Senha.Valor);
+        //}
 
-        public void Ativar() => Excluido = false;
+        public void Ativar() => Ativo = true;
 
-        public void Desativar() => Excluido = true;
+        public void Desativar() => Ativo = false;
 
         public void AdicionarPlaylist(Playlist playlist)
         {
@@ -116,18 +117,18 @@ namespace AVS.Cadastro.Domain.Entities
             
             RuleFor(x => x.Email.Address)
                 .NotEmpty()
-                .WithMessage("Email é obrigatório.")
+                .WithMessage("E-mail é obrigatório.")
                 .Must(Email.ValidarEmail)
-                .WithMessage("E-mail Inválido.");
+                .WithMessage("E-mail inválido.");
 
             RuleFor(x => x.Foto)
                 .NotEmpty()
                 .WithMessage("Foto do usuário inválida.");
 
-            RuleFor(x => x.Senha)
-                //.NotEmpty()
-                //.WithMessage("Senha é obrigatória.")
-                .SetValidator(new SenhaValidator());
+            //RuleFor(x => x.Senha)
+            //    .NotEmpty()
+            //    .WithMessage("Senha é obrigatória.")
+            //    .SetValidator(new SenhaValidator());
 
         }
         
@@ -150,10 +151,10 @@ namespace AVS.Cadastro.Domain.Entities
 
     public class UsuarioFactory
     {
-        public static Usuario Criar(string nome, string email, string cpf, string foto, bool excluido)
+        public static Usuario Criar(string nome, string email, string cpf, string foto, bool Ativo)
         {
             Validacao.ValidarSeNuloVazio(nome, "Nome é obrigatório.");
-            return new Usuario(nome, email, cpf, foto, excluido);
+            return new Usuario(nome, email, cpf, foto, Ativo);
         }
     }
     

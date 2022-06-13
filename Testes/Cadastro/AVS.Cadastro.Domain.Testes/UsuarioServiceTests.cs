@@ -1,7 +1,6 @@
-﻿using AVS.Cadastro.Domain.Entities;
-using AVS.Core.Data;
+﻿using AVS.Cadastro.Domain.Interfaces.Repositories;
+using AVS.Cadastro.Domain.Services;
 using Moq;
-using System;
 using Xunit;
 
 namespace AVS.Cadastro.Domain.Testes
@@ -33,44 +32,5 @@ namespace AVS.Cadastro.Domain.Testes
             usuarioRepo.Verify(r => r.Adicionar(usuario), Times.Once());
         }
     }
-
-    public interface IUsuarioService
-    {
-        void Adicionar(Usuario usuario);
-    }
-    public class UsuarioService : IUsuarioService
-    {
-        private readonly IUsuarioRepository _usuarioRepository;
-
-        public UsuarioService(IUsuarioRepository usuarioRepository)
-        {
-            _usuarioRepository = usuarioRepository;
-        }
-
-        public void Adicionar(Usuario usuario)
-        {
-            if (!usuario.EhValido()) return;
-            _usuarioRepository.Adicionar(usuario);
-        }
-    }
-
-    public interface IUsuarioRepository : IRepository<Usuario>
-    {
-        void Adicionar(Usuario usuario);
-    }
-
-    public class UsuarioRepository : IUsuarioRepository
-    {
-        public IUnitOfWork UnitOfWork => throw new NotImplementedException();
-
-        public void Adicionar(Usuario usuario)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-    }
+        
 }

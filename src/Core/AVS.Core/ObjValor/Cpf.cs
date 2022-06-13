@@ -10,8 +10,8 @@ namespace AVS.Core.ObjValor
                 
         public Cpf(string numero)
         {
-            Validar(numero);
-            if (!ValidarCpf(numero)) throw new DomainException("Documento inválido.");
+            //Validar(numero);
+            //if (!ValidarCpf(numero)) throw new DomainException("Documento inválido.");
             Numero = numero;
         }
 
@@ -22,6 +22,7 @@ namespace AVS.Core.ObjValor
 
         public static bool ValidarCpf(string cpf)
         {
+            if(string.IsNullOrEmpty(cpf)) return true;
             cpf = cpf.OnlyNumbers(cpf);
 
             if (cpf.Length != 11) return false;

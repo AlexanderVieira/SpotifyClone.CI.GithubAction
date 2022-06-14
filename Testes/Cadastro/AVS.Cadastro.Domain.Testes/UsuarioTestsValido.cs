@@ -108,7 +108,7 @@ namespace AVS.Cadastro.Domain.Testes
             usuario.Ativar();
 
             //Assert            
-            Assert.False(usuario.Ativo);
+            Assert.True(usuario.Ativo);
         }
 
         [Fact(DisplayName = "Usuario Inativo")]
@@ -122,7 +122,7 @@ namespace AVS.Cadastro.Domain.Testes
             usuario.Desativar();
 
             //Assert            
-            Assert.True(usuario.Ativo);
+            Assert.False(usuario.Ativo);
         }
     }
     

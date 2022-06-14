@@ -127,97 +127,97 @@ namespace AVS.Cadastro.Domain.Testes
         }
 
         //[Fact(DisplayName = "Novo Usuario Nome Vazio")]
-        [Trait("Categoria", "Usuario Bogus Testes")]
-        [Theory(DisplayName = "Novo Usuario Nome Nulo/Vazio")]
-        [InlineData("")]
-        [InlineData(null)]
-        public void Usuario_ValidarNomeNuloVazio_DeveRetornarExcecao(string nomeInvalido)
-        {
-            //Arrange            
+        //[Trait("Categoria", "Usuario Bogus Testes")]
+        //[Theory(DisplayName = "Novo Usuario Nome Nulo/Vazio retorna excecao")]
+        //[InlineData("")]
+        //[InlineData(null)]
+        //public void Usuario_ValidarNomeNuloVazio_DeveRetornarExcecao(string nomeInvalido)
+        //{
+        //    //Arrange            
             
-            //Act
+        //    //Act
             
-            //Assert
-            var ex = Assert.Throws<DomainException>(() =>                
-                UsuarioBuilder.Novo().ComNome(nomeInvalido).Buid()
-            );
+        //    //Assert
+        //    var ex = Assert.Throws<DomainException>(() =>                
+        //        UsuarioBuilder.Novo().ComNome(nomeInvalido).Buid()
+        //    );
 
-            Assert.Equal("Nome é obrigatório.", ex.Message);
-        }
+        //    Assert.Equal("Nome é obrigatório.", ex.Message);
+        //}
         
-        //[Fact(DisplayName = "Novo Usuario E-mail Vazio")]
-        [Trait("Categoria", "Usuario Bogus Testes")]
-        [Theory(DisplayName = "Novo Usuario Email Nulo/Vazio")]
-        [InlineData("")]
-        [InlineData(null)]        
-        public void Usuario_ValidarEmailNuloVazio_DeveRetornarExcecao(string emailInvalido)
-        {
-            //Arrange                   
+        ////[Fact(DisplayName = "Novo Usuario E-mail Vazio")]
+        //[Trait("Categoria", "Usuario Bogus Testes")]
+        //[Theory(DisplayName = "Novo Usuario Email Nulo/Vazio retorna excecao")]
+        //[InlineData("")]
+        //[InlineData(null)]        
+        //public void Usuario_ValidarEmailNuloVazio_DeveRetornarExcecao(string emailInvalido)
+        //{
+        //    //Arrange                   
 
-            //Act            
+        //    //Act            
 
-            //Assert
-            var ex = Assert.Throws<DomainException>(() =>                
-                UsuarioBuilder.Novo().ComEmail(emailInvalido).Buid()
-            );
+        //    //Assert
+        //    var ex = Assert.Throws<DomainException>(() =>                
+        //        UsuarioBuilder.Novo().ComEmail(emailInvalido).Buid()
+        //    );
 
-            Assert.Equal("E-mail é obrigatório.", ex.Message);
-        }
+        //    Assert.Equal("E-mail é obrigatório.", ex.Message);
+        //}
 
-        [Trait("Categoria", "Usuario Bogus Testes")]
-        [Theory(DisplayName = "Novo Usuario Email Inválido")]
-        [InlineData("teste.gmail.com")]        
-        public void Usuario_ValidarEmailInvalido_DeveRetornarExcecao(string emailInvalido)
-        {
-            //Arrange                   
+        //[Trait("Categoria", "Usuario Bogus Testes")]
+        //[Theory(DisplayName = "Novo Usuario Email Inválido retorna excecao")]
+        //[InlineData("teste.gmail.com")]        
+        //public void Usuario_ValidarEmailInvalido_DeveRetornarExcecao(string emailInvalido)
+        //{
+        //    //Arrange                   
 
-            //Act            
+        //    //Act            
 
-            //Assert
-            var ex = Assert.Throws<DomainException>(() =>
-                UsuarioBuilder.Novo().ComEmail(emailInvalido).Buid()
-            );
+        //    //Assert
+        //    var ex = Assert.Throws<DomainException>(() =>
+        //        UsuarioBuilder.Novo().ComEmail(emailInvalido).Buid()
+        //    );
 
-            Assert.Equal("E-mail inválido.", ex.Message);
-        }
+        //    Assert.Equal("E-mail inválido.", ex.Message);
+        //}
 
-        //[Fact(DisplayName = "Novo Usuario CPF Vazio")]
-        [Trait("Categoria", "Usuario Bogus Testes")]
-        [Theory(DisplayName = "Novo Usuario CPF Nulo/Vazio")]
-        [InlineData("")]
-        [InlineData(null)]        
-        public void Usuario_ValidarCpfNuloVazio_DeveRetornarExcecao(string cpfInvalido)
-        {
-            //Arrange
+        ////[Fact(DisplayName = "Novo Usuario CPF Vazio")]
+        //[Trait("Categoria", "Usuario Bogus Testes")]
+        //[Theory(DisplayName = "Novo Usuario CPF Nulo/Vazio retorna excecao")]
+        //[InlineData("")]
+        //[InlineData(null)]        
+        //public void Usuario_ValidarCpfNuloVazio_DeveRetornarExcecao(string cpfInvalido)
+        //{
+        //    //Arrange
             
-            //Act
+        //    //Act
             
-            //Assert
-            var ex = Assert.Throws<DomainException>(() =>                
-                UsuarioBuilder.Novo().ComCpf(cpfInvalido).Buid()
-            );
+        //    //Assert
+        //    var ex = Assert.Throws<DomainException>(() =>                
+        //        UsuarioBuilder.Novo().ComCpf(cpfInvalido).Buid()
+        //    );
 
-            Assert.Equal("Documento é obrigatório.", ex.Message);
-        }
+        //    Assert.Equal("Documento é obrigatório.", ex.Message);
+        //}
 
-        [Trait("Categoria", "Usuario Bogus Testes")]
-        [Theory(DisplayName = "Novo Usuario CPF Invalido")]        
-        [InlineData("19100000001")]
-        [InlineData("1910000000")]
-        [InlineData("191000000000")]
-        public void Usuario_ValidarCpfInvalido_DeveRetornarExcecao(string cpfInvalido)
-        {
-            //Arrange
+        //[Trait("Categoria", "Usuario Bogus Testes")]
+        //[Theory(DisplayName = "Novo Usuario CPF Invalido retorna excecao")]        
+        //[InlineData("19100000001")]
+        //[InlineData("1910000000")]
+        //[InlineData("191000000000")]
+        //public void Usuario_ValidarCpfInvalido_DeveRetornarExcecao(string cpfInvalido)
+        //{
+        //    //Arrange
 
-            //Act
+        //    //Act
 
-            //Assert
-            var ex = Assert.Throws<DomainException>(() =>                
-                UsuarioBuilder.Novo().ComCpf(cpfInvalido).Buid()
-            );
+        //    //Assert
+        //    var ex = Assert.Throws<DomainException>(() =>                
+        //        UsuarioBuilder.Novo().ComCpf(cpfInvalido).Buid()
+        //    );
 
-            Assert.Equal("Documento inválido.", ex.Message);
-        }
+        //    Assert.Equal("Documento inválido.", ex.Message);
+        //}
 
         [Fact(DisplayName = "Novo Usuario Invalido")]
         [Trait("Categoria", "Usuario Bogus Testes")]

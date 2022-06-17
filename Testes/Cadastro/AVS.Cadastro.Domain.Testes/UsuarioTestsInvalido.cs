@@ -1,5 +1,4 @@
-﻿ using AVS.Cadastro.Domain.Testes.Builders;
-using AVS.Core.ObjDoinio;
+﻿using AVS.Cadastro.Domain.Testes.Builders;
 using FluentAssertions;
 using Xunit;
 
@@ -89,10 +88,12 @@ namespace AVS.Cadastro.Domain.Testes
         }
 
         [Trait("Categoria", "Usuario Bogus Testes")]
-        [Theory(DisplayName = "Novo Usuario CPF inválido retorna mensagem")]
+        [Theory(DisplayName = "Novo Usuario CPF inválido retorna mensagem")]        
         [InlineData("19100000001")]
         [InlineData("1910000000")]
         [InlineData("191000000000")]
+        [InlineData("11111111111")]
+        [InlineData("1234567890")]
         public void Usuario_ValidarCpfInvalido_DeveRetornarMensagem(string cpfInvalido)
         {
             //Arrange            
@@ -134,9 +135,9 @@ namespace AVS.Cadastro.Domain.Testes
         //public void Usuario_ValidarNomeNuloVazio_DeveRetornarExcecao(string nomeInvalido)
         //{
         //    //Arrange            
-            
+
         //    //Act
-            
+
         //    //Assert
         //    var ex = Assert.Throws<DomainException>(() =>                
         //        UsuarioBuilder.Novo().ComNome(nomeInvalido).Buid()
@@ -144,7 +145,7 @@ namespace AVS.Cadastro.Domain.Testes
 
         //    Assert.Equal("Nome é obrigatório.", ex.Message);
         //}
-        
+
         ////[Fact(DisplayName = "Novo Usuario E-mail Vazio")]
         //[Trait("Categoria", "Usuario Bogus Testes")]
         //[Theory(DisplayName = "Novo Usuario Email Nulo/Vazio retorna excecao")]
@@ -189,9 +190,9 @@ namespace AVS.Cadastro.Domain.Testes
         //public void Usuario_ValidarCpfNuloVazio_DeveRetornarExcecao(string cpfInvalido)
         //{
         //    //Arrange
-            
+
         //    //Act
-            
+
         //    //Assert
         //    var ex = Assert.Throws<DomainException>(() =>                
         //        UsuarioBuilder.Novo().ComCpf(cpfInvalido).Buid()
@@ -205,6 +206,8 @@ namespace AVS.Cadastro.Domain.Testes
         //[InlineData("19100000001")]
         //[InlineData("1910000000")]
         //[InlineData("191000000000")]
+        //[InlineData("11111111111")]
+        //[InlineData("1234567890")]
         //public void Usuario_ValidarCpfInvalido_DeveRetornarExcecao(string cpfInvalido)
         //{
         //    //Arrange

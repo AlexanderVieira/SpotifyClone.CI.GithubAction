@@ -5,6 +5,7 @@ using Bogus.Extensions.Brazil;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AVS.Cadastro.Domain.Testes
 {
@@ -15,12 +16,17 @@ namespace AVS.Cadastro.Domain.Testes
             return CriarUsuarios(1, true).FirstOrDefault();
         }
 
-        public IEnumerable<Usuario> ObterUsuarios()
+        public Task<IEnumerable<Usuario>> ObterUsuarios()
         {
             var usuarios = new List<Usuario>();
             usuarios.AddRange(CriarUsuarios(50, true).ToList());
             usuarios.AddRange(CriarUsuarios(50, false).ToList());
-            return usuarios;
+            return Task.FromResult(usuarios.AsEnumerable());
+        }
+
+        public Task<IEnumerable<Usuario>> ObterUsuariosAtivos()
+        {
+            return Task.FromResult(ObterUsuarios().Result.Where(u => u.Ativo).AsEnumerable());            
         }
 
         private IEnumerable<Usuario> CriarUsuarios(int quantidade, bool Ativo)

@@ -1,5 +1,7 @@
-﻿using AVS.Cadastro.Domain.Entities;
+﻿using AVS.Banda.Domain;
+using AVS.Cadastro.Domain.Entities;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace AVS.Cadastro.Domain.Testes
@@ -113,17 +115,37 @@ namespace AVS.Cadastro.Domain.Testes
 
         [Fact(DisplayName = "Usuario Inativo")]
         [Trait("Categoria", "Usuario Bogus Testes")]
-        public void Usuario_Ativar_DeveTerFlagAtivoIgualFalso()
+        public void Usuario_Inativar_DeveTerFlagAtivoIgualFalso()
         {
             //Arrange
             var usuario = _usuarioTestsFixture.CriarUsuarioValido();
 
             //Act
-            usuario.Desativar();
+            usuario.Inativar();
 
             //Assert            
             Assert.False(usuario.Ativo);
         }
+
+        [Fact(DisplayName = "Usuario Adicionar Musica na Playlist")]
+        [Trait("Categoria", "Usuario Bogus Testes")]
+        public void Usuario_AdicionarMusicaPlaylist_DeveTerTamanhoMaiorOuIgualUm()
+        {
+            //Arrange
+            var usuario = _usuarioTestsFixture.CriarUsuarioValido();                      
+            var playlist = new Playlist("Titulo", "Descricao");
+            var musica = new Musica("Titulo", 300);
+            playlist.AdicionarMusica(musica);    
+
+            //Act
+            usuario.AdicionarPlaylist(playlist);            
+
+            //Assert
+            Assert.Contains(usuario.Playlists, p => p.Musicas.Contains(musica));
+            Assert.All(usuario.Playlists, p => p.Musicas.Any());  
+            
+        }
+        
     }
     
 }

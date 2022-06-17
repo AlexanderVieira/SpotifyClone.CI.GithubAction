@@ -15,7 +15,8 @@ namespace AVS.Cadastro.Domain.Entities
         public string Foto { get; private set; }
         
         //public Senha Senha { get; private set; }
-        public IList<Playlist> Playlists { get; private set; }
+        private List<Playlist> _playlists { get; set; }
+        public IReadOnlyCollection<Playlist> Playlists => _playlists.AsReadOnly();
 
         protected Usuario()
         {            
@@ -29,7 +30,7 @@ namespace AVS.Cadastro.Domain.Entities
             Cpf = new Cpf(cpf);
             Foto = foto;
             Ativo = ativo;             
-            Playlists = new List<Playlist>();
+            //Playlists = new List<Playlist>();
         }
 
         public void AtualizarEmail(string email)
@@ -44,29 +45,30 @@ namespace AVS.Cadastro.Domain.Entities
 
         public void Ativar() => Ativo = true;
 
-        public void Desativar() => Ativo = false;
+        public void Inativar() => Ativo = false;
 
         public void AdicionarPlaylist(Playlist playlist)
         {
-            Playlists.Add(playlist);
+            _playlists ??= new List<Playlist>();
+            _playlists.Add(playlist);
         }
 
         public void AtualizarPlaylist(List<Playlist> playlists)
         {            
             Validar(playlists);
-            Playlists = playlists;
+            _playlists = playlists;
         }
 
         public void RemoverPlaylist(Playlist playlist)
         {            
             Validar(playlist);
-            Playlists.Remove(playlist);
+            _playlists.Remove(playlist);
             
         }
 
         public void RemoverPlaylists()
         {
-            Playlists.Clear();
+            _playlists.Clear();
         }
 
         private static void Validar(Playlist playlist)
@@ -80,10 +82,10 @@ namespace AVS.Cadastro.Domain.Entities
             Validacao.ValidarSeExiste(lista, "Playlist vazia.");
         }
 
-        public static void Validar(string param)
-        {
-            Validacao.ValidarSeNuloVazio(param, "Nome é obrigatório.");
-        }
+        //public static void Validar(string param)
+        //{
+        //    Validacao.ValidarSeNuloVazio(param, "Nome é obrigatório.");
+        //}
 
         public override bool EhValido()
         {

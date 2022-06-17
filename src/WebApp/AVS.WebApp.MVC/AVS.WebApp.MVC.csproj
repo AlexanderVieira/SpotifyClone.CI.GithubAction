@@ -14,4 +14,10 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Services\Applications\AVS.Cadastro.Application\AVS.Cadastro.Application.csproj" />
+    <ProjectReference Include="..\..\Services\Domains\AVS.Cadastro.Domain\AVS.Cadastro.Domain.csproj" />
+    <ProjectReference Include="..\..\Services\Infra\Data\AVS.Cadastro.Data\AVS.Cadastro.Data.csproj" />
+  </ItemGroup>
+
 </Project>

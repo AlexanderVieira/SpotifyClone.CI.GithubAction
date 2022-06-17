@@ -2,8 +2,10 @@
 
 namespace AVS.Cadastro.Domain.Interfaces.Services
 {
-    public interface IUsuarioService
-    {
-        void Adicionar(Usuario usuario);
+    public interface IUsuarioService : IService<Usuario>
+    {        
+        Task<IEnumerable<Usuario>> ObterTodosAtivos();
+        void Ativar(Usuario usuario);
+        void Inativar(Usuario usuario);
     }
 }

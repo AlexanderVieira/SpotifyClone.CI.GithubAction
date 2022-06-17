@@ -34,14 +34,15 @@ namespace AVS.Cadastro.Domain.Testes
             var genero = new Faker().PickRandom<Name.Gender>();
             var usuarios = new Faker<Usuario>("pt_BR")
                 .CustomInstantiator(f => new Usuario(
+                    f.Random.Guid(),
                     f.Name.FullName(genero),
                     f.Internet.Email(),
                     f.Person.Cpf(),
                     f.Internet.Avatar(),
                     Ativo
-                    ))
-                .RuleFor(f => f.Id, f => f.Random.Guid());
-            return usuarios.Generate(quantidade);
+                    )).Generate(quantidade);
+            //.RuleFor(f => f.Id, f => f.Random.Guid());
+            return usuarios;
         }
         
         public Usuario CriarUsuarioInvalido()
@@ -49,13 +50,13 @@ namespace AVS.Cadastro.Domain.Testes
             var genero = new Faker().PickRandom<Name.Gender>();
             var usuario = new Faker<Usuario>("pt_BR")
                 .CustomInstantiator(f => new Usuario(
+                    f.Random.Guid(),
                     string.Empty,
                     "teste",
                     string.Empty,
                     string.Empty,
                     f.Random.Bool()
-                    ))
-                .RuleFor(f => f.Id, f => f.Random.Guid());
+                    )).Generate();                
             return usuario;
         }
         public void Dispose()

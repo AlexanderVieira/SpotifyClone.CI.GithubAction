@@ -96,7 +96,7 @@ namespace AVS.Core.ObjDoinio
             if (param) throw new DomainException(mensagem);
         }
 
-        public static void ValidarSeExiste(List<Object> objs, string mensagem)
+        public static void ValidarSeExiste(List<object> objs, string mensagem)
         {
             if (!objs.Any()) throw new DomainException(mensagem);
         }

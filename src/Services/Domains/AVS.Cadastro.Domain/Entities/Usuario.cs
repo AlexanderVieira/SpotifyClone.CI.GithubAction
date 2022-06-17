@@ -1,6 +1,5 @@
 ﻿using AVS.Core.ObjDoinio;
 using AVS.Core.ObjValor;
-using AVS.Core.Utils;
 using FluentValidation;
 using System.Text.RegularExpressions;
 
@@ -22,15 +21,16 @@ namespace AVS.Cadastro.Domain.Entities
         {            
         }
 
-        public Usuario(string nome, string email, string cpf, string foto, bool ativo)
+        public Usuario(Guid id, string nome, string email, string cpf, string foto, bool ativo)
         {
-            //Validar(nome);            
+            //Validar(nome);
+            Id = id;
             Nome = nome;
             Email = new Email(email);
             Cpf = new Cpf(cpf);
             Foto = foto;
-            Ativo = ativo;             
-            //Playlists = new List<Playlist>();
+            Ativo = ativo; 
+            _playlists = new List<Playlist>();
         }
 
         public void AtualizarEmail(string email)
@@ -78,7 +78,7 @@ namespace AVS.Cadastro.Domain.Entities
 
         private static void Validar(List<Playlist> playlists)
         {
-            var lista = playlists.Cast<Object>().ToList();
+            var lista = playlists.Cast<object>().ToList();
             Validacao.ValidarSeExiste(lista, "Playlist vazia.");
         }
 
@@ -153,10 +153,10 @@ namespace AVS.Cadastro.Domain.Entities
 
     public class UsuarioFactory
     {
-        public static Usuario Criar(string nome, string email, string cpf, string foto, bool Ativo)
+        public static Usuario Criar(Guid id, string nome, string email, string cpf, string foto, bool Ativo)
         {
             Validacao.ValidarSeNuloVazio(nome, "Nome é obrigatório.");
-            return new Usuario(nome, email, cpf, foto, Ativo);
+            return new Usuario(id, nome, email, cpf, foto, Ativo);
         }
     }
     

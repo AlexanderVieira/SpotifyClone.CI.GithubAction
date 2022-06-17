@@ -9,7 +9,7 @@ namespace AVS.Cadastro.Domain.Entities
         public string Titulo { get; set; }
         public string Descricao { get; set; }
         public string? Foto { get; set; }
-        public Usuario Usuario { get; set; }
+        public Guid UsuarioId { get; set; }
         private List<Musica> _musicas {  get; set;}
         public IReadOnlyCollection<Musica> Musicas => _musicas.AsReadOnly();
 
@@ -17,12 +17,13 @@ namespace AVS.Cadastro.Domain.Entities
         {
         }
 
-        public Playlist(string titulo, string descricao, string? foto = null)
+        public Playlist(Guid id, Guid usuarioId, string titulo, string descricao, string? foto = null)
         {
+            Id = id;
             Titulo = titulo;
             Descricao = descricao;
             Foto = foto;
-            //Musicas = new List<Musica>();
+            UsuarioId = usuarioId;            
         }
 
         public void AdicionarMusica(Musica musica)

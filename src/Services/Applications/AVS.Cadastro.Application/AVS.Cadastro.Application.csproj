@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\AVS.Core\AVS.Core.csproj" />
+    <ProjectReference Include="..\..\Domains\AVS.Cadastro.Domain\AVS.Cadastro.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -32,7 +32,7 @@ namespace AVS.Cadastro.Data.Mappings
             });
 
             builder.HasMany(u => u.Playlists)
-                .WithOne(p => p.Usuario)
+                .WithOne()
                 .HasForeignKey("UsuarioId");
 
             builder.ToTable("Usuarios");

@@ -1,11 +1,13 @@
 ﻿using AVS.Cadastro.Domain.Entities;
+using System;
 using Xunit;
 
 namespace AVS.Cadastro.Domain.Testes.Builders
 {
     [Collection(nameof(UsuarioCollection))]
     public class UsuarioBuilder
-    {        
+    {
+        public Guid Id { get; set; }
         public string Nome { get; private set; }
         public string Email { get; private set; }
         public string Cpf { get; private set; }
@@ -16,6 +18,7 @@ namespace AVS.Cadastro.Domain.Testes.Builders
         {
             var usuarioTestsFixture = new UsuarioTestsFixture();
             var usuario = usuarioTestsFixture.CriarUsuarioValido();
+            Id = usuario.Id;
             Nome = usuario.Nome;
             Email = usuario.Email.Address;
             Cpf = usuario.Cpf.Numero;
@@ -54,7 +57,7 @@ namespace AVS.Cadastro.Domain.Testes.Builders
         
         public Usuario Buid()
         {
-            return new Usuario(Nome, Email, Cpf, Foto, Ativo);
+            return new Usuario(Id, Nome, Email, Cpf, Foto, Ativo);
         }
     }
 }

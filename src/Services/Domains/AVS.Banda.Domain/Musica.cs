@@ -8,16 +8,18 @@ namespace AVS.Banda.Domain
     {
         public string Nome { get; set; }
         public Duracao Duracao { get; set; }
+        public Guid PlaylistId { get; set; }
 
         protected Musica()
         {
         }
 
-        public Musica(string nome, int paramDuracao)
+        public Musica(Guid id, Guid playlistId, string nome, int paramDuracao)
         {
-            var duracao = new Duracao(paramDuracao);
+            Id = id;
+            PlaylistId = playlistId;
             Nome = nome;
-            Duracao = duracao;
+            Duracao = new Duracao(paramDuracao);
         }
 
         public override bool EhValido()

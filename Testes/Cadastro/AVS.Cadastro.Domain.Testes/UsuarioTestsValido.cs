@@ -1,5 +1,6 @@
 ﻿using AVS.Banda.Domain;
 using AVS.Cadastro.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -37,7 +38,7 @@ namespace AVS.Cadastro.Domain.Testes
         {
             //Arrange
             var usuario = _usuarioTestsFixture.CriarUsuarioValido();
-            var playlist = new Playlist("Titulo", "Descricao");
+            var playlist = new Playlist(Guid.NewGuid(), usuario.Id, "Titulo", "Descricao");
             //Act
             usuario.AdicionarPlaylist(playlist);
 
@@ -51,7 +52,7 @@ namespace AVS.Cadastro.Domain.Testes
         {
             //Arrange
             var usuario = _usuarioTestsFixture.CriarUsuarioValido();
-            var playlists = new List<Playlist> { new Playlist("Titulo", "Descricao") };
+            var playlists = new List<Playlist> { new Playlist(Guid.NewGuid(), usuario.Id, "Titulo", "Descricao") };
             //Act
             usuario.AtualizarPlaylist(playlists);
 
@@ -67,8 +68,8 @@ namespace AVS.Cadastro.Domain.Testes
             var usuario = _usuarioTestsFixture.CriarUsuarioValido();
             var playlists = new List<Playlist> 
             { 
-                new Playlist("Titulo", "Descricao"), 
-                new Playlist("Titulo-1", "Descricao-1")
+                new Playlist(Guid.NewGuid(), usuario.Id, "Titulo", "Descricao"), 
+                new Playlist(Guid.NewGuid(), usuario.Id, "Titulo-1", "Descricao-1")
             };
             usuario.AtualizarPlaylist(playlists);
             var countExpected = playlists.Count - 1;
@@ -87,8 +88,8 @@ namespace AVS.Cadastro.Domain.Testes
             var usuario = _usuarioTestsFixture.CriarUsuarioValido();
             var playlists = new List<Playlist> 
             { 
-                new Playlist("Titulo", "Descricao"), 
-                new Playlist("Titulo-1", "Descricao-1")
+                new Playlist(Guid.NewGuid(), usuario.Id, "Titulo", "Descricao"), 
+                new Playlist(Guid.NewGuid(), usuario.Id, "Titulo-1", "Descricao-1")
             };
             usuario.AtualizarPlaylist(playlists);
             
@@ -133,8 +134,8 @@ namespace AVS.Cadastro.Domain.Testes
         {
             //Arrange
             var usuario = _usuarioTestsFixture.CriarUsuarioValido();                      
-            var playlist = new Playlist("Titulo", "Descricao");
-            var musica = new Musica("Titulo", 300);
+            var playlist = new Playlist(Guid.NewGuid(), usuario.Id, "Titulo", "Descricao");
+            var musica = new Musica(Guid.NewGuid(), playlist.Id, "Titulo", 300);
             playlist.AdicionarMusica(musica);    
 
             //Act

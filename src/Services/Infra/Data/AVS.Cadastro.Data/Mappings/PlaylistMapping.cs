@@ -25,8 +25,8 @@ namespace AVS.Cadastro.Data.Mappings
                 .HasColumnName("Foto")
                 .HasColumnType("varchar(250)");
 
-            builder.HasOne(p => p.Usuario)
-                .WithMany(u => u.Playlists);
+            //builder.HasOne(p => p.Usuario)
+            //    .WithMany(u => u.Playlists);
             
             builder.ToTable("Playlists");
 

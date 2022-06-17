@@ -1,10 +1,11 @@
 ﻿using AVS.Banda.Domain;
 using AVS.Cadastro.Domain.Entities;
+using AVS.Core.Mensagens;
 using FluentValidation;
 
 namespace AVS.Cadastro.Application.DTOs
 {
-    public class UsuarioDTO : BaseDTO
+    public class UsuarioDTO : MensagemResposta
     {
         public Guid Id {  get; set; }
         public string Nome { get; private set; }
@@ -75,8 +76,8 @@ namespace AVS.Cadastro.Application.DTOs
         }
         public override bool EhValido()
         {
-            var validationResult = new UsuarioDTOValidator().Validate(this);
-            return validationResult.IsValid;
+            ValidationResult = new UsuarioDTOValidator().Validate(this);
+            return ValidationResult.IsValid;
         }       
 
     }

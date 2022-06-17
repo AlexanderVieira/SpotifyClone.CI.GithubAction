@@ -24,7 +24,7 @@ namespace AVS.Cadastro.Application.AppServices
 
         public void Ativar(UsuarioDTO usuarioDTO)
         {
-            if (!usuarioDTO.EhValido()) return;
+            if (!usuarioDTO.EhValido()) return ;
 
             var usuario = UsuarioDTO.ConverteParaUsuario(usuarioDTO);
             _usuarioService.Ativar(usuario);
@@ -48,17 +48,16 @@ namespace AVS.Cadastro.Application.AppServices
 
         public async Task<UsuarioDTO> ObterPorId(Guid id)
         {
-            Validacao.ValidarSeNuloVazio(id.ToString(), "Usuario não encontrado.");
+            //Validacao.ValidarSeNuloVazio(id.ToString(), "Usuario não encontrado.");
             var usuario = await _usuarioService.ObterPorId(id);
             var usuarioDTO = UsuarioDTO.ConverteParaUsuarioDTO(usuario);
-
             return usuarioDTO;
         }
 
         public async Task<IEnumerable<UsuarioDTO>> ObterTodos()
         {
             var usuarios = await _usuarioService.ObterTodos();
-            Validacao.ValidarSeExiste(usuarios.Cast<object>().ToList(), "Não existem dados para exibição.");
+            //Validacao.ValidarSeExiste(usuarios.Cast<object>().ToList(), "Não existem dados para exibição.");
             IEnumerable<UsuarioDTO> usuarioDTOs = new List<UsuarioDTO>();
             foreach (var item in usuarios)
             {
@@ -71,7 +70,7 @@ namespace AVS.Cadastro.Application.AppServices
         public async Task<IEnumerable<UsuarioDTO>> ObterTodosAtivos()
         {
             var usuarios = await _usuarioService.ObterTodosAtivos();
-            Validacao.ValidarSeExiste(usuarios.Cast<object>().ToList(), "Não existem dados para exibição.");
+            //Validacao.ValidarSeExiste(usuarios.Cast<object>().ToList(), "Não existem dados para exibição.");
             IEnumerable<UsuarioDTO> usuarioDTOs = new List<UsuarioDTO>();
             foreach (var item in usuarios)
             {
@@ -88,5 +87,6 @@ namespace AVS.Cadastro.Application.AppServices
             var usuario = UsuarioDTO.ConverteParaUsuario(usuarioDTO);
             _usuarioService.Remover(usuario);
         }
+        
     }
 }

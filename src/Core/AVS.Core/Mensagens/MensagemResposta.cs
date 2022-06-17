@@ -1,13 +1,19 @@
 ﻿using FluentValidation.Results;
 
-namespace AVS.Cadastro.Application.DTOs
+namespace AVS.Core.Mensagens
 {
-    public abstract class BaseDTO
+    public class MensagemResposta : Mensagem
     {
         public ValidationResult ValidationResult { get; set; }
+
         public virtual bool EhValido()
         {
             throw new NotImplementedException();
         }
+
+        //public MensagemResposta(ValidationResult validation)
+        //{
+        //    ValidationResult = validation;
+        //}
     }
 }

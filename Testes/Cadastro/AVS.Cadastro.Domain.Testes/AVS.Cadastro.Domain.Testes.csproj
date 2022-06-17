@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Documentacao\AVS.Documentacao.API\AVS.Documentacao.API.csproj" />
     <ProjectReference Include="..\..\..\src\Services\Applications\AVS.Cadastro.Application\AVS.Cadastro.Application.csproj" />
     <ProjectReference Include="..\..\..\src\Services\Domains\AVS.Cadastro.Domain\AVS.Cadastro.Domain.csproj" />
   </ItemGroup>

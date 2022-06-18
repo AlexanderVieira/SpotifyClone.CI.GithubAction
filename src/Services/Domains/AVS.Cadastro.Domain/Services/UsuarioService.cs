@@ -1,6 +1,7 @@
 ﻿using AVS.Cadastro.Domain.Entities;
 using AVS.Cadastro.Domain.Interfaces.Repositories;
 using AVS.Cadastro.Domain.Interfaces.Services;
+using AVS.Core.ObjDoinio;
 
 namespace AVS.Cadastro.Domain.Services
 {
@@ -21,7 +22,6 @@ namespace AVS.Cadastro.Domain.Services
         public async Task<IEnumerable<Usuario>> ObterTodosAtivos()
         {
             return await _usuarioRepository.ObterTodosAtivos();
-
         }
 
         public async Task<Usuario> ObterPorId(Guid id)
@@ -31,8 +31,9 @@ namespace AVS.Cadastro.Domain.Services
 
         public void Adicionar(Usuario usuario)
         {
-            if (!usuario.EhValido()) return;
+            //if (!usuario.EhValido()) return;
             _usuarioRepository.Adicionar(usuario);
+            if (!_usuarioRepository.UnitOfWork.Commit().Result) throw new DomainException("Falha ao adicionar usuario.") ;
         }        
 
         public void Atualizar(Usuario usuario)
@@ -59,7 +60,7 @@ namespace AVS.Cadastro.Domain.Services
         {
             if (!usuario.EhValido()) return;            
             _usuarioRepository.Remover(usuario);
-        }
+        }        
         
     }
 }

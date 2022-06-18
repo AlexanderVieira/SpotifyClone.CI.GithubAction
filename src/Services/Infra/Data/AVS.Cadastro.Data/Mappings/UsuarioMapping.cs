@@ -13,6 +13,11 @@ namespace AVS.Cadastro.Data.Mappings
 
             builder.Property(u => u.Nome)
                 .IsRequired()
+                .HasColumnName("Nome")
+                .HasColumnType("varchar(200)");
+
+            builder.Property(u => u.Foto)
+                .HasColumnName("Foto")
                 .HasColumnType("varchar(200)");
 
             builder.OwnsOne(u => u.Email, tf => 
@@ -33,7 +38,8 @@ namespace AVS.Cadastro.Data.Mappings
 
             builder.HasMany(u => u.Playlists)
                 .WithOne()
-                .HasForeignKey("UsuarioId");
+                .HasForeignKey(p => p.UsuarioId)
+                .HasConstraintName("FK_Usuario_Playlist");
 
             builder.ToTable("Usuarios");
         }

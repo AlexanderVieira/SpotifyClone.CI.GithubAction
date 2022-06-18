@@ -1,4 +1,5 @@
 ﻿using AVS.Core.Comunicacao;
+using AVS.Core.Data;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -70,6 +71,11 @@ namespace AVS.Documentacao.API.Controllers
         protected void LimparErrosProcessamento()
         {
             Erros.Clear();
+        }
+
+        protected async Task PersistirDados(IUnitOfWork uow,string mensagem)
+        {
+            if (!await uow.Commit()) AdicionarErroProcessamento(mensagem);
         }
     }
 }

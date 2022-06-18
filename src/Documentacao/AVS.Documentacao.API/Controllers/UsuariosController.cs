@@ -1,5 +1,6 @@
 ﻿using AVS.Cadastro.Application.DTOs;
 using AVS.Cadastro.Application.Interfaces;
+using AVS.Core.ObjDoinio;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,13 +38,23 @@ namespace AVS.Documentacao.API.Controllers
         }
 
         [HttpPost("usuario")]
-        public IActionResult AdicionarUsuario(UsuarioDTO usuarioDTO)
+        public IActionResult AdicionarUsuario([FromBody] UsuarioDTO usuarioDTO)
         {
-            if (usuarioDTO == null) return RespostaPersonalizada();            
-            var validationResult = ValidarUsuario(usuarioDTO);
-            if (!validationResult.IsValid) return RespostaPersonalizada(validationResult);
-            _usuarioAppService.Adicionar(usuarioDTO);
-            return RespostaPersonalizada();
+            if (!ModelState.IsValid) return RespostaPersonalizada();
+            try
+            {
+                if (usuarioDTO == null) return RespostaPersonalizada();
+                var validationResult = ValidarUsuario(usuarioDTO);
+                if (!validationResult.IsValid) return RespostaPersonalizada(validationResult);
+                _usuarioAppService.Adicionar(usuarioDTO);
+                return RespostaPersonalizada();
+            }
+            catch (DomainException ex)
+            {
+                AdicionarErroProcessamento(ex.Message);
+                return RespostaPersonalizada();
+            }
+            
         }
         private ValidationResult ValidarUsuario(UsuarioDTO usuarioDTO)
         {

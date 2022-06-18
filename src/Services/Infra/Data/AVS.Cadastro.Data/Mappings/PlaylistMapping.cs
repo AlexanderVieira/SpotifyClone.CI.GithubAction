@@ -20,13 +20,14 @@ namespace AVS.Cadastro.Data.Mappings
                 .HasColumnName("Descricao")
                 .HasColumnType("varchar(200)");
 
-            builder.Property(p => p.Foto)
-                .IsRequired()
+            builder.Property(p => p.Foto)                
                 .HasColumnName("Foto")
-                .HasColumnType("varchar(250)");
+                .HasColumnType("varchar(250)");            
 
-            //builder.HasOne(p => p.Usuario)
-            //    .WithMany(u => u.Playlists);
+            builder.HasMany(p => p.Musicas)
+                .WithOne()
+                .HasForeignKey(m => m.PlaylistId)
+                .HasConstraintName("FK_Playlist_Musica");
             
             builder.ToTable("Playlists");
 

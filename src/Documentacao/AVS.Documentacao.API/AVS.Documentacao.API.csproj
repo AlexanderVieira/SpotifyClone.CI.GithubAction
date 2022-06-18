@@ -21,8 +21,4 @@
     <ProjectReference Include="..\..\Services\Infra\Data\AVS.Cadastro.Data\AVS.Cadastro.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Configuracao\" />
-  </ItemGroup>
-
 </Project>

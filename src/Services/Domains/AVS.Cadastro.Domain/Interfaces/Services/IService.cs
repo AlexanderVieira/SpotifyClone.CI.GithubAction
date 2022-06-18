@@ -9,5 +9,6 @@ namespace AVS.Cadastro.Domain.Interfaces.Services
         void Adicionar(T TEntity);
         void Atualizar(T TEntity);
         void Remover(T TEntity);
+        
     }
 }

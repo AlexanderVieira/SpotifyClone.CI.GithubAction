@@ -8,11 +8,11 @@ namespace AVS.Cadastro.Application.DTOs
     public class UsuarioDTO : MensagemResposta
     {
         public Guid Id {  get; set; }
-        public string Nome { get; private set; }
-        public string Email { get; private set; }
-        public string Cpf { get; private set; }
-        public bool Ativo { get; private set; }
-        public string Foto { get; private set; }        
+        public string Nome { get; set; }
+        public string Email { get; set; }
+        public string Cpf { get; set; }
+        public bool Ativo { get; set; }
+        public string? Foto { get; set; }        
         public List<PlaylistDTO> Playlists { get; set; }
 
         public static UsuarioDTO ConverteParaUsuarioDTO(Usuario usuario)

@@ -1,7 +1,6 @@
 ﻿using AVS.Cadastro.Application.DTOs;
 using AVS.Cadastro.Application.Interfaces;
 using AVS.Cadastro.Domain.Interfaces.Services;
-using AVS.Core.ObjDoinio;
 
 namespace AVS.Cadastro.Application.AppServices
 {
@@ -50,6 +49,7 @@ namespace AVS.Cadastro.Application.AppServices
         {
             //Validacao.ValidarSeNuloVazio(id.ToString(), "Usuario não encontrado.");
             var usuario = await _usuarioService.ObterPorId(id);
+            if(usuario == null) return null;
             var usuarioDTO = UsuarioDTO.ConverteParaUsuarioDTO(usuario);
             return usuarioDTO;
         }

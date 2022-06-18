@@ -11,7 +11,7 @@ namespace AVS.Cadastro.Domain.Entities
         public Email Email { get; private set; }
         public Cpf Cpf { get; private set; }
         public bool Ativo { get; private set; }
-        public string Foto { get; private set; }
+        public string? Foto { get; private set; }
         
         //public Senha Senha { get; private set; }
         private List<Playlist> _playlists { get; set; }

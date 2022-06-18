@@ -11,9 +11,9 @@ namespace AVS.Core.Mensagens
             throw new NotImplementedException();
         }
 
-        //public MensagemResposta(ValidationResult validation)
-        //{
-        //    ValidationResult = validation;
-        //}
+        public MensagemResposta()
+        {
+            ValidationResult = new ValidationResult();
+        }
     }
 }

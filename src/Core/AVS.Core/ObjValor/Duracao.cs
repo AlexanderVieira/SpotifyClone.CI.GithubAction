@@ -1,15 +1,21 @@
 ﻿namespace AVS.Core.ObjValor
 {
     public class Duracao
-    {        
+    {
         public Duracao(int valor)
         {
             Valor = valor;
         }
 
         public int Valor { get; set; }
-        public string Formatado => ValorFormatado();
 
+        private string _formatado;
+        public string Formatado 
+        { 
+            get { return _formatado; } 
+            set { _formatado = ValorFormatado(); } 
+        }
+        
         private string ValorFormatado()
         {
             var horas = Math.Floor(Convert.ToDecimal(this.Valor) / 3600);

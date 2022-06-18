@@ -32,8 +32,7 @@ namespace AVS.Cadastro.Domain.Services
         public void Adicionar(Usuario usuario)
         {
             //if (!usuario.EhValido()) return;
-            _usuarioRepository.Adicionar(usuario);
-            if (!_usuarioRepository.UnitOfWork.Commit().Result) throw new DomainException("Falha ao adicionar usuario.") ;
+            _usuarioRepository.Adicionar(usuario);            
         }        
 
         public void Atualizar(Usuario usuario)

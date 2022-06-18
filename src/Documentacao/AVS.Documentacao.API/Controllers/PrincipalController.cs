@@ -71,11 +71,6 @@ namespace AVS.Documentacao.API.Controllers
         protected void LimparErrosProcessamento()
         {
             Erros.Clear();
-        }
-
-        protected async Task PersistirDados(IUnitOfWork uow,string mensagem)
-        {
-            if (!await uow.Commit()) AdicionarErroProcessamento(mensagem);
-        }
+        }        
     }
 }

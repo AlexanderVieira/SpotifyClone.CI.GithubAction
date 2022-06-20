@@ -41,7 +41,7 @@ namespace AVS.Cadastro.Data.Mappings
                 .HasForeignKey(p => p.UsuarioId)
                 .HasConstraintName("FK_Usuario_Playlist");
 
-            builder.ToTable("Usuarios");
+            builder.ToTable(nameof(Usuario));
         }
     }
 }

@@ -71,7 +71,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.Testes", "4.Testes", "{00
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.1.Cadastro", "4.1.Cadastro", "{2AF7F1C1-3538-4481-A8E9-75AAC32C4917}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVS.Cadastro.Domain.Testes", "Testes\Cadastro\AVS.Cadastro.Domain.Testes\AVS.Cadastro.Domain.Testes.csproj", "{CC87D3A3-4798-42BF-BAA2-D5F7AC402666}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVS.Cadastro.Domain.Testes", "Testes\Cadastro\AVS.Cadastro.Domain.Testes\AVS.Cadastro.Domain.Testes.csproj", "{CC87D3A3-4798-42BF-BAA2-D5F7AC402666}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D7A084E8-BC35-4EE5-A9A5-6E30C3B9EA6F}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -14,23 +14,23 @@ namespace AVS.Cadastro.Domain.Entities
         public string? Foto { get; private set; }
         
         //public Senha Senha { get; private set; }
-        private List<Playlist> _playlists { get; set; }
-        public IReadOnlyCollection<Playlist> Playlists => _playlists.AsReadOnly();
+        
+        public List<Playlist> Playlists { get; private set; }
 
         protected Usuario()
         {            
         }
 
-        public Usuario(Guid id, string nome, string email, string cpf, string foto, bool ativo)
+        public Usuario(Guid id, string nome, string email, string cpf, string? foto, bool ativo)
         {
             //Validar(nome);
             Id = id;
-            Nome = nome;
+            Nome = nome; 
             Email = new Email(email);
             Cpf = new Cpf(cpf);
             Foto = foto;
-            Ativo = ativo; 
-            _playlists = new List<Playlist>();
+            Ativo = ativo;
+            Playlists = new List<Playlist>();
         }
 
         public void AtualizarEmail(string email)
@@ -49,26 +49,26 @@ namespace AVS.Cadastro.Domain.Entities
 
         public void AdicionarPlaylist(Playlist playlist)
         {
-            _playlists ??= new List<Playlist>();
-            _playlists.Add(playlist);
+            Playlists ??= new List<Playlist>();
+            Playlists.Add(playlist);
         }
 
         public void AtualizarPlaylist(List<Playlist> playlists)
         {            
             Validar(playlists);
-            _playlists = playlists;
+            Playlists = playlists;
         }
 
         public void RemoverPlaylist(Playlist playlist)
         {            
             Validar(playlist);
-            _playlists.Remove(playlist);
+            Playlists.Remove(playlist);
             
         }
 
         public void RemoverPlaylists()
         {
-            _playlists.Clear();
+            Playlists.Clear();
         }
 
         private static void Validar(Playlist playlist)
@@ -92,9 +92,9 @@ namespace AVS.Cadastro.Domain.Entities
             ValidationResult = new UsuarioValidator().Validate(this);
             return ValidationResult.IsValid;
         }
-                
-        //public void Validate() =>
-        //    new UsuarioValidator().ValidateAndThrow(this);
+
+        public void Validar() =>
+            new UsuarioValidator().ValidateAndThrow(this);
     }    
 
     public class UsuarioValidator : AbstractValidator<Usuario>
@@ -115,7 +115,7 @@ namespace AVS.Cadastro.Domain.Entities
                 .NotEmpty()
                 .WithMessage("Documento é obrigatório.")
                 .Must(Cpf.ValidarCpf)
-                .WithMessage("Documento Inválido.");
+                .WithMessage("Documento inválido.");
             
             RuleFor(x => x.Email.Address)
                 .NotEmpty()

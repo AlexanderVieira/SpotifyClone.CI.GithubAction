@@ -9,13 +9,15 @@
 
         public int Valor { get; set; }
 
-        private string _formatado;
-        public string Formatado 
-        { 
-            get { return _formatado; } 
-            set { _formatado = ValorFormatado(); } 
-        }
-        
+        //private string _formatado;
+
+        public string Formatado => ValorFormatado();
+        //public string Formatado 
+        //{ 
+        //    get { return _formatado; } 
+        //    set { _formatado = ValorFormatado(); } 
+        //}
+
         private string ValorFormatado()
         {
             var horas = Math.Floor(Convert.ToDecimal(this.Valor) / 3600);

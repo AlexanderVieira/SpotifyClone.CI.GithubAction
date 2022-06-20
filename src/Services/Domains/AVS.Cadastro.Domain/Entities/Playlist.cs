@@ -10,8 +10,8 @@ namespace AVS.Cadastro.Domain.Entities
         public string Descricao { get; set; }
         public string? Foto { get; set; }
         public Guid UsuarioId { get; set; }
-        private List<Musica> _musicas {  get; set;}
-        public IReadOnlyCollection<Musica> Musicas => _musicas.AsReadOnly();
+        public List<Musica> Musicas {  get; set;}
+        //public IReadOnlyCollection<Musica> Musicas => _musicas.AsReadOnly();
 
         protected Playlist()
         {
@@ -23,27 +23,28 @@ namespace AVS.Cadastro.Domain.Entities
             Titulo = titulo;
             Descricao = descricao;
             Foto = foto;
-            UsuarioId = usuarioId;            
+            UsuarioId = usuarioId;
+            Musicas = new List<Musica>();
         }
 
         public void AdicionarMusica(Musica musica)
         {
-            _musicas ??= new List<Musica>();
-            _musicas.Add(musica);
+            Musicas ??= new List<Musica>();
+            Musicas.Add(musica);
         }
 
         public void AtualizarMusicas(List<Musica> musicas)
         {
-            _musicas = musicas;
+            Musicas = musicas;
         }
 
         public void RemoverMusica(Musica musica)
         {
-            _musicas.Remove(musica);
+            Musicas.Remove(musica);
         }
         public void RemoverMusicas()
         {
-            _musicas.Clear();
+            Musicas.Clear();
         }
 
         public override bool EhValido()

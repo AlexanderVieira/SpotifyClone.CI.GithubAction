@@ -29,7 +29,7 @@ namespace AVS.Cadastro.Data.Mappings
                 .HasForeignKey(m => m.PlaylistId)
                 .HasConstraintName("FK_Playlist_Musica");
             
-            builder.ToTable("Playlists");
+            builder.ToTable(nameof(Playlist));
 
         }
     }

@@ -5,7 +5,7 @@ using FluentValidation;
 
 namespace AVS.Cadastro.Application.DTOs
 {
-    public class UsuarioDTO : MensagemResposta
+    public class UsuarioDTO
     {
         public Guid Id {  get; set; }
         public string Nome { get; set; }
@@ -44,6 +44,7 @@ namespace AVS.Cadastro.Application.DTOs
                 {
                     playlistDTO.Musicas.Add(new MusicaDTO
                     {
+                        Id = musica.Id,
                         Nome = musica.Nome,
                         Duracao = musica.Duracao.Valor,
                         PlaylistId = playlistDTO.Id
@@ -58,7 +59,7 @@ namespace AVS.Cadastro.Application.DTOs
 
         public static Usuario ConverteParaUsuario(UsuarioDTO usuarioDTO)
         {
-            var usuario = new Usuario(usuarioDTO.Id, usuarioDTO.Nome, usuarioDTO.Email, usuarioDTO.Email, usuarioDTO.Foto, usuarioDTO.Ativo);
+            var usuario = new Usuario(usuarioDTO.Id, usuarioDTO.Nome, usuarioDTO.Email, usuarioDTO.Cpf, usuarioDTO.Foto, usuarioDTO.Ativo);           
             var musicas = new List<Musica>();
             foreach (var item in usuarioDTO.Playlists)
             {
@@ -74,10 +75,10 @@ namespace AVS.Cadastro.Application.DTOs
             
             return usuario;
         }
-        public override bool EhValido()
+        public bool EhValido()
         {
-            ValidationResult = new UsuarioDTOValidator().Validate(this);
-            return ValidationResult.IsValid;
+            var validationResult = new UsuarioDTOValidator().Validate(this);
+            return validationResult.IsValid;
         }       
 
     }

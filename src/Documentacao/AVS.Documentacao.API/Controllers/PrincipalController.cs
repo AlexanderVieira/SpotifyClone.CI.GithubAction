@@ -1,5 +1,6 @@
 ﻿using AVS.Core.Comunicacao;
-using AVS.Core.Data;
+using AVS.Core.ObjDoinio;
+using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -10,6 +11,17 @@ namespace AVS.Documentacao.API.Controllers
     public abstract class PrincipalController : Controller
     {
         protected ICollection<string> Erros = new List<string>();
+        protected ValidationResult ValidationResult { get; set; }
+
+        protected virtual bool ExecutarValidacao<TV, TE>(TV validacao, TE entidade) where TV : AbstractValidator<TE> where TE : class
+        {
+            throw new NotImplementedException();
+        }
+
+        protected virtual bool EhValido(object obj)
+        {
+            throw new NotImplementedException();
+        }
 
         protected ActionResult RespostaPersonalizada(object? resultado = null)
         {

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AVS.Cadastro.Data.Migrations
 {
     [DbContext(typeof(UsuarioContext))]
-    [Migration("20220618003531_Inicial")]
-    partial class Inicial
+    [Migration("20220619023315_Coltype")]
+    partial class Coltype
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -41,7 +41,7 @@ namespace AVS.Cadastro.Data.Migrations
 
                     b.HasIndex("PlaylistId");
 
-                    b.ToTable("Musicas");
+                    b.ToTable("Musica", (string)null);
                 });
 
             modelBuilder.Entity("AVS.Cadastro.Domain.Entities.Playlist", b =>
@@ -71,7 +71,7 @@ namespace AVS.Cadastro.Data.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("Playlists", (string)null);
+                    b.ToTable("Playlist", (string)null);
                 });
 
             modelBuilder.Entity("AVS.Cadastro.Domain.Entities.Usuario", b =>
@@ -94,7 +94,7 @@ namespace AVS.Cadastro.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Usuarios", (string)null);
+                    b.ToTable("Usuario", (string)null);
                 });
 
             modelBuilder.Entity("AVS.Banda.Domain.Musica", b =>
@@ -110,18 +110,13 @@ namespace AVS.Cadastro.Data.Migrations
                             b1.Property<Guid>("MusicaId")
                                 .HasColumnType("uniqueidentifier");
 
-                            b1.Property<string>("Formatado")
-                                .IsRequired()
-                                .HasColumnType("varchar(100)")
-                                .HasColumnName("DuracaoFormatada");
-
                             b1.Property<int>("Valor")
                                 .HasColumnType("int")
                                 .HasColumnName("Duracao");
 
                             b1.HasKey("MusicaId");
 
-                            b1.ToTable("Musicas");
+                            b1.ToTable("Musica");
 
                             b1.WithOwner()
                                 .HasForeignKey("MusicaId");
@@ -154,7 +149,7 @@ namespace AVS.Cadastro.Data.Migrations
 
                             b1.HasKey("UsuarioId");
 
-                            b1.ToTable("Usuarios");
+                            b1.ToTable("Usuario");
 
                             b1.WithOwner()
                                 .HasForeignKey("UsuarioId");
@@ -172,7 +167,7 @@ namespace AVS.Cadastro.Data.Migrations
 
                             b1.HasKey("UsuarioId");
 
-                            b1.ToTable("Usuarios");
+                            b1.ToTable("Usuario");
 
                             b1.WithOwner()
                                 .HasForeignKey("UsuarioId");

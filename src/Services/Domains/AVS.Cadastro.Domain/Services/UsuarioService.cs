@@ -32,32 +32,37 @@ namespace AVS.Cadastro.Domain.Services
         public void Adicionar(Usuario usuario)
         {
             //if (!usuario.EhValido()) return;
+            usuario.Validar();
             _usuarioRepository.Adicionar(usuario);            
         }        
 
         public void Atualizar(Usuario usuario)
         {
-            if(!usuario.EhValido()) return;
+            //if(!usuario.EhValido()) return;
+            usuario.Validar();
             _usuarioRepository.Atualizar(usuario);
         }
 
         public void Ativar(Usuario usuario)
         {
-            if (!usuario.EhValido()) return;
+            //if (!usuario.EhValido()) return;
+            usuario.Validar();
             usuario.Ativar();
             _usuarioRepository.Atualizar(usuario);
         }
 
         public void Inativar(Usuario usuario)
         {
-            if (!usuario.EhValido()) return;
+            //if (!usuario.EhValido()) return;
+            usuario.Validar();
             usuario.Inativar();
             _usuarioRepository.Atualizar(usuario);
         }
 
         public void Remover(Usuario usuario)
         {
-            if (!usuario.EhValido()) return;            
+            //if (!usuario.EhValido()) return;
+            usuario.Validar();
             _usuarioRepository.Remover(usuario);
         }        
         

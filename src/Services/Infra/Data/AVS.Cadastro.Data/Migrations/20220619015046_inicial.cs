@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AVS.Cadastro.Data.Migrations
 {
-    public partial class Inicial : Migration
+    public partial class inicial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Usuarios",
+                name: "Usuario",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -22,11 +22,11 @@ namespace AVS.Cadastro.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Usuarios", x => x.Id);
+                    table.PrimaryKey("PK_Usuario", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Playlists",
+                name: "Playlist",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -37,55 +37,55 @@ namespace AVS.Cadastro.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Playlists", x => x.Id);
+                    table.PrimaryKey("PK_Playlist", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Usuario_Playlist",
                         column: x => x.UsuarioId,
-                        principalTable: "Usuarios",
+                        principalTable: "Usuario",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Musicas",
+                name: "Musica",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Nome = table.Column<string>(type: "varchar(200)", nullable: false),
                     Duracao = table.Column<int>(type: "int", nullable: false),
-                    DuracaoFormatada = table.Column<string>(type: "varchar(100)", nullable: false),
+                    Duracao_Formatado = table.Column<string>(type: "varchar(100)", nullable: false),
                     PlaylistId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Musicas", x => x.Id);
+                    table.PrimaryKey("PK_Musica", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Playlist_Musica",
                         column: x => x.PlaylistId,
-                        principalTable: "Playlists",
+                        principalTable: "Playlist",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Musicas_PlaylistId",
-                table: "Musicas",
+                name: "IX_Musica_PlaylistId",
+                table: "Musica",
                 column: "PlaylistId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Playlists_UsuarioId",
-                table: "Playlists",
+                name: "IX_Playlist_UsuarioId",
+                table: "Playlist",
                 column: "UsuarioId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Musicas");
+                name: "Musica");
 
             migrationBuilder.DropTable(
-                name: "Playlists");
+                name: "Playlist");
 
             migrationBuilder.DropTable(
-                name: "Usuarios");
+                name: "Usuario");
         }
     }
 }

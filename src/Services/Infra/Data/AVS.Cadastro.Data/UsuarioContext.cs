@@ -1,7 +1,6 @@
 ﻿using AVS.Banda.Domain;
 using AVS.Cadastro.Domain.Entities;
 using AVS.Core.Data;
-using AVS.Core.ObjDoinio;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,7 +31,7 @@ namespace AVS.Cadastro.Data
 
             foreach(var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
-                relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
+                relationship.DeleteBehavior = DeleteBehavior.ClientCascade;
             }
 
             base.OnModelCreating(modelBuilder);

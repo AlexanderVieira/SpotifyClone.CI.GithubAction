@@ -19,48 +19,153 @@ namespace AVS.Documentacao.API.Controllers
         [HttpGet("usuarios")]
         public async Task<IActionResult> ObterTodosUsuarios()
         {
-            var usuarios = await _usuarioAppService.ObterTodos();
-            return usuarios == null ? NotFound() : RespostaPersonalizada(usuarios.ToArray());
-        }
-
-        [HttpGet("usuarios/ativos")]
-        public async Task<IActionResult> ObterTodosUsuariosAtivos()
-        {
-            var usuarios = await _usuarioAppService.ObterTodosAtivos();
-            return usuarios == null ? NotFound() : RespostaPersonalizada(usuarios.ToArray());
-        }
-
-        [HttpGet("usuario/{id}")]
-        public async Task<IActionResult> ObterUsuarioPorId(Guid id)
-        {
-            var usuario = await _usuarioAppService.ObterPorId(id);
-            return usuario == null ? NotFound() : RespostaPersonalizada(usuario);
-        }
-
-        [HttpPost("usuario")]
-        public IActionResult AdicionarUsuario([FromBody] UsuarioDTO usuarioDTO)
-        {
-            if (!ModelState.IsValid) return RespostaPersonalizada();
             try
             {
-                if (usuarioDTO == null) return RespostaPersonalizada();
-                var validationResult = ValidarUsuario(usuarioDTO);
-                if (!validationResult.IsValid) return RespostaPersonalizada(validationResult);
-                _usuarioAppService.Adicionar(usuarioDTO);
-                return RespostaPersonalizada();
+                var usuarios = await _usuarioAppService.ObterTodos();
+                return usuarios == null ? NotFound() : RespostaPersonalizada(usuarios.ToArray());
             }
-            catch (DomainException ex)
+            catch (Exception ex)
             {
                 AdicionarErroProcessamento(ex.Message);
                 return RespostaPersonalizada();
             }
             
         }
-        private ValidationResult ValidarUsuario(UsuarioDTO usuarioDTO)
+
+        [HttpGet("usuarios/ativos")]
+        public async Task<IActionResult> ObterTodosUsuariosAtivos()
         {
-            if (!usuarioDTO.EhValido()) return usuarioDTO.ValidationResult;            
-            return usuarioDTO.ValidationResult;
+            try
+            {
+                var usuarios = await _usuarioAppService.ObterTodosAtivos();
+                return usuarios == null ? NotFound() : RespostaPersonalizada(usuarios.ToArray());
+            }
+            catch (Exception ex)
+            {
+                AdicionarErroProcessamento(ex.Message);
+                return RespostaPersonalizada();
+            }
+            
         }
+
+        [HttpGet("usuario/{id}")]
+        public async Task<IActionResult> ObterUsuarioPorId(Guid id)
+        {
+            try
+            {
+                var usuario = await _usuarioAppService.ObterPorId(id);
+                return usuario == null ? NotFound() : RespostaPersonalizada(usuario);
+            }
+            catch (Exception ex)
+            {
+                AdicionarErroProcessamento(ex.Message);
+                return RespostaPersonalizada();
+            }
+            
+        }
+
+        [HttpPost("usuario/adicionar")]
+        public IActionResult AdicionarUsuario([FromBody] UsuarioDTO usuarioDTO)
+        {
+            if (!ModelState.IsValid) return RespostaPersonalizada();
+            try
+            {
+                if (usuarioDTO == null) return RespostaPersonalizada();                
+                if (!ExecutarValidacao(new UsuarioDTOValidator(), usuarioDTO)) return RespostaPersonalizada(ValidationResult);
+                _usuarioAppService.Adicionar(usuarioDTO);
+                return RespostaPersonalizada();
+            }
+            catch (Exception ex)
+            {
+                AdicionarErroProcessamento(ex.Message);
+                return RespostaPersonalizada();
+            }
+            
+        }
+
+        [HttpPut("usuario/atualizar")]
+        public IActionResult AtualizarUsuario([FromBody] UsuarioDTO usuarioDTO)
+        {
+            if (!ModelState.IsValid) return RespostaPersonalizada();
+            try
+            {
+                if (usuarioDTO == null) return RespostaPersonalizada();
+                if (!ExecutarValidacao(new UsuarioDTOValidator(), usuarioDTO)) return RespostaPersonalizada(ValidationResult);
+                _usuarioAppService.Atualizar(usuarioDTO);
+                return RespostaPersonalizada();
+            }
+            catch (Exception ex)
+            {
+                AdicionarErroProcessamento(ex.Message);
+                return RespostaPersonalizada();
+            }
+
+        }
+
+        [HttpDelete("usuario/remover")]
+        public IActionResult RemoverUsuario([FromBody] UsuarioDTO usuarioDTO)
+        {
+            if (!ModelState.IsValid) return RespostaPersonalizada();
+            try
+            {
+                if (usuarioDTO == null) return RespostaPersonalizada();
+                if (!ExecutarValidacao(new UsuarioDTOValidator(), usuarioDTO)) return RespostaPersonalizada(ValidationResult);
+                _usuarioAppService.Remover(usuarioDTO);
+                return RespostaPersonalizada();
+            }
+            catch (Exception ex)
+            {
+                AdicionarErroProcessamento(ex.Message);
+                return RespostaPersonalizada();
+            }
+
+        }
+
+        [HttpPut("usuario/ativar")]
+        public IActionResult AtivarUsuario([FromBody] UsuarioDTO usuarioDTO)
+        {
+            if (!ModelState.IsValid) return RespostaPersonalizada();
+            try
+            {
+                if (usuarioDTO == null) return RespostaPersonalizada();
+                if (!ExecutarValidacao(new UsuarioDTOValidator(), usuarioDTO)) return RespostaPersonalizada(ValidationResult);                
+                _usuarioAppService.Ativar(usuarioDTO);
+                return RespostaPersonalizada();
+            }
+            catch (Exception ex)
+            {
+                AdicionarErroProcessamento(ex.Message);
+                return RespostaPersonalizada();
+            }
+
+        }
+
+        [HttpPut("usuario/inativar")]
+        public IActionResult InativarUsuario([FromBody] UsuarioDTO usuarioDTO)
+        {
+            if (!ModelState.IsValid) return RespostaPersonalizada();
+            try
+            {
+                if (usuarioDTO == null) return RespostaPersonalizada();
+                if (!ExecutarValidacao(new UsuarioDTOValidator(), usuarioDTO)) return RespostaPersonalizada(ValidationResult);                
+                _usuarioAppService.Inativar(usuarioDTO);
+                return RespostaPersonalizada();
+            }
+            catch (Exception ex)
+            {
+                AdicionarErroProcessamento(ex.Message);
+                return RespostaPersonalizada();
+            }
+
+        }
+
+        protected override bool ExecutarValidacao<TV, TE>(TV validacao, TE entidade)
+        {
+            ValidationResult = validacao.Validate(entidade);
+            if (ValidationResult.IsValid) return true;
+
+            return false;
+        }        
 
     }
 }

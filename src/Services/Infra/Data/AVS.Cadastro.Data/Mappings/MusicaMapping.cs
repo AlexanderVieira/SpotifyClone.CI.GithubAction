@@ -17,14 +17,13 @@ namespace AVS.Cadastro.Data.Mappings
             builder.OwnsOne(u => u.Duracao, tf =>
             {
                 tf.Property(u => u.Valor)
-                .IsRequired()
-                .HasColumnType("int")
-                .HasColumnName("Duracao");
-
-                tf.Property(u => u.Formatado)
                 .IsRequired()                
-                .HasColumnName("DuracaoFormatada");                
-            });            
+                .HasColumnName("Duracao")
+                .HasColumnType("int");
+
+            }); 
+            
+            builder.ToTable(nameof(Musica));
         }
     }
 }

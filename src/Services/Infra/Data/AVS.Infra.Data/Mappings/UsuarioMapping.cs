@@ -3,7 +3,7 @@ using AVS.Core.ObjValor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AVS.Cadastro.Data.Mappings
+namespace AVS.Infra.Data.Mappings
 {
     public class UsuarioMapping : IEntityTypeConfiguration<Usuario>
     {
@@ -37,11 +37,9 @@ namespace AVS.Cadastro.Data.Mappings
             });
 
             builder.HasMany(u => u.Playlists)
-                .WithOne()
-                .HasForeignKey(p => p.UsuarioId)
-                .HasConstraintName("FK_Usuario_Playlist");
+                .WithOne();
 
-            builder.ToTable(nameof(Usuario));
+            builder.ToTable("USUARIOS");
         }
     }
 }

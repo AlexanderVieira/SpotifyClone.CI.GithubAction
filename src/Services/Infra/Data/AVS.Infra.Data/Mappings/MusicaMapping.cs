@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AVS.Cadastro.Data.Mappings
+namespace AVS.Infra.Data.Mappings
 {
     public class MusicaMapping : IEntityTypeConfiguration<Musica>
     {
@@ -21,9 +21,12 @@ namespace AVS.Cadastro.Data.Mappings
                 .HasColumnName("Duracao")
                 .HasColumnType("int");
 
-            }); 
-            
-            builder.ToTable(nameof(Musica));
+                tf.Property(u => u.Formatado)
+                .IsRequired()
+                .HasColumnName("Duracao_Formatada");
+            });                      
+
+            builder.ToTable("MUSICAS");
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using AVS.Core.ObjDoinio;
+﻿using AVS.Banda.Domain;
+using AVS.Core.ObjDoinio;
 using AVS.Core.ObjValor;
 using FluentValidation;
 using System.Text.RegularExpressions;
@@ -22,8 +23,7 @@ namespace AVS.Cadastro.Domain.Entities
         }
 
         public Usuario(Guid id, string nome, string email, string cpf, string? foto, bool ativo)
-        {
-            //Validar(nome);
+        {            
             Id = id;
             Nome = nome; 
             Email = new Email(email);
@@ -73,19 +73,14 @@ namespace AVS.Cadastro.Domain.Entities
 
         private static void Validar(Playlist playlist)
         {
-            Validacao.ValidarSeNulo(playlist, "Playlist vazia.");
+            Validacao.ValidarSeNulo(playlist, "Playlist não encontrada.");
         }
 
         private static void Validar(List<Playlist> playlists)
         {
             var lista = playlists.Cast<object>().ToList();
-            Validacao.ValidarSeExiste(lista, "Playlist vazia.");
-        }
-
-        //public static void Validar(string param)
-        //{
-        //    Validacao.ValidarSeNuloVazio(param, "Nome é obrigatório.");
-        //}
+            Validacao.ValidarSeExiste(lista, "Não existem dados para exibição.");
+        }        
 
         public override bool EhValido()
         {
@@ -93,7 +88,7 @@ namespace AVS.Cadastro.Domain.Entities
             return ValidationResult.IsValid;
         }
 
-        public void Validar() =>
+        public override void Validar() =>
             new UsuarioValidator().ValidateAndThrow(this);
     }    
 

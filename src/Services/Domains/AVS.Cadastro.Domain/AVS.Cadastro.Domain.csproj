@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Entities\Playlist.cs" />
+    <Compile Remove="Interfaces\Repositories\IPlaylistRepository.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.0.2" />
   </ItemGroup>
 

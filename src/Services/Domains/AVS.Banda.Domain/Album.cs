@@ -7,17 +7,21 @@ namespace AVS.Banda.Domain
     {        
         public string Titulo { get; private set; }
         public string Descricao { get; private set; }
-        public string Foto { get; private set; }
+        public string? Foto { get; private set; }
+        public Guid BandaId { get; private set; }
+        public Banda Banda { get; set; }
         public IList<Musica> Musicas { get; private set; }
 
         protected Album()
         {            
         }
 
-        public Album(string titulo, string descricao)
+        public Album(Guid id, string titulo, string descricao, string? foto)
         {
+            Id = id;
             Titulo = titulo;
             Descricao = descricao;
+            Foto = foto;
             Musicas = new List<Musica>();
         }
 
@@ -36,6 +40,8 @@ namespace AVS.Banda.Domain
             var validationResult = new AlbumValidator().Validate(this);
             return validationResult.IsValid;
         }
+        public override void Validar() => 
+            new AlbumValidator().ValidateAndThrow(this);
 
     }
 
@@ -47,17 +53,17 @@ namespace AVS.Banda.Domain
                 .NotEqual(Guid.Empty)
                 .WithMessage("Id do album inválido.");
             
-            RuleFor(x => x.Titulo)
+            RuleFor(x => x.Titulo)                
                 .NotEmpty()
-                .WithMessage("Título do album inválido.");
+                .WithMessage("Título do album é obrigatório.");
             
             RuleFor(x => x.Foto)
                 .NotEmpty()
-                .WithMessage("Foto do album inválida.");
+                .WithMessage("Foto do album é obrigatória.");
             
             RuleFor(x => x.Descricao)
                 .NotEmpty()
-                .WithMessage("Descrição do album inválida.");
+                .WithMessage("Descrição do album é obrigatória.");
         }
     }
 }

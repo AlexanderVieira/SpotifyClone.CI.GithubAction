@@ -6,18 +6,18 @@ namespace AVS.Banda.Domain
 {
     public class Banda : Entity , IAggregateRoot
     {
-        public string Nome { get; set; }
-        public string Foto { get; set; }
-        public string Descricao { get; set; }
-        public IList<Album> Albuns { get; set; }
+        public string Nome { get; private set; }
+        public string? Foto { get; private set; }
+        public string Descricao { get; private set; }
+        public IList<Album> Albuns { get; private set; }
 
         protected Banda()
         {
         }
                 
-        public void CriarAlbum(string nome, string descricao, IList<Musica> musicas)
+        public void CriarAlbum(Guid id, string nome, string descricao, string foto, IList<Musica> musicas)
         {
-            var album = AlbumFactory.Criar(nome, descricao, musicas);
+            var album = AlbumFactory.Criar(id, nome, descricao, foto, musicas);
             Albuns.Add(album);           
         }
 
@@ -30,6 +30,8 @@ namespace AVS.Banda.Domain
             var validationResult = new BandaValidator().Validate(this);
             return validationResult.IsValid;
         }
+        public override void Validar() =>
+            new BandaValidator().ValidateAndThrow(this);
 
     }
 
@@ -43,13 +45,15 @@ namespace AVS.Banda.Domain
             
             RuleFor(x => x.Nome)
                 .NotEmpty()
-                .WithMessage("Nome da banda inválido.");
+                .WithMessage("Nome da banda é obrigatório.");
             
-            //RuleFor(x => x.Foto).NotEmpty().WithMessage("Foto da banda inválida.");
+            RuleFor(x => x.Foto)
+                .NotEmpty()
+                .WithMessage("Foto da banda é obrigatória.");
             
             RuleFor(x => x.Descricao)
                 .NotEmpty()
-                .WithMessage("Descrição da banda inválida.");
+                .WithMessage("Descrição da banda é obrigatória.");
         }
     }
 }

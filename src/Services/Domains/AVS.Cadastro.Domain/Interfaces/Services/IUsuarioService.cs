@@ -1,11 +1,12 @@
 ﻿using AVS.Cadastro.Domain.Entities;
+using AVS.Core.Services;
 
 namespace AVS.Cadastro.Domain.Interfaces.Services
 {
-    public interface IUsuarioService : IService<Usuario>
+    public interface IUsuarioService : IAppService<Usuario>
     {        
         Task<IEnumerable<Usuario>> ObterTodosAtivos();
-        void Ativar(Usuario usuario);
-        void Inativar(Usuario usuario);
+        Task Ativar(Usuario usuario);
+        Task Inativar(Usuario usuario);        
     }
 }

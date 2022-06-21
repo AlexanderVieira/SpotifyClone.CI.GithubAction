@@ -1,12 +1,12 @@
-﻿using AVS.Cadastro.Domain.Entities;
+﻿using AVS.Banda.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AVS.Cadastro.Data.Mappings
+namespace AVS.Infra.Data.Mappings
 {
-    public class PlaylistMapping : IEntityTypeConfiguration<Playlist>
+    public class AlbumMapping : IEntityTypeConfiguration<Album>
     {
-        public void Configure(EntityTypeBuilder<Playlist> builder)
+        public void Configure(EntityTypeBuilder<Album> builder)
         {
             builder.HasKey(p => p.Id);
 
@@ -22,14 +22,12 @@ namespace AVS.Cadastro.Data.Mappings
 
             builder.Property(p => p.Foto)                
                 .HasColumnName("Foto")
-                .HasColumnType("varchar(250)");            
+                .HasColumnType("varchar(250)");
 
-            builder.HasMany(p => p.Musicas)
-                .WithOne()
-                .HasForeignKey(m => m.PlaylistId)
-                .HasConstraintName("FK_Playlist_Musica");
-            
-            builder.ToTable(nameof(Playlist));
+            builder.HasMany(a => a.Musicas)
+                .WithOne(m => m.Album);
+
+            builder.ToTable("ALBUNS");
 
         }
     }

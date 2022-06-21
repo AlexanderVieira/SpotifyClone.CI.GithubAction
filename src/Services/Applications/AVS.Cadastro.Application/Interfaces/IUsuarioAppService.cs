@@ -1,11 +1,12 @@
 ﻿using AVS.Cadastro.Application.DTOs;
+using AVS.Core.Services;
 
 namespace AVS.Cadastro.Application.Interfaces
 {
     public interface IUsuarioAppService : IAppService<UsuarioDTO>
     {        
         Task<IEnumerable<UsuarioDTO>> ObterTodosAtivos();
-        void Ativar(UsuarioDTO usuario);
-        void Inativar(UsuarioDTO usuario);
+        Task Ativar(UsuarioDTO usuario);
+        Task Inativar(UsuarioDTO usuario);        
     }
 }

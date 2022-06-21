@@ -14,4 +14,9 @@
     <ProjectReference Include="..\..\..\Core\AVS.Core\AVS.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\" />
+    <Folder Include="Entities\" />
+  </ItemGroup>
+
 </Project>

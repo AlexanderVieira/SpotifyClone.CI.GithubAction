@@ -4,17 +4,19 @@ using AVS.Core.Data;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 
-namespace AVS.Cadastro.Data
+namespace AVS.Infra.Data
 {
-    public class UsuarioContext : DbContext, IUnitOfWork
+    public class SpotifyCloneContext : DbContext, IUnitOfWork
     {
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Playlist> Playlists { get; set; }
         public DbSet<Musica> Musicas { get; set; }
+        public DbSet<Banda.Domain.Banda> Bandas { get; set; }
+        public DbSet<Album> Albuns { get; set; }
 
-        public UsuarioContext(DbContextOptions<UsuarioContext> options) : base(options)
+        public SpotifyCloneContext(DbContextOptions<SpotifyCloneContext> options) : base(options)
         {
-            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTrackingWithIdentityResolution;
             ChangeTracker.AutoDetectChangesEnabled = false;
         }
 
@@ -27,7 +29,7 @@ namespace AVS.Cadastro.Data
             }
             
             modelBuilder.Ignore<ValidationResult>();
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(UsuarioContext).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(SpotifyCloneContext).Assembly);
 
             foreach(var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {

@@ -1,5 +1,4 @@
 ﻿using AVS.Core.Comunicacao;
-using AVS.Core.ObjDoinio;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;

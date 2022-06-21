@@ -3,6 +3,7 @@ using AVS.Cadastro.Application.DTOs;
 using AVS.Cadastro.Domain.Interfaces.Services;
 using Moq;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace AVS.Cadastro.Domain.Testes
@@ -19,34 +20,34 @@ namespace AVS.Cadastro.Domain.Testes
 
         [Fact(DisplayName = "Adicionar Usuario com Sucesso")]
         [Trait("Categoria", "Usuario AppService Mock Tests")]
-        public void UsuarioAppService_Adicionar_DeveExecutarComSucesso()
+        public async Task UsuarioAppService_Adicionar_DeveExecutarComSucesso()
         {
             //Arrange
             var usuario = _usuarioTestsFixture.CriarUsuarioValido();
             var usuarioService = new Mock<IUsuarioService>();
             var usuarioAppService = new UsuarioAppService(usuarioService.Object);
-            var usuarioDTO = UsuarioDTO.ConverteParaUsuarioDTO(usuario);
+            var usuarioDTO = UsuarioDTO.ConverterParaUsuarioDTO(usuario);
 
             //Act
-            usuarioAppService.Adicionar(usuarioDTO);
+            await usuarioAppService.Salvar(usuarioDTO);
 
             //Asset
             Assert.True(usuarioDTO.EhValido());
-            usuarioService.Verify(r => r.Adicionar(usuario), Times.Once());
+            usuarioService.Verify(r => r.Salvar(usuario), Times.Once());
         }
 
         [Fact(DisplayName = "Atualizar Usuario com Sucesso")]
         [Trait("Categoria", "Usuario AppService Mock Tests")]
-        public void UsuarioAppService_Atualizar_DeveExecutarComSucesso()
+        public async Task UsuarioAppService_Atualizar_DeveExecutarComSucesso()
         {
             //Arrange
             var usuario = _usuarioTestsFixture.CriarUsuarioValido();
             var usuarioService = new Mock<IUsuarioService>();
             var usuarioAppService = new UsuarioAppService(usuarioService.Object);
-            var usuarioDTO = UsuarioDTO.ConverteParaUsuarioDTO(usuario);
+            var usuarioDTO = UsuarioDTO.ConverterParaUsuarioDTO(usuario);
 
             //Act
-            usuarioAppService.Atualizar(usuarioDTO);
+            await usuarioAppService.Atualizar(usuarioDTO);
 
             //Asset
             Assert.True(usuarioDTO.EhValido());
@@ -55,25 +56,25 @@ namespace AVS.Cadastro.Domain.Testes
 
         [Fact(DisplayName = "Remover Usuario com Sucesso")]
         [Trait("Categoria", "Usuario AppService Mock Tests")]
-        public void UsuarioAppService_Remover_DeveExecutarComSucesso()
+        public async Task UsuarioAppService_Remover_DeveExecutarComSucesso()
         {
             //Arrange
             var usuario = _usuarioTestsFixture.CriarUsuarioValido();
             var usuarioService = new Mock<IUsuarioService>();
             var usuarioAppService = new UsuarioAppService(usuarioService.Object);
-            var usuarioDTO = UsuarioDTO.ConverteParaUsuarioDTO(usuario);
+            var usuarioDTO = UsuarioDTO.ConverterParaUsuarioDTO(usuario);
 
             //Act
-            usuarioAppService.Remover(usuarioDTO);
+            await usuarioAppService.Exluir(usuarioDTO);
 
             //Asset
             Assert.True(usuarioDTO.EhValido());
-            usuarioService.Verify(r => r.Remover(usuario), Times.Once());
+            usuarioService.Verify(r => r.Exluir(usuario), Times.Once());
         }
 
         [Fact(DisplayName = "Obter todos Usuarios com Sucesso")]
         [Trait("Categoria", "Usuario AppService Mock Tests")]
-        public void UsuarioAppService_ObterTodos_DeveExecutarComSucesso()
+        public async Task UsuarioAppService_ObterTodos_DeveExecutarComSucesso()
         {
             //Arrange            
             var usuarioService = new Mock<IUsuarioService>();
@@ -81,16 +82,16 @@ namespace AVS.Cadastro.Domain.Testes
             var usuarioAppService = new UsuarioAppService(usuarioService.Object);
 
             //Act
-            var usuarioDTOs = usuarioAppService.ObterTodos();
+            var usuarioDTOs = await usuarioAppService.ObterTodos();
 
             //Asset
-            Assert.NotNull(usuarioDTOs.Result.Any());
+            Assert.True(usuarioDTOs.Any());
             usuarioService.Verify(r => r.ObterTodos(), Times.Once());
         }
 
         [Fact(DisplayName = "Obter todos Usuarios Ativos com Sucesso")]
         [Trait("Categoria", "Usuario AppService Mock Tests")]
-        public void UsuarioAppService_ObterTodosAtivos_DeveExecutarComSucesso()
+        public async Task UsuarioAppService_ObterTodosAtivos_DeveExecutarComSucesso()
         {
             //Arrange            
             var usuarioService = new Mock<IUsuarioService>();
@@ -98,17 +99,17 @@ namespace AVS.Cadastro.Domain.Testes
             var usuarioAppService = new UsuarioAppService(usuarioService.Object);
 
             //Act
-            var usuarioDTOs = usuarioAppService.ObterTodosAtivos();
+            var usuarioDTOs = await usuarioAppService.ObterTodosAtivos();
 
             //Asset
             usuarioService.Verify(r => r.ObterTodosAtivos(), Times.Once());
-            Assert.NotNull(usuarioDTOs.Result.Any());
-            Assert.False(usuarioDTOs.Result.Count(u => !u.Ativo) > 0);
+            Assert.True(usuarioDTOs.Any());
+            Assert.False(usuarioDTOs.Count(u => !u.Ativo) > 0);
         }
 
         [Fact(DisplayName = "Obter Usuario por ID com Sucesso")]
         [Trait("Categoria", "Usuario AppService Mock Tests")]
-        public void UsuarioAppService_ObterPorId_DeveExecutarComSucesso()
+        public async Task UsuarioAppService_ObterPorId_DeveExecutarComSucesso()
         {
             //Arrange            
             var usuario = _usuarioTestsFixture.CriarUsuarioValido();
@@ -117,25 +118,25 @@ namespace AVS.Cadastro.Domain.Testes
             var UsuarioAppService = new UsuarioAppService(usuarioService.Object);
 
             //Act
-            var usuarioAtual = UsuarioAppService.ObterPorId(usuario.Id);
+            var usuarioAtual = await UsuarioAppService.ObterPorId(usuario.Id);
 
             //Asset
             usuarioService.Verify(r => r.ObterPorId(usuario.Id), Times.Once());
-            Assert.Equal(usuario.Id, usuarioAtual.Result.Id);
+            Assert.Equal(usuario.Id, usuarioAtual.Id);
         }
 
         [Fact(DisplayName = "Ativar Usuario com Sucesso")]
         [Trait("Categoria", "Usuario AppService Mock Tests")]
-        public void UsuarioAppService_Ativar_DeveExecutarComSucesso()
+        public async Task UsuarioAppService_Ativar_DeveExecutarComSucesso()
         {
             //Arrange            
             var usuario = _usuarioTestsFixture.CriarUsuarioValido();
             var usuarioService = new Mock<IUsuarioService>();
             var usuarioAppService = new UsuarioAppService(usuarioService.Object);
-            var usuarioDTO = UsuarioDTO.ConverteParaUsuarioDTO(usuario);
+            var usuarioDTO = UsuarioDTO.ConverterParaUsuarioDTO(usuario);
 
             //Act
-            usuarioAppService.Ativar(usuarioDTO);
+            await usuarioAppService.Ativar(usuarioDTO);
 
             //Asset
             usuarioService.Verify(r => r.Ativar(usuario), Times.Once());
@@ -143,16 +144,16 @@ namespace AVS.Cadastro.Domain.Testes
 
         [Fact(DisplayName = "Inativar Usuario com Sucesso")]
         [Trait("Categoria", "Usuario AppService Mock Tests")]
-        public void UsuarioAppService_Inativar_DeveExecutarComSucesso()
+        public async Task UsuarioAppService_Inativar_DeveExecutarComSucesso()
         {
             //Arrange            
             var usuario = _usuarioTestsFixture.CriarUsuarioValido();
             var usuarioService = new Mock<IUsuarioService>();
             var usuarioAppService = new UsuarioAppService(usuarioService.Object);
-            var usuarioDTO = UsuarioDTO.ConverteParaUsuarioDTO(usuario);
+            var usuarioDTO = UsuarioDTO.ConverterParaUsuarioDTO(usuario);
 
             //Act
-            usuarioAppService.Inativar(usuarioDTO);
+            await usuarioAppService.Inativar(usuarioDTO);
 
             //Asset
             usuarioService.Verify(r => r.Inativar(usuario), Times.Once());

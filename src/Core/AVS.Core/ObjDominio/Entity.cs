@@ -47,5 +47,9 @@ namespace AVS.Core.ObjDoinio
         {
             throw new NotImplementedException();
         }
+        public virtual void Validar()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

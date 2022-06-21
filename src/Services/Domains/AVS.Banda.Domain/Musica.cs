@@ -6,20 +6,23 @@ namespace AVS.Banda.Domain
 {
     public class Musica : Entity
     {
-        public string Nome { get; set; }
-        public Duracao Duracao { get; set; }
-        public Guid PlaylistId { get; set; }
+        public string Nome { get; private set; }
+        public Duracao Duracao { get; private set; }
+        public Guid AlbumId { get; private set; }
+        public virtual Album Album { get; private set; }
+        public IList<Playlist> Playlists { get; private set; }
 
         protected Musica()
         {
         }
 
-        public Musica(Guid id, Guid playlistId, string nome, int paramDuracao)
-        {
+        public Musica(Guid id, Guid albumId, string nome, int paramDuracao)
+        {            
             Id = id;
-            PlaylistId = playlistId;
+            AlbumId = albumId;
             Nome = nome;
             Duracao = new Duracao(paramDuracao);
+            Playlists = new List<Playlist>();
         }
 
         public override bool EhValido()
@@ -27,6 +30,8 @@ namespace AVS.Banda.Domain
             var validationResult = new MusicaValidator().Validate(this);
             return validationResult.IsValid;
         }
+        public override void Validar() => 
+            new MusicaValidator().ValidateAndThrow(this);        
     }
 
     public class MusicaValidator : AbstractValidator<Musica>
@@ -39,11 +44,11 @@ namespace AVS.Banda.Domain
             
             RuleFor(x => x.Nome)
                 .NotEmpty()
-                .WithMessage("Nome da banda inválido.");
+                .WithMessage("Nome da banda é obrigatório.");
             
             RuleFor(x => x.Duracao.Valor)
                 .NotEmpty()
-                .WithMessage("Tempo de duração inválido.");            
+                .WithMessage("Tempo de duração é obrigatório.");            
         }
     }
 }

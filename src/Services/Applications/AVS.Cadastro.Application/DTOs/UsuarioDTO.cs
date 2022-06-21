@@ -1,6 +1,6 @@
 ﻿using AVS.Banda.Domain;
+using AVS.Banda.Domain.AppServices.DTOs;
 using AVS.Cadastro.Domain.Entities;
-using AVS.Core.Mensagens;
 using FluentValidation;
 
 namespace AVS.Cadastro.Application.DTOs
@@ -13,9 +13,9 @@ namespace AVS.Cadastro.Application.DTOs
         public string Cpf { get; set; }
         public bool Ativo { get; set; }
         public string? Foto { get; set; }        
-        public List<PlaylistDTO> Playlists { get; set; }
+        public IList<PlaylistDTO> Playlists { get; set; }
 
-        public static UsuarioDTO ConverteParaUsuarioDTO(Usuario usuario)
+        public static UsuarioDTO ConverterParaUsuarioDTO(Usuario usuario)
         {
             var usuarioDTO = new UsuarioDTO
             {
@@ -28,50 +28,53 @@ namespace AVS.Cadastro.Application.DTOs
                 Playlists = new List<PlaylistDTO>()
             };
 
-            foreach (var item in usuario.Playlists)
+            if (usuario.Playlists != null && usuario.Playlists.Count > 0)
             {
-                var playlistDTO = new PlaylistDTO
+                foreach (var item in usuario.Playlists)
                 {
-                    Id=item.Id,
-                    Titulo = item.Titulo,
-                    Descricao = item.Descricao,
-                    Foto = item.Foto,
-                    Musicas = new List<MusicaDTO>(),
-                    UsuarioId = item.UsuarioId
-                };
-
-                foreach (var musica in item.Musicas)
-                {
-                    playlistDTO.Musicas.Add(new MusicaDTO
+                    var playlistDTO = new PlaylistDTO(item.Id, item.UsuarioId, item.Titulo, item.Descricao, item.Foto);
+                    
+                    if (item.Musicas != null && item.Musicas.Count > 0)
                     {
-                        Id = musica.Id,
-                        Nome = musica.Nome,
-                        Duracao = musica.Duracao.Valor,
-                        PlaylistId = playlistDTO.Id
-                    });
+                        foreach (var musica in item.Musicas)
+                        {
+                            playlistDTO.Musicas.Add(new MusicaDTO
+                            {
+                                Id = musica.Id,
+                                Nome = musica.Nome,
+                                Duracao = musica.Duracao.Valor,
+                                AlbumId = musica.AlbumId
+                            });
+                        }
+                    }
+                    usuarioDTO.Playlists.Add(playlistDTO);
                 }
-
-                usuarioDTO.Playlists.Add(playlistDTO);
             }
-
+            
             return usuarioDTO;
         }
 
-        public static Usuario ConverteParaUsuario(UsuarioDTO usuarioDTO)
+        public static Usuario ConverterParaUsuario(UsuarioDTO usuarioDTO)
         {
             var usuario = new Usuario(usuarioDTO.Id, usuarioDTO.Nome, usuarioDTO.Email, usuarioDTO.Cpf, usuarioDTO.Foto, usuarioDTO.Ativo);           
-            var musicas = new List<Musica>();
-            foreach (var item in usuarioDTO.Playlists)
+            
+            if (usuarioDTO.Playlists != null && usuario.Playlists.Count > 0)
             {
-                var playlist = new Playlist(item.Id, usuario.Id, item.Titulo, item.Descricao, item.Foto);
-                foreach (var musica in item.Musicas)
+                var musicas = new List<Musica>();
+                foreach (var item in usuarioDTO.Playlists)
                 {
-                    musicas.Add(new Musica(musica.Id, playlist.Id, musica.Nome, musica.Duracao));
-                    playlist.AtualizarMusicas(musicas);
+                    var playlist = new Playlist(item.Id, usuario.Id, item.Titulo, item.Descricao, item.Foto);
+                    if (item.Musicas != null && item.Musicas.Count > 0)
+                    {
+                        foreach (var musica in item.Musicas)
+                        {
+                            musicas.Add(new Musica(musica.Id, musica.AlbumId, musica.Nome, musica.Duracao));
+                            playlist.AtualizarMusicas(musicas);
+                        }                        
+                    }
+                    usuario.AdicionarPlaylist(playlist);
                 }
-                
-                usuario.AdicionarPlaylist(playlist);
-            }
+            }            
             
             return usuario;
         }

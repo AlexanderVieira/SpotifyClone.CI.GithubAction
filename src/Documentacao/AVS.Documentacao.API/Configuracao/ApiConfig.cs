@@ -1,4 +1,5 @@
-﻿using AVS.Cadastro.Data;
+﻿using AVS.Infra.CrossCutting;
+using AVS.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace AVS.Documentacao.API.Configuracao
@@ -7,7 +8,7 @@ namespace AVS.Documentacao.API.Configuracao
     {
         public static void AddApiConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<UsuarioContext>(options =>
+            services.AddDbContext<SpotifyCloneContext>(options =>
                     options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             services.AddControllers();

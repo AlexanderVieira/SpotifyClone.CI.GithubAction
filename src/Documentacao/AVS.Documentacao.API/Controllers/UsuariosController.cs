@@ -1,12 +1,11 @@
 ﻿using AVS.Cadastro.Application.DTOs;
 using AVS.Cadastro.Application.Interfaces;
-using AVS.Core.ObjDoinio;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AVS.Documentacao.API.Controllers
 {
-    //[Route("api/[controller]")]    
+    [Route("api")]    
     public class UsuariosController : PrincipalController
     {
         private readonly IUsuarioAppService _usuarioAppService;
@@ -48,7 +47,7 @@ namespace AVS.Documentacao.API.Controllers
             
         }
 
-        [HttpGet("usuario/{id}")]
+        [HttpGet("usuario/detalhe/{id}")]
         public async Task<IActionResult> ObterUsuarioPorId(Guid id)
         {
             try
@@ -65,14 +64,14 @@ namespace AVS.Documentacao.API.Controllers
         }
 
         [HttpPost("usuario/adicionar")]
-        public IActionResult AdicionarUsuario([FromBody] UsuarioDTO usuarioDTO)
+        public async Task<IActionResult> AdicionarUsuario([FromBody] UsuarioDTO usuarioDTO)
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try
             {
                 if (usuarioDTO == null) return RespostaPersonalizada();                
                 if (!ExecutarValidacao(new UsuarioDTOValidator(), usuarioDTO)) return RespostaPersonalizada(ValidationResult);
-                _usuarioAppService.Adicionar(usuarioDTO);
+                await _usuarioAppService.Salvar(usuarioDTO);
                 return RespostaPersonalizada();
             }
             catch (Exception ex)
@@ -84,14 +83,14 @@ namespace AVS.Documentacao.API.Controllers
         }
 
         [HttpPut("usuario/atualizar")]
-        public IActionResult AtualizarUsuario([FromBody] UsuarioDTO usuarioDTO)
+        public async Task<IActionResult> AtualizarUsuario([FromBody] UsuarioDTO usuarioDTO)
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try
             {
                 if (usuarioDTO == null) return RespostaPersonalizada();
                 if (!ExecutarValidacao(new UsuarioDTOValidator(), usuarioDTO)) return RespostaPersonalizada(ValidationResult);
-                _usuarioAppService.Atualizar(usuarioDTO);
+                await _usuarioAppService.Atualizar(usuarioDTO);
                 return RespostaPersonalizada();
             }
             catch (Exception ex)
@@ -102,15 +101,15 @@ namespace AVS.Documentacao.API.Controllers
 
         }
 
-        [HttpDelete("usuario/remover")]
-        public IActionResult RemoverUsuario([FromBody] UsuarioDTO usuarioDTO)
+        [HttpDelete("usuario/excluir")]
+        public async Task<IActionResult> ExcluirUsuario([FromBody] UsuarioDTO usuarioDTO)
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try
             {
                 if (usuarioDTO == null) return RespostaPersonalizada();
                 if (!ExecutarValidacao(new UsuarioDTOValidator(), usuarioDTO)) return RespostaPersonalizada(ValidationResult);
-                _usuarioAppService.Remover(usuarioDTO);
+                await _usuarioAppService.Exluir(usuarioDTO);
                 return RespostaPersonalizada();
             }
             catch (Exception ex)
@@ -122,14 +121,14 @@ namespace AVS.Documentacao.API.Controllers
         }
 
         [HttpPut("usuario/ativar")]
-        public IActionResult AtivarUsuario([FromBody] UsuarioDTO usuarioDTO)
+        public async Task<IActionResult> AtivarUsuario([FromBody] UsuarioDTO usuarioDTO)
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try
             {
                 if (usuarioDTO == null) return RespostaPersonalizada();
                 if (!ExecutarValidacao(new UsuarioDTOValidator(), usuarioDTO)) return RespostaPersonalizada(ValidationResult);                
-                _usuarioAppService.Ativar(usuarioDTO);
+                await _usuarioAppService.Ativar(usuarioDTO);
                 return RespostaPersonalizada();
             }
             catch (Exception ex)
@@ -141,14 +140,14 @@ namespace AVS.Documentacao.API.Controllers
         }
 
         [HttpPut("usuario/inativar")]
-        public IActionResult InativarUsuario([FromBody] UsuarioDTO usuarioDTO)
+        public async Task<IActionResult> InativarUsuario([FromBody] UsuarioDTO usuarioDTO)
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try
             {
                 if (usuarioDTO == null) return RespostaPersonalizada();
                 if (!ExecutarValidacao(new UsuarioDTOValidator(), usuarioDTO)) return RespostaPersonalizada(ValidationResult);                
-                _usuarioAppService.Inativar(usuarioDTO);
+                await _usuarioAppService.Inativar(usuarioDTO);
                 return RespostaPersonalizada();
             }
             catch (Exception ex)
@@ -157,7 +156,7 @@ namespace AVS.Documentacao.API.Controllers
                 return RespostaPersonalizada();
             }
 
-        }
+        }               
 
         protected override bool ExecutarValidacao<TV, TE>(TV validacao, TE entidade)
         {

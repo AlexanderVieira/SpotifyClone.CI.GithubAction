@@ -2,6 +2,7 @@
 using AVS.Cadastro.Application.Interfaces;
 using AVS.Cadastro.Domain.Interfaces.Services;
 using AVS.Core.ObjDoinio;
+using System.Linq.Expressions;
 
 namespace AVS.Cadastro.Application.AppServices
 {
@@ -21,7 +22,7 @@ namespace AVS.Cadastro.Application.AppServices
             IEnumerable<UsuarioDTO> usuarioDTOs = new List<UsuarioDTO>();
             foreach (var usuario in usuarios)
             {
-                var usuarioDTO = UsuarioDTO.ConverteParaUsuarioDTO(usuario);
+                var usuarioDTO = UsuarioDTO.ConverterParaUsuarioDTO(usuario);
                 usuarioDTOs = usuarioDTOs.Append(usuarioDTO);
             }
             return usuarioDTOs;
@@ -34,55 +35,61 @@ namespace AVS.Cadastro.Application.AppServices
             IEnumerable<UsuarioDTO> usuarioDTOs = new List<UsuarioDTO>();
             foreach (var item in usuarios)
             {
-                var usuarioDTO = UsuarioDTO.ConverteParaUsuarioDTO(item);
+                var usuarioDTO = UsuarioDTO.ConverterParaUsuarioDTO(item);
                 usuarioDTOs = usuarioDTOs.Append(usuarioDTO);
             }
             return usuarioDTOs;
         }
 
-        public async Task<UsuarioDTO> ObterPorId(Guid id)
+        public async Task<UsuarioDTO> ObterPorId(object id)
         {
             var usuario = await _usuarioService.ObterPorId(id);
             Validacao.ValidarSeNulo(usuario, "Usuario não encontrado.");
-            var usuarioDTO = UsuarioDTO.ConverteParaUsuarioDTO(usuario);
+            var usuarioDTO = UsuarioDTO.ConverterParaUsuarioDTO(usuario);
             return usuarioDTO;
         }
 
-        public void Adicionar(UsuarioDTO usuarioDTO)
-        {
-            //if (!usuarioDTO.EhValido()) return;            
-            var usuario = UsuarioDTO.ConverteParaUsuario(usuarioDTO);
-            _usuarioService.Adicionar(usuario);
+        public async Task Salvar(UsuarioDTO usuarioDTO)
+        {                       
+            var usuario = UsuarioDTO.ConverterParaUsuario(usuarioDTO);
+            usuario.Validar();
+            await _usuarioService.Salvar(usuario);
         }
 
-        public void Atualizar(UsuarioDTO usuarioDTO)
-        {
-            //if (!usuarioDTO.EhValido()) return;
-            var usuario = UsuarioDTO.ConverteParaUsuario(usuarioDTO);
-            _usuarioService.Atualizar(usuario);
+        public async Task Atualizar(UsuarioDTO usuarioDTO)
+        {            
+            var usuario = UsuarioDTO.ConverterParaUsuario(usuarioDTO);
+            usuario.Validar();
+            await _usuarioService.Atualizar(usuario);
         }
 
-        public void Ativar(UsuarioDTO usuarioDTO)
-        {
-            //if (!usuarioDTO.EhValido()) return ;
-            var usuario = UsuarioDTO.ConverteParaUsuario(usuarioDTO);
-            _usuarioService.Ativar(usuario);
+        public async Task Ativar(UsuarioDTO usuarioDTO)
+        {            
+            var usuario = UsuarioDTO.ConverterParaUsuario(usuarioDTO);
+            await _usuarioService.Ativar(usuario);
         }        
 
-        public void Inativar(UsuarioDTO usuarioDTO)
-        {
-            //if (!usuarioDTO.EhValido()) return;
-            var usuario = UsuarioDTO.ConverteParaUsuario(usuarioDTO);
-            _usuarioService.Inativar(usuario);
-        }
-
-        public void Remover(UsuarioDTO usuarioDTO)
-        {
-            //if (!usuarioDTO.EhValido()) return;
-            Validacao.ValidarSeNulo(usuarioDTO, "Opa! Ocorreu um erro.");
-            var usuario = UsuarioDTO.ConverteParaUsuario(usuarioDTO);
-            _usuarioService.Remover(usuario);
+        public async Task Inativar(UsuarioDTO usuarioDTO)
+        {            
+            var usuario = UsuarioDTO.ConverterParaUsuario(usuarioDTO);
+            await _usuarioService.Inativar(usuario);
         }
         
+        public async Task Exluir(UsuarioDTO usuarioDTO)
+        {            
+            Validacao.ValidarSeNulo(usuarioDTO, "Opa! Ocorreu um erro.");
+            var usuario = UsuarioDTO.ConverterParaUsuario(usuarioDTO);
+            await _usuarioService.Exluir(usuario);
+        }        
+
+        public Task<IEnumerable<UsuarioDTO>> BuscarTodosPorCriterio(Expression<Func<UsuarioDTO, bool>> expression)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<UsuarioDTO> BuscarPorCriterio(Expression<Func<UsuarioDTO, bool>> expression)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

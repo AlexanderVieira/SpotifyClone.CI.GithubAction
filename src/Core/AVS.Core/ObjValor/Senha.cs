@@ -8,7 +8,7 @@ namespace AVS.Core.ObjValor
         
         public Senha(string valor)
         {
-            Valor = valor ?? throw new DomainException(this.Valor);
+            Valor = valor ?? throw new DomainException(Valor);
         }
     }
 }

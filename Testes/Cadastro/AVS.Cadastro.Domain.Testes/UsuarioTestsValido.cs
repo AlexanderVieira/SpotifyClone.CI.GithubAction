@@ -1,5 +1,4 @@
-﻿using AVS.Banda.Domain;
-using AVS.Cadastro.Domain.Entities;
+﻿using AVS.Banda.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +28,7 @@ namespace AVS.Cadastro.Domain.Testes
             
             //Assert
             Assert.True(result);
-            Assert.Equal(0, usuario.ValidationResult.Errors.Count);
+            Assert.True(usuario.ValidationResult.Errors.Count == 0);
         }
 
         [Fact(DisplayName = "Usuario Criar Playlist")]
@@ -43,7 +42,7 @@ namespace AVS.Cadastro.Domain.Testes
             usuario.AdicionarPlaylist(playlist);
 
             //Assert            
-            Assert.NotEqual(0, usuario.Playlists.Count);
+            Assert.False(usuario.Playlists.Count == 0);
         }
 
         [Fact(DisplayName = "Usuario Atualizar Playlist")]
@@ -57,7 +56,7 @@ namespace AVS.Cadastro.Domain.Testes
             usuario.AtualizarPlaylist(playlists);
 
             //Assert            
-            Assert.NotEqual(0, usuario.Playlists.Count);
+            Assert.False(usuario.Playlists.Count == 0);
         }
 
         [Fact(DisplayName = "Usuario Remover Playlist")]
@@ -97,7 +96,7 @@ namespace AVS.Cadastro.Domain.Testes
             usuario.RemoverPlaylists();
 
             //Assert            
-            Assert.Equal(0, usuario.Playlists.Count);
+            Assert.True(usuario.Playlists.Count == 0);
         }
 
         [Fact(DisplayName = "Usuario Ativo")]

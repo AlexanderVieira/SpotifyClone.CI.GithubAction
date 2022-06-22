@@ -1,7 +1,7 @@
 ﻿using AVS.Core.ObjDoinio;
 using FluentValidation;
 
-namespace AVS.Banda.Domain
+namespace AVS.Banda.Domain.Entities
 {
     public class Playlist : Entity, IAggregateRoot
     {
@@ -9,9 +9,7 @@ namespace AVS.Banda.Domain
         public string Descricao { get; private set; }
         public string? Foto { get; private set; }
         public Guid UsuarioId { get; private set; }
-        public IList<Musica> Musicas {  get; private set;}
-        
-        //public IReadOnlyCollection<Musica> Musicas => _musicas.AsReadOnly();
+        public IList<Musica> Musicas { get; private set; }
 
         protected Playlist()
         {
@@ -63,15 +61,15 @@ namespace AVS.Banda.Domain
             RuleFor(x => x.Id)
                 .NotEqual(Guid.Empty)
                 .WithMessage("Id da playlist inválido.");
-            
+
             RuleFor(x => x.Titulo)
                 .NotEmpty()
                 .WithMessage("Titulo da playlist é obrigatório.");
-            
+
             RuleFor(x => x.Foto)
                 .NotEmpty()
                 .WithMessage("Foto da playlist é obrigatória.");
-            
+
             RuleFor(x => x.Descricao)
                 .NotEmpty()
                 .WithMessage("Descrição da playlist é obrigatória.");

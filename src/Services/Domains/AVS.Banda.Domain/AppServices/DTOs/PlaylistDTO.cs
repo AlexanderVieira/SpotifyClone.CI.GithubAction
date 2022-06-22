@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using AVS.Banda.Domain.Entities;
+using FluentValidation;
 
 namespace AVS.Banda.Domain.AppServices.DTOs
 {
@@ -29,13 +30,8 @@ namespace AVS.Banda.Domain.AppServices.DTOs
             {
                 foreach (var musica in playlist.Musicas)
                 {
-                    playlistDTO.Musicas.Add(new MusicaDTO
-                    {
-                        Id = musica.Id,
-                        Nome = musica.Nome,
-                        Duracao = musica.Duracao.Valor,
-                        AlbumId = musica.AlbumId
-                    });
+                    playlistDTO.Musicas.Add(new MusicaDTO(musica.Id,
+                        musica.AlbumId, musica.Nome, musica.Duracao.Valor));
                 }
             }
             return playlistDTO;

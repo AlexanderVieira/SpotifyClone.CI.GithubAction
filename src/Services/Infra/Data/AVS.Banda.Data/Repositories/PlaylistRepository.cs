@@ -1,4 +1,4 @@
-﻿using AVS.Banda.Domain;
+﻿using AVS.Banda.Domain.Entities;
 using AVS.Banda.Domain.Interfaces.Repositories;
 using AVS.Infra.CrossCutting;
 using AVS.Infra.Data;

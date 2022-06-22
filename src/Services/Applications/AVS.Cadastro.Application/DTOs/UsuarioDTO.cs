@@ -1,5 +1,6 @@
 ﻿using AVS.Banda.Domain;
 using AVS.Banda.Domain.AppServices.DTOs;
+using AVS.Banda.Domain.Entities;
 using AVS.Cadastro.Domain.Entities;
 using FluentValidation;
 
@@ -38,13 +39,8 @@ namespace AVS.Cadastro.Application.DTOs
                     {
                         foreach (var musica in item.Musicas)
                         {
-                            playlistDTO.Musicas.Add(new MusicaDTO
-                            {
-                                Id = musica.Id,
-                                Nome = musica.Nome,
-                                Duracao = musica.Duracao.Valor,
-                                AlbumId = musica.AlbumId
-                            });
+                            playlistDTO.Musicas.Add(new MusicaDTO(musica.Id, 
+                                musica.AlbumId, musica.Nome, musica.Duracao.Valor));                            
                         }
                     }
                     usuarioDTO.Playlists.Add(playlistDTO);
@@ -56,7 +52,8 @@ namespace AVS.Cadastro.Application.DTOs
 
         public static Usuario ConverterParaUsuario(UsuarioDTO usuarioDTO)
         {
-            var usuario = new Usuario(usuarioDTO.Id, usuarioDTO.Nome, usuarioDTO.Email, usuarioDTO.Cpf, usuarioDTO.Foto, usuarioDTO.Ativo);           
+            var usuario = new Usuario(usuarioDTO.Id, 
+                usuarioDTO.Nome, usuarioDTO.Email, usuarioDTO.Cpf, usuarioDTO.Foto, usuarioDTO.Ativo);           
             
             if (usuarioDTO.Playlists != null && usuario.Playlists.Count > 0)
             {

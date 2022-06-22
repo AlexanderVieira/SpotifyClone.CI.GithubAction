@@ -66,12 +66,14 @@ namespace AVS.Cadastro.Application.AppServices
         public async Task Ativar(UsuarioDTO usuarioDTO)
         {            
             var usuario = UsuarioDTO.ConverterParaUsuario(usuarioDTO);
+            usuario.Validar();
             await _usuarioService.Ativar(usuario);
         }        
 
         public async Task Inativar(UsuarioDTO usuarioDTO)
         {            
             var usuario = UsuarioDTO.ConverterParaUsuario(usuarioDTO);
+            usuario.Validar();
             await _usuarioService.Inativar(usuario);
         }
         
@@ -79,6 +81,7 @@ namespace AVS.Cadastro.Application.AppServices
         {            
             Validacao.ValidarSeNulo(usuarioDTO, "Opa! Ocorreu um erro.");
             var usuario = UsuarioDTO.ConverterParaUsuario(usuarioDTO);
+            usuario.Validar();
             await _usuarioService.Exluir(usuario);
         }        
 

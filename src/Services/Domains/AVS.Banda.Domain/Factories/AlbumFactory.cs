@@ -1,4 +1,5 @@
-﻿using AVS.Core.ObjDoinio;
+﻿using AVS.Banda.Domain.Entities;
+using AVS.Core.ObjDoinio;
 
 namespace AVS.Banda.Domain.Factories
 {

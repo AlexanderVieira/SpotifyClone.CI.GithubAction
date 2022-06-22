@@ -1,4 +1,4 @@
-﻿using AVS.Banda.Domain;
+﻿using AVS.Banda.Domain.Entities;
 using AVS.Cadastro.Domain.Entities;
 using AVS.Core.Data;
 using FluentValidation.Results;
@@ -11,7 +11,7 @@ namespace AVS.Infra.Data
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Playlist> Playlists { get; set; }
         public DbSet<Musica> Musicas { get; set; }
-        public DbSet<Banda.Domain.Banda> Bandas { get; set; }
+        public DbSet<Banda.Domain.Entities.Banda> Bandas { get; set; }
         public DbSet<Album> Albuns { get; set; }
 
         public SpotifyCloneContext(DbContextOptions<SpotifyCloneContext> options) : base(options)

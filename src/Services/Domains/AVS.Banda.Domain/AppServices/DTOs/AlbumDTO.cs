@@ -8,5 +8,15 @@
         public string? Foto { get; set; }
         public Guid BandaId { get; set; }
         public IList<MusicaDTO> Musicas { get; set; }
+
+        public AlbumDTO(Guid id, string titulo, string descricao, string? foto, Guid bandaId)
+        {
+            Id = id;
+            Titulo = titulo;
+            Descricao = descricao;
+            Foto = foto;
+            BandaId = bandaId;
+            Musicas = new List<MusicaDTO>();
+        }
     }
 }

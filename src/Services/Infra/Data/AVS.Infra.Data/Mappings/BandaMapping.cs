@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AVS.Infra.Data.Mappings
 {
-    public class BandaMapping : IEntityTypeConfiguration<Banda.Domain.Banda>
+    public class BandaMapping : IEntityTypeConfiguration<Banda.Domain.Entities.Banda>
     {
-        public void Configure(EntityTypeBuilder<Banda.Domain.Banda> builder)
+        public void Configure(EntityTypeBuilder<Banda.Domain.Entities.Banda> builder)
         {
             builder.HasKey(p => p.Id);
 

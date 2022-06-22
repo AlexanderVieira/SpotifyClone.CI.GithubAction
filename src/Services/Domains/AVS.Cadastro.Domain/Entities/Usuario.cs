@@ -1,4 +1,4 @@
-﻿using AVS.Banda.Domain;
+﻿using AVS.Banda.Domain.Entities;
 using AVS.Core.ObjDoinio;
 using AVS.Core.ObjValor;
 using FluentValidation;

@@ -1,4 +1,4 @@
-﻿using AVS.Banda.Domain;
+﻿using AVS.Banda.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

@@ -39,8 +39,8 @@ namespace AVS.Cadastro.Application.DTOs
                     {
                         foreach (var musica in item.Musicas)
                         {
-                            playlistDTO.Musicas.Add(new MusicaDTO(musica.Id, 
-                                musica.AlbumId, musica.Nome, musica.Duracao.Valor));                            
+                            //playlistDTO.Musicas.Add(new MusicaDTO(musica.Id, 
+                            //    musica.AlbumId, musica.Nome, musica.Duracao.Valor));                            
                         }
                     }
                     usuarioDTO.Playlists.Add(playlistDTO);
@@ -65,8 +65,8 @@ namespace AVS.Cadastro.Application.DTOs
                     {
                         foreach (var musica in item.Musicas)
                         {
-                            musicas.Add(new Musica(musica.Id, musica.AlbumId, musica.Nome, musica.Duracao));
-                            playlist.AtualizarMusicas(musicas);
+                            //musicas.Add(new Musica(musica.Id, musica.AlbumId, musica.Nome, musica.Duracao));
+                            //playlist.AtualizarMusicas(musicas);
                         }                        
                     }
                     usuario.AdicionarPlaylist(playlist);

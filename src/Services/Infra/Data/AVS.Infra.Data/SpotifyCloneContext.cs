@@ -13,6 +13,7 @@ namespace AVS.Infra.Data
         public DbSet<Musica> Musicas { get; set; }
         public DbSet<Banda.Domain.Entities.Banda> Bandas { get; set; }
         public DbSet<Album> Albuns { get; set; }
+        public DbSet<MusicaPlaylist> MusicaPlaylists { get; set; }
 
         public SpotifyCloneContext(DbContextOptions<SpotifyCloneContext> options) : base(options)
         {

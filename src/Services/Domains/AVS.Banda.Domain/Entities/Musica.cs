@@ -10,7 +10,7 @@ namespace AVS.Banda.Domain.Entities
         public Duracao Duracao { get; private set; }
         public Guid AlbumId { get; private set; }
         public virtual Album Album { get; private set; }
-        public IList<Playlist> Playlists { get; private set; }
+        public virtual IList<MusicaPlaylist> Playlists { get; private set; }
 
         protected Musica()
         {
@@ -22,7 +22,7 @@ namespace AVS.Banda.Domain.Entities
             AlbumId = albumId;
             Nome = nome;
             Duracao = new Duracao(paramDuracao);
-            Playlists = new List<Playlist>();
+            Playlists = new List<MusicaPlaylist>();
         }
 
         public override bool EhValido()

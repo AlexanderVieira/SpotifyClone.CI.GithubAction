@@ -5,19 +5,19 @@ namespace AVS.Banda.Domain.Factories
 {
     public static class AlbumFactory
     {
-        public static Album Criar(Guid id, string nome, string descricao, string foto, Musica musica)
+        public static Album Criar(Guid id, Guid bandaId, string nome, string descricao, string? foto, Musica musica)
         {            
             Validar(musica);
-            var album = new Album(id, nome, descricao, foto);
+            var album = new Album(id, bandaId, nome, descricao, foto);
             album.AdicionarMusica(musica);
             
             return album;
         }
 
-        public static Album Criar(Guid id, string nome, string descricao, string foto, IList<Musica> musicas)
+        public static Album Criar(Guid id, Guid bandaId, string nome, string descricao, string? foto, IList<Musica> musicas)
         {
             Validar(musicas);
-            var album = new Album(id, nome, descricao, foto);
+            var album = new Album(id, bandaId, nome, descricao, foto);
             album.AtualizarMusicas(musicas);
 
             return album;

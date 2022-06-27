@@ -9,16 +9,17 @@ namespace AVS.Banda.Domain.Entities
         public string Descricao { get; private set; }
         public string? Foto { get; private set; }
         public Guid BandaId { get; private set; }
-        public Banda Banda { get; set; }
-        public IList<Musica> Musicas { get; private set; }
+        public virtual Banda Banda { get; set; }
+        public virtual IList<Musica> Musicas { get; private set; }
 
         protected Album()
         {
         }
 
-        public Album(Guid id, string titulo, string descricao, string? foto)
+        public Album(Guid id, Guid bandaId,  string titulo, string descricao, string? foto)
         {
             Id = id;
+            BandaId = bandaId;
             Titulo = titulo;
             Descricao = descricao;
             Foto = foto;
@@ -57,9 +58,9 @@ namespace AVS.Banda.Domain.Entities
                 .NotEmpty()
                 .WithMessage("Título do album é obrigatório.");
 
-            RuleFor(x => x.Foto)
-                .NotEmpty()
-                .WithMessage("Foto do album é obrigatória.");
+            //RuleFor(x => x.Foto)
+            //    .NotEmpty()
+            //    .WithMessage("Foto do album é obrigatória.");
 
             RuleFor(x => x.Descricao)
                 .NotEmpty()

@@ -9,7 +9,7 @@ namespace AVS.Banda.Domain.Entities
         public string Nome { get; private set; }
         public string? Foto { get; private set; }
         public string Descricao { get; private set; }
-        public IList<Album> Albuns { get; private set; }
+        public virtual IList<Album> Albuns { get; private set; }
 
         public Banda()
         {
@@ -24,9 +24,9 @@ namespace AVS.Banda.Domain.Entities
             Albuns = new List<Album>();
         }
 
-        public void CriarAlbum(Guid id, string nome, string descricao, string? foto, IList<Musica> musicas)
+        public void CriarAlbum(Guid id, Guid bandaId, string nome, string descricao, string? foto, IList<Musica> musicas)
         {
-            var album = AlbumFactory.Criar(id, nome, descricao, foto, musicas);
+            var album = AlbumFactory.Criar(id, bandaId, nome, descricao, foto, musicas);
             Albuns.Add(album);
         }
 
@@ -56,9 +56,9 @@ namespace AVS.Banda.Domain.Entities
                 .NotEmpty()
                 .WithMessage("Nome da banda é obrigatório.");
 
-            RuleFor(x => x.Foto)
-                .NotEmpty()
-                .WithMessage("Foto da banda é obrigatória.");
+            //RuleFor(x => x.Foto)
+            //    .NotEmpty()
+            //    .WithMessage("Foto da banda é obrigatória.");
 
             RuleFor(x => x.Descricao)
                 .NotEmpty()

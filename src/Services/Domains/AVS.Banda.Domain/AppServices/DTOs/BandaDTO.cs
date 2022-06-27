@@ -43,19 +43,16 @@ namespace AVS.Banda.Domain.AppServices.DTOs
 
                             if (musicaDTO.Playlists != null && musicaDTO.Playlists.Count > 0)
                             {
-                                foreach (var playlistDTO in musicaDTO.Playlists)
-                                {
-                                    musica.Playlists.Add(new Playlist(playlistDTO.Id,
-                                        playlistDTO.UsuarioId, playlistDTO.Titulo, playlistDTO.Descricao, playlistDTO.Foto));
-                                }
+                                //foreach (var playlistDTO in musicaDTO.Playlists)
+                                //{
+                                //    musica.Playlists.Add(new Playlist(playlistDTO.Id,
+                                //        playlistDTO.UsuarioId, playlistDTO.Titulo, playlistDTO.Descricao, playlistDTO.Foto));
+                                //}
                             }
                             musicas.Add(musica);
-                        }
-                        //var album = new Album(album.Id, album.Titulo, album.Descricao, album.Foto, album.BandaId);
-                        //albumDTO.Musicas = musicasDTO;
-                        //bandaDTO.Albuns.Add(albumDTO);
+                        }                        
                         
-                        banda.CriarAlbum(albumDTO.Id, albumDTO.Titulo, albumDTO.Descricao, albumDTO.Foto, musicas);
+                        banda.CriarAlbum(albumDTO.Id, albumDTO.BandaId, albumDTO.Titulo, albumDTO.Descricao, albumDTO.Foto, musicas);
 
                     }
 
@@ -66,7 +63,8 @@ namespace AVS.Banda.Domain.AppServices.DTOs
 
         public static BandaDTO ConverterParaBandaDTO(Entities.Banda banda)
         {
-            var bandaDTO = new BandaDTO(banda.Id, banda.Nome, banda.Descricao, banda.Foto);
+            var bandaDTO = new BandaDTO(banda.Id, banda.Nome, banda.Descricao, banda.Foto);            
+            var musicasDTO = new List<MusicaDTO>();
 
             if (banda.Albuns != null && banda.Albuns.Count > 0)
             {
@@ -74,7 +72,7 @@ namespace AVS.Banda.Domain.AppServices.DTOs
                 {                    
                     if (album.Musicas != null && album.Musicas.Count > 0)
                     {
-                        var musicasDTO = new List<MusicaDTO>();
+                        
                         foreach (var musica in album.Musicas)
                         {
                             var musicaDTO = new MusicaDTO(musica.Id, musica.AlbumId, musica.Nome, musica.Duracao.Valor);                        
@@ -83,19 +81,21 @@ namespace AVS.Banda.Domain.AppServices.DTOs
                             {
                                 foreach (var playlist in musica.Playlists)
                                 {
-                                    musicaDTO.Playlists.Add(new PlaylistDTO(playlist.Id, 
-                                        playlist.UsuarioId, playlist.Titulo, playlist.Descricao, playlist.Foto));                                    
+                                    //musicaDTO.Playlists.Add(new PlaylistDTO(playlist.Id, 
+                                    //    playlist.UsuarioId, playlist.Titulo, playlist.Descricao, playlist.Foto));                                    
                                 }
                             }
                             musicasDTO.Add(musicaDTO);
                         }
-                        var albumDTO = new AlbumDTO(album.Id, album.Titulo, album.Descricao, album.Foto, album.BandaId);
-                        albumDTO.Musicas = musicasDTO;
-                        bandaDTO.Albuns.Add(albumDTO);
+                        
                     }
-                                      
+                    var albumDTO = new AlbumDTO(album.Id, album.BandaId, album.Titulo, album.Descricao, album.Foto);
+                    albumDTO.Musicas = musicasDTO;
+                    bandaDTO.Albuns.Add(albumDTO);
+
                 }
-            }
+            }           
+
             return bandaDTO;
         }
     }

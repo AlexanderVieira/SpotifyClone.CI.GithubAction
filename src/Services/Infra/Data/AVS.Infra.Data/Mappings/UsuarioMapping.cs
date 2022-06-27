@@ -37,7 +37,8 @@ namespace AVS.Infra.Data.Mappings
             });
 
             builder.HasMany(u => u.Playlists)
-                .WithOne();
+                .WithOne()
+                .HasForeignKey(p => p.UsuarioId);
 
             builder.ToTable("USUARIOS");
         }

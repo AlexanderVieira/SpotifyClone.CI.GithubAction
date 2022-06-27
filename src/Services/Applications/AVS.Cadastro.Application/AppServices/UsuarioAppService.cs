@@ -18,33 +18,38 @@ namespace AVS.Cadastro.Application.AppServices
         public async Task<IEnumerable<UsuarioDTO>> ObterTodos()
         {
             var usuarios = await _usuarioService.ObterTodos();
-            Validacao.ValidarSeExiste(usuarios.Cast<object>().ToList(), "Não existem dados para exibição.");
-            IEnumerable<UsuarioDTO> usuarioDTOs = new List<UsuarioDTO>();
-            foreach (var usuario in usuarios)
-            {
-                var usuarioDTO = UsuarioDTO.ConverterParaUsuarioDTO(usuario);
-                usuarioDTOs = usuarioDTOs.Append(usuarioDTO);
-            }
-            return usuarioDTOs;
+            //Validacao.ValidarSeNulo(usuarios.Cast<object>().ToList(), "Não existem dados para exibição.");
+            if (usuarios == null) return null;
+            return usuarios.Select(UsuarioDTO.ConverterParaUsuarioDTO);
+            //IEnumerable<UsuarioDTO> usuarioDTOs = new List<UsuarioDTO>();
+            //foreach (var usuario in usuarios)
+            //{
+            //    var usuarioDTO = UsuarioDTO.ConverterParaUsuarioDTO(usuario);
+            //    usuarioDTOs = usuarioDTOs.Append(usuarioDTO);
+            //}
+            //return usuarioDTOs;
         }
 
         public async Task<IEnumerable<UsuarioDTO>> ObterTodosAtivos()
         {
             var usuarios = await _usuarioService.ObterTodosAtivos();
-            Validacao.ValidarSeExiste(usuarios.Cast<object>().ToList(), "Não existem dados para exibição.");
-            IEnumerable<UsuarioDTO> usuarioDTOs = new List<UsuarioDTO>();
-            foreach (var item in usuarios)
-            {
-                var usuarioDTO = UsuarioDTO.ConverterParaUsuarioDTO(item);
-                usuarioDTOs = usuarioDTOs.Append(usuarioDTO);
-            }
-            return usuarioDTOs;
+            //Validacao.ValidarSeNulo(usuarios.Cast<object>().ToList(), "Não existem dados para exibição.");
+            if (usuarios == null) return null;
+            return usuarios.Select(UsuarioDTO.ConverterParaUsuarioDTO);
+            //IEnumerable<UsuarioDTO> usuarioDTOs = new List<UsuarioDTO>();
+            //foreach (var item in usuarios)
+            //{
+            //    var usuarioDTO = UsuarioDTO.ConverterParaUsuarioDTO(item);
+            //    usuarioDTOs = usuarioDTOs.Append(usuarioDTO);
+            //}
+            //return usuarioDTOs;
         }
 
         public async Task<UsuarioDTO> ObterPorId(object id)
         {
             var usuario = await _usuarioService.ObterPorId(id);
-            Validacao.ValidarSeNulo(usuario, "Usuario não encontrado.");
+            //Validacao.ValidarSeNulo(usuario, "Usuario não encontrado.");
+            if (usuario == null) return null;
             var usuarioDTO = UsuarioDTO.ConverterParaUsuarioDTO(usuario);
             return usuarioDTO;
         }

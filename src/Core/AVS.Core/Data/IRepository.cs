@@ -7,12 +7,7 @@ namespace AVS.Core.Data
 {
     public interface IRepository<T> : IDisposable where T : class
     {
-        IUnitOfWork UnitOfWork { get; }
-        //Task<IEnumerable<T>> ObterTodos();
-        //Task<T> ObterPorId(Guid id);
-        //void Adicionar(T TEntity);        
-        //void Atualizar(T TEntity);
-        //void Remover(T TEntity);
+        IUnitOfWork UnitOfWork { get; }        
         Task Salvar(T entity);
         Task Exluir(T entity);
         Task Atualizar(T entity);

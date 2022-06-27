@@ -134,14 +134,14 @@ namespace AVS.Cadastro.Domain.Testes
             //Arrange
             var usuario = _usuarioTestsFixture.CriarUsuarioValido();                      
             var playlist = new Playlist(Guid.NewGuid(), usuario.Id, "Titulo", "Descricao");
-            var musica = new Musica(Guid.NewGuid(), playlist.Id, "Titulo", 300);
-            playlist.AdicionarMusica(musica);    
+            //var musica = new Musica(Guid.NewGuid(), playlist.Id, "Titulo", 300);
+            //playlist.AdicionarMusica(musica);    
 
             //Act
             usuario.AdicionarPlaylist(playlist);            
 
             //Assert
-            Assert.Contains(usuario.Playlists, p => p.Musicas.Contains(musica));
+            //Assert.Contains(usuario.Playlists, p => p.Musicas.Contains(musica));
             Assert.All(usuario.Playlists, p => p.Musicas.Any());  
             
         }

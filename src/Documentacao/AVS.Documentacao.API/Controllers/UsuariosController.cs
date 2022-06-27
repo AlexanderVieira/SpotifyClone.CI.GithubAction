@@ -21,7 +21,8 @@ namespace AVS.Documentacao.API.Controllers
             try
             {
                 var usuarios = await _usuarioAppService.ObterTodos();
-                return usuarios == null ? NotFound() : RespostaPersonalizada(usuarios.ToArray());
+                return usuarios == null || (!usuarios.Any()) ? ProcessarRespostaMensagem(
+                    StatusCodes.Status404NotFound, "Não existem dados para exibição.") : RespostaPersonalizada(usuarios.ToArray());
             }
             catch (Exception ex)
             {
@@ -37,7 +38,8 @@ namespace AVS.Documentacao.API.Controllers
             try
             {
                 var usuarios = await _usuarioAppService.ObterTodosAtivos();
-                return usuarios == null ? NotFound() : RespostaPersonalizada(usuarios.ToArray());
+                return usuarios == null || (!usuarios.Any()) ? ProcessarRespostaMensagem(
+                    StatusCodes.Status404NotFound, "Não existem dados para exibição.") : RespostaPersonalizada(usuarios.ToArray());
             }
             catch (Exception ex)
             {
@@ -53,7 +55,8 @@ namespace AVS.Documentacao.API.Controllers
             try
             {
                 var usuario = await _usuarioAppService.ObterPorId(id);
-                return usuario == null ? NotFound() : RespostaPersonalizada(usuario);
+                return usuario == null ? ProcessarRespostaMensagem(
+                    StatusCodes.Status404NotFound, "Usuario não encontrado.") : RespostaPersonalizada(usuario);
             }
             catch (Exception ex)
             {
@@ -72,7 +75,8 @@ namespace AVS.Documentacao.API.Controllers
                 if (usuarioDTO == null) return RespostaPersonalizada();                
                 if (!ExecutarValidacao(new UsuarioDTOValidator(), usuarioDTO)) return RespostaPersonalizada(ValidationResult);
                 await _usuarioAppService.Salvar(usuarioDTO);
-                return RespostaPersonalizada();
+                AdicionaMensagemSucesso("Usuario adicionado com sucesso.");
+                return RespostaPersonalizada(StatusCodes.Status201Created);
             }
             catch (Exception ex)
             {
@@ -91,7 +95,8 @@ namespace AVS.Documentacao.API.Controllers
                 if (usuarioDTO == null) return RespostaPersonalizada();
                 if (!ExecutarValidacao(new UsuarioDTOValidator(), usuarioDTO)) return RespostaPersonalizada(ValidationResult);
                 await _usuarioAppService.Atualizar(usuarioDTO);
-                return RespostaPersonalizada();
+                AdicionaMensagemSucesso("Usuario atualizado com sucesso.");
+                return RespostaPersonalizada(StatusCodes.Status200OK);
             }
             catch (Exception ex)
             {
@@ -110,7 +115,8 @@ namespace AVS.Documentacao.API.Controllers
                 if (usuarioDTO == null) return RespostaPersonalizada();
                 if (!ExecutarValidacao(new UsuarioDTOValidator(), usuarioDTO)) return RespostaPersonalizada(ValidationResult);
                 await _usuarioAppService.Exluir(usuarioDTO);
-                return RespostaPersonalizada();
+                AdicionaMensagemSucesso("Usuario excluído com sucesso.");
+                return RespostaPersonalizada(StatusCodes.Status204NoContent);
             }
             catch (Exception ex)
             {

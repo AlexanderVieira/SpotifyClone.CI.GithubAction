@@ -24,14 +24,20 @@ namespace AVS.Documentacao.API.Configuracao
             services.AddScoped(typeof(GenericRepository<>));
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IPlaylistRepository, PlaylistRepository>();
+            services.AddScoped<IBandaRepository, BandaRepository>();
+            services.AddScoped<IMusicaPlaylistRepository, MusicaPlaylistRepository>();
 
             //Service
             services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<IPlaylistService, PlaylistService>();
+            services.AddScoped<IBandaService, BandaService>();
+            services.AddScoped<IMusicaPlaylistService, MusicaPlaylistService>();
 
             //Application
             services.AddScoped<IUsuarioAppService, UsuarioAppService>();
-            services.AddScoped<IPlaylistAppService, PlaylistAppService>();            
+            services.AddScoped<IPlaylistAppService, PlaylistAppService>();
+            services.AddScoped<IBandaAppService, BandaAppService>();
+            services.AddScoped<IMusicaPlaylistAppService, MusicaPlaylistAppService>();
         }
     }
 }

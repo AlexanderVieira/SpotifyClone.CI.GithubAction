@@ -16,7 +16,7 @@ namespace AVS.Cadastro.Domain.Entities
         
         //public Senha Senha { get; private set; }
         
-        public List<Playlist> Playlists { get; private set; }
+        public virtual IList<Playlist> Playlists { get; private set; }
 
         protected Usuario()
         {            
@@ -118,9 +118,9 @@ namespace AVS.Cadastro.Domain.Entities
                 .Must(Email.ValidarEmail)
                 .WithMessage("E-mail inválido.");
 
-            RuleFor(x => x.Foto)
-                .NotEmpty()
-                .WithMessage("Foto do usuário inválida.");
+            //RuleFor(x => x.Foto)
+            //    .NotEmpty()
+            //    .WithMessage("Foto do usuário inválida.");
 
             //RuleFor(x => x.Senha)
             //    .NotEmpty()

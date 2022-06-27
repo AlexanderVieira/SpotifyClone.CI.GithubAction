@@ -24,7 +24,8 @@ namespace AVS.Infra.Data.Mappings
                 .HasColumnType("varchar(250)");
 
             builder.HasMany(b => b.Albuns)
-                .WithOne(a => a.Banda);                
+                .WithOne(a => a.Banda)
+                .HasForeignKey(a => a.BandaId);
             
             builder.ToTable("BANDAS");
 

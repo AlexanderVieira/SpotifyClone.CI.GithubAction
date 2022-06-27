@@ -4,7 +4,7 @@
     {
         public string Titulo { get; set; }
         public int Codigo { get; set; }
-        public RespostaMensagemErros Erros { get; set; }
+        public RespostaMensagemErros Erros { get; set; }        
         public ResultadoResposta()
         {
             Erros = new RespostaMensagemErros();

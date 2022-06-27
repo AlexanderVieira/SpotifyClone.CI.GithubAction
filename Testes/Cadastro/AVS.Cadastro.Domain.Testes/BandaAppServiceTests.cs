@@ -31,7 +31,7 @@ namespace AVS.Cadastro.Domain.Testes
             var musicas = new List<Musica>();
             musicas.Add(musica);
             banda.CriarAlbum(
-                Guid.NewGuid(), "Top 10", "As dez melhores!", "http://url.com.br", musicas);
+                Guid.NewGuid(), Guid.NewGuid(), "Top 10", "As dez melhores!", "http://url.com.br", musicas);
             var bandaService = new Mock<IBandaService>();
             var bandaAppService = new BandaAppService(bandaService.Object);
             var bandaDTO = BandaDTO.ConverterParaBandaDTO(banda);

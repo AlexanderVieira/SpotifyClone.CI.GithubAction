@@ -24,8 +24,8 @@ namespace AVS.Infra.Data.Mappings
                 .HasColumnName("Foto")
                 .HasColumnType("varchar(250)");
 
-            builder.HasMany(p => p.Musicas)
-                .WithMany(m => m.Playlists);
+            //builder.HasMany(p => p.Musicas)
+            //    .WithMany(m => m.Playlists);
             
             builder.ToTable("PLAYLISTS");
 

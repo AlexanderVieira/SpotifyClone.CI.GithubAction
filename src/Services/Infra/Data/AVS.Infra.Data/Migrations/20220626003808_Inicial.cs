@@ -100,23 +100,23 @@ namespace AVS.Infra.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MusicaPlaylist",
+                name: "MUSICA_PLAYLIST",
                 columns: table => new
                 {
-                    MusicasId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PlaylistsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    PlaylistId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MusicaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MusicaPlaylist", x => new { x.MusicasId, x.PlaylistsId });
+                    table.PrimaryKey("PK_MUSICA_PLAYLIST", x => new { x.PlaylistId, x.MusicaId });
                     table.ForeignKey(
-                        name: "FK_MusicaPlaylist_MUSICAS_MusicasId",
-                        column: x => x.MusicasId,
+                        name: "FK_MUSICA_PLAYLIST_MUSICAS_MusicaId",
+                        column: x => x.MusicaId,
                         principalTable: "MUSICAS",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_MusicaPlaylist_PLAYLISTS_PlaylistsId",
-                        column: x => x.PlaylistsId,
+                        name: "FK_MUSICA_PLAYLIST_PLAYLISTS_PlaylistId",
+                        column: x => x.PlaylistId,
                         principalTable: "PLAYLISTS",
                         principalColumn: "Id");
                 });
@@ -127,9 +127,9 @@ namespace AVS.Infra.Data.Migrations
                 column: "BandaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MusicaPlaylist_PlaylistsId",
-                table: "MusicaPlaylist",
-                column: "PlaylistsId");
+                name: "IX_MUSICA_PLAYLIST_MusicaId",
+                table: "MUSICA_PLAYLIST",
+                column: "MusicaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MUSICAS_AlbumId",
@@ -145,7 +145,7 @@ namespace AVS.Infra.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "MusicaPlaylist");
+                name: "MUSICA_PLAYLIST");
 
             migrationBuilder.DropTable(
                 name: "MUSICAS");

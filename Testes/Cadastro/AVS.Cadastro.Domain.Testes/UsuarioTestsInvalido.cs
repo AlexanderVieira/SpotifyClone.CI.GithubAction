@@ -119,8 +119,8 @@ namespace AVS.Cadastro.Domain.Testes
             var result = usuario.EhValido();
 
             //Assert            
-            Assert.False(result);
-            Assert.Contains(usuario.ValidationResult.Errors, f => f.ErrorMessage.Contains("Foto do usuário inválida."));
+            Assert.True(result);
+            Assert.DoesNotContain(usuario.ValidationResult.Errors, f => f.ErrorMessage.Contains("Foto do usuário inválida."));
 
         }
                 

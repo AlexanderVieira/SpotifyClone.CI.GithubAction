@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AVS.Infra.Data.Migrations
 {
     [DbContext(typeof(SpotifyCloneContext))]
-    [Migration("20220621165615_Inicial")]
+    [Migration("20220626003808_Inicial")]
     partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,7 +24,7 @@ namespace AVS.Infra.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("AVS.Banda.Domain.Album", b =>
+            modelBuilder.Entity("AVS.Banda.Domain.Entities.Album", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -54,7 +54,7 @@ namespace AVS.Infra.Data.Migrations
                     b.ToTable("ALBUNS", (string)null);
                 });
 
-            modelBuilder.Entity("AVS.Banda.Domain.Banda", b =>
+            modelBuilder.Entity("AVS.Banda.Domain.Entities.Banda", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -79,7 +79,7 @@ namespace AVS.Infra.Data.Migrations
                     b.ToTable("BANDAS", (string)null);
                 });
 
-            modelBuilder.Entity("AVS.Banda.Domain.Musica", b =>
+            modelBuilder.Entity("AVS.Banda.Domain.Entities.Musica", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -99,7 +99,22 @@ namespace AVS.Infra.Data.Migrations
                     b.ToTable("MUSICAS", (string)null);
                 });
 
-            modelBuilder.Entity("AVS.Banda.Domain.Playlist", b =>
+            modelBuilder.Entity("AVS.Banda.Domain.Entities.MusicaPlaylist", b =>
+                {
+                    b.Property<Guid>("PlaylistId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("MusicaId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("PlaylistId", "MusicaId");
+
+                    b.HasIndex("MusicaId");
+
+                    b.ToTable("MUSICA_PLAYLIST", (string)null);
+                });
+
+            modelBuilder.Entity("AVS.Banda.Domain.Entities.Playlist", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -152,24 +167,9 @@ namespace AVS.Infra.Data.Migrations
                     b.ToTable("USUARIOS", (string)null);
                 });
 
-            modelBuilder.Entity("MusicaPlaylist", b =>
+            modelBuilder.Entity("AVS.Banda.Domain.Entities.Album", b =>
                 {
-                    b.Property<Guid>("MusicasId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("PlaylistsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("MusicasId", "PlaylistsId");
-
-                    b.HasIndex("PlaylistsId");
-
-                    b.ToTable("MusicaPlaylist");
-                });
-
-            modelBuilder.Entity("AVS.Banda.Domain.Album", b =>
-                {
-                    b.HasOne("AVS.Banda.Domain.Banda", "Banda")
+                    b.HasOne("AVS.Banda.Domain.Entities.Banda", "Banda")
                         .WithMany("Albuns")
                         .HasForeignKey("BandaId")
                         .OnDelete(DeleteBehavior.ClientCascade)
@@ -178,9 +178,9 @@ namespace AVS.Infra.Data.Migrations
                     b.Navigation("Banda");
                 });
 
-            modelBuilder.Entity("AVS.Banda.Domain.Musica", b =>
+            modelBuilder.Entity("AVS.Banda.Domain.Entities.Musica", b =>
                 {
-                    b.HasOne("AVS.Banda.Domain.Album", "Album")
+                    b.HasOne("AVS.Banda.Domain.Entities.Album", "Album")
                         .WithMany("Musicas")
                         .HasForeignKey("AlbumId")
                         .OnDelete(DeleteBehavior.ClientCascade)
@@ -214,7 +214,26 @@ namespace AVS.Infra.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AVS.Banda.Domain.Playlist", b =>
+            modelBuilder.Entity("AVS.Banda.Domain.Entities.MusicaPlaylist", b =>
+                {
+                    b.HasOne("AVS.Banda.Domain.Entities.Musica", "Musica")
+                        .WithMany("Playlists")
+                        .HasForeignKey("MusicaId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.HasOne("AVS.Banda.Domain.Entities.Playlist", "Playlist")
+                        .WithMany("Musicas")
+                        .HasForeignKey("PlaylistId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.Navigation("Musica");
+
+                    b.Navigation("Playlist");
+                });
+
+            modelBuilder.Entity("AVS.Banda.Domain.Entities.Playlist", b =>
                 {
                     b.HasOne("AVS.Cadastro.Domain.Entities.Usuario", null)
                         .WithMany("Playlists")
@@ -268,29 +287,24 @@ namespace AVS.Infra.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MusicaPlaylist", b =>
-                {
-                    b.HasOne("AVS.Banda.Domain.Musica", null)
-                        .WithMany()
-                        .HasForeignKey("MusicasId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-
-                    b.HasOne("AVS.Banda.Domain.Playlist", null)
-                        .WithMany()
-                        .HasForeignKey("PlaylistsId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("AVS.Banda.Domain.Album", b =>
+            modelBuilder.Entity("AVS.Banda.Domain.Entities.Album", b =>
                 {
                     b.Navigation("Musicas");
                 });
 
-            modelBuilder.Entity("AVS.Banda.Domain.Banda", b =>
+            modelBuilder.Entity("AVS.Banda.Domain.Entities.Banda", b =>
                 {
                     b.Navigation("Albuns");
+                });
+
+            modelBuilder.Entity("AVS.Banda.Domain.Entities.Musica", b =>
+                {
+                    b.Navigation("Playlists");
+                });
+
+            modelBuilder.Entity("AVS.Banda.Domain.Entities.Playlist", b =>
+                {
+                    b.Navigation("Musicas");
                 });
 
             modelBuilder.Entity("AVS.Cadastro.Domain.Entities.Usuario", b =>

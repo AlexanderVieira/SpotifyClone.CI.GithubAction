@@ -8,8 +8,7 @@ using System.Linq.Expressions;
 namespace AVS.Infra.CrossCutting
 {
     public class GenericRepository<T> : IRepository<T> where T : class
-    {
-        //private readonly UsuarioContext _context;
+    {        
         public IUnitOfWork UnitOfWork => (IUnitOfWork)Context;
         protected DbSet<T> Query { get; set; }
         protected DbContext Context { get; set; }
@@ -30,7 +29,7 @@ namespace AVS.Infra.CrossCutting
         public async Task<IEnumerable<T>> BuscarTodosPorCriterio(Expression<Func<T, bool>> expression)
         {
             return await Query
-                             .AsNoTrackingWithIdentityResolution()
+                             .AsNoTrackingWithIdentityResolution()                             
                              .Where(expression)
                              .ToListAsync();
         }

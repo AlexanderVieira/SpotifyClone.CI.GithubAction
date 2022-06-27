@@ -8,8 +8,8 @@ namespace AVS.Banda.Domain.Entities
         public string Titulo { get; private set; }
         public string Descricao { get; private set; }
         public string? Foto { get; private set; }
-        public Guid UsuarioId { get; private set; }
-        public IList<Musica> Musicas { get; private set; }
+        public Guid UsuarioId { get; private set; }        
+        public virtual IList<MusicaPlaylist> Musicas { get; private set; }
 
         protected Playlist()
         {
@@ -22,21 +22,21 @@ namespace AVS.Banda.Domain.Entities
             Descricao = descricao;
             Foto = foto;
             UsuarioId = usuarioId;
-            Musicas = new List<Musica>();
+            Musicas = new List<MusicaPlaylist>();
         }
 
-        public void AdicionarMusica(Musica musica)
+        public void AdicionarMusica(MusicaPlaylist musica)
         {
-            Musicas ??= new List<Musica>();
+            Musicas ??= new List<MusicaPlaylist>();
             Musicas.Add(musica);
         }
 
-        public void AtualizarMusicas(List<Musica> musicas)
+        public void AtualizarMusicas(List<MusicaPlaylist> musicas)
         {
             Musicas = musicas;
         }
 
-        public void RemoverMusica(Musica musica)
+        public void RemoverMusica(MusicaPlaylist musica)
         {
             Musicas.Remove(musica);
         }
@@ -66,9 +66,9 @@ namespace AVS.Banda.Domain.Entities
                 .NotEmpty()
                 .WithMessage("Titulo da playlist é obrigatório.");
 
-            RuleFor(x => x.Foto)
-                .NotEmpty()
-                .WithMessage("Foto da playlist é obrigatória.");
+            //RuleFor(x => x.Foto)
+            //    .NotEmpty()
+            //    .WithMessage("Foto da playlist é obrigatória.");
 
             RuleFor(x => x.Descricao)
                 .NotEmpty()

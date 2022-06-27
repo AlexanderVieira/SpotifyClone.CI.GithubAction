@@ -10,7 +10,7 @@ namespace AVS.Banda.Domain.AppServices.DTOs
         public string Descricao { get; set; }
         public string? Foto { get; set; }
         public Guid UsuarioId { get; set; }
-        public IList<MusicaDTO> Musicas { get; set; }
+        public IList<MusicaPlaylistDTO> Musicas { get; set; }
 
         public PlaylistDTO(Guid id, Guid usuarioId, string titulo, string descricao, string? foto)
         {
@@ -19,19 +19,23 @@ namespace AVS.Banda.Domain.AppServices.DTOs
             Descricao = descricao;
             Foto = foto;
             UsuarioId = usuarioId;
-            Musicas = new List<MusicaDTO>();
+            Musicas = new List<MusicaPlaylistDTO>();
         }
 
         public static PlaylistDTO ConverterParaPlaylistDTO(Playlist playlist)
         {
             var playlistDTO = new PlaylistDTO(playlist.Id, playlist.UsuarioId, playlist.Titulo, playlist.Descricao, playlist.Foto);
-
-            if (playlistDTO.Musicas != null && playlistDTO.Musicas.Count > 0)
-            {
-                foreach (var musica in playlist.Musicas)
+            
+            if (playlist.Musicas != null && playlist.Musicas.Count > 0)
+            {                
+                var musicasDTO = playlistDTO.Musicas.Select(x => x.Musica).AsEnumerable();
+                var musicas = playlist.Musicas.Select(x => x.Musica).AsEnumerable();
+                foreach (var musica in musicas)
                 {
-                    playlistDTO.Musicas.Add(new MusicaDTO(musica.Id,
-                        musica.AlbumId, musica.Nome, musica.Duracao.Valor));
+                    musicasDTO = musicasDTO.Append(new MusicaDTO(musica.Id, musica.AlbumId, musica.Nome, musica.Duracao.Valor));
+                    var mp = new MusicaPlaylistDTO { PlaylistId = playlistDTO.Id, MusicaId = musica.Id };
+                    mp.Musica = new MusicaDTO(musica.Id, musica.AlbumId, musica.Nome, musica.Duracao.Valor);
+                    playlistDTO.Musicas.Add(mp);
                 }
             }
             return playlistDTO;
@@ -40,14 +44,14 @@ namespace AVS.Banda.Domain.AppServices.DTOs
         public static Playlist ConverterParaPlaylist(PlaylistDTO playlistDTO)
         {
             var playlist = new Playlist(playlistDTO.Id, playlistDTO.UsuarioId, playlistDTO.Titulo, playlistDTO.Descricao, playlistDTO.Foto);
-
-            if (playlist.Musicas != null && playlist.Musicas.Count > 0)
+            
+            if (playlistDTO.Musicas != null && playlistDTO.Musicas.Count > 0)
             {
                 var musicas = new List<Musica>();
                 foreach (var musica in playlistDTO.Musicas)
                 {
-                    musicas.Add(new Musica(musica.Id, musica.AlbumId, musica.Nome, musica.Duracao));
-                    playlist.AtualizarMusicas(musicas);
+                    //musicas.Add(new Musica(musica.Id, musica.AlbumId, musica.Nome, musica.Duracao));
+                    //playlist.AtualizarMusicas(musicas);
                 }
             }
 

@@ -9,7 +9,7 @@
         public Guid BandaId { get; set; }
         public IList<MusicaDTO> Musicas { get; set; }
 
-        public AlbumDTO(Guid id, string titulo, string descricao, string? foto, Guid bandaId)
+        public AlbumDTO(Guid id, Guid bandaId, string titulo, string descricao, string? foto)
         {
             Id = id;
             Titulo = titulo;

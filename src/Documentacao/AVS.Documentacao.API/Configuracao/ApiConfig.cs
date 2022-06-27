@@ -1,5 +1,4 @@
-﻿using AVS.Infra.CrossCutting;
-using AVS.Infra.Data;
+﻿ using AVS.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace AVS.Documentacao.API.Configuracao

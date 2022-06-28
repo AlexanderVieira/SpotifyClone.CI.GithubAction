@@ -20,7 +20,7 @@ namespace AVS.Documentacao.API.Controllers
             try
             {
                 var bandas = await _bandaAppService.ObterTodos();
-                return bandas == null || (bandas.Count() == 0) ? ProcessarRespostaMensagem(
+                return bandas == null || (!bandas.Any()) ? ProcessarRespostaMensagem(
                     StatusCodes.Status404NotFound, "Não existem dados para exibição.") : RespostaPersonalizada(bandas.ToArray());
             }
             catch (Exception ex)
@@ -38,7 +38,7 @@ namespace AVS.Documentacao.API.Controllers
             {
                 //EF.Functions.Like(b.Nome, $"%{filtro}%")
                 var bandas = await _bandaAppService.BuscarTodosPorCriterio(b => b.Nome.ToLower().Contains(filtro.ToLower()));
-                return bandas == null || (bandas.Count() == 0) ? ProcessarRespostaMensagem(
+                return bandas == null || (!bandas.Any()) ? ProcessarRespostaMensagem(
                     StatusCodes.Status404NotFound, "Não existem dados para exibição.") : RespostaPersonalizada(bandas.ToArray());
             }
             catch (Exception ex)

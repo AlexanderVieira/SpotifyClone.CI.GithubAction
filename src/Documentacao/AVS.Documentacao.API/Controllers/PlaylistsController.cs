@@ -137,7 +137,7 @@ namespace AVS.Documentacao.API.Controllers
         }
 
         [HttpPost("playlist/adicionar/musica")]
-        public async Task<IActionResult> AdicionarMusicaPlaylist(MusicaPlaylistDTO musicaPlaylistDTO)
+        public async Task<IActionResult> AdicionarMusicaPlaylist([FromBody] MusicaPlaylistDTO musicaPlaylistDTO)
         {            
             await _musicaPlaylistAppService.Salvar(musicaPlaylistDTO);
             AdicionaMensagemSucesso("Música adicionada a playlist com sucesso.");
@@ -145,7 +145,7 @@ namespace AVS.Documentacao.API.Controllers
         }
 
         [HttpPost("playlist/excluir/musica")]
-        public async Task<IActionResult> ExcluirMusicaPlaylist(MusicaPlaylistDTO musicaPlaylistDTO)
+        public async Task<IActionResult> ExcluirMusicaPlaylist([FromBody] MusicaPlaylistDTO musicaPlaylistDTO)
         {
             await _musicaPlaylistAppService.Exluir(musicaPlaylistDTO);
             AdicionaMensagemSucesso("Música excluída da playlist com sucesso.");

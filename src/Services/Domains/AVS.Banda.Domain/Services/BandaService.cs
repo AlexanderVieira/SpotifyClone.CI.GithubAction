@@ -15,8 +15,7 @@ namespace AVS.Banda.Domain.Services
 
         public async Task<Entities.Banda> BuscarPorCriterio(Expression<Func<Entities.Banda, bool>> expression)
         {
-            var banda = await _bandaRepository.BuscarPorCriterio(expression);           
-            return banda;
+            return await _bandaRepository.BuscarPorCriterio(expression);
         }
 
     }

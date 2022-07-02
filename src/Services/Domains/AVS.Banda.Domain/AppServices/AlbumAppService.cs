@@ -45,13 +45,14 @@ namespace AVS.Banda.Domain.AppServices
             var albuns = await _albumService.ObterTodos();
             //Validacao.ValidarSeNulo(bandas.Cast<object>().ToList(), "Não existem dados para exibição.");
             if (albuns == null) return null;
-            IEnumerable<AlbumDTO> albumDTOs = new List<AlbumDTO>();
-            foreach (var album in albuns)
-            {
-                var albumDTO = AlbumDTO.ConverterParaAlbumDTO(album);
-                albumDTOs = albumDTOs.Append(albumDTO);
-            }
-            return albumDTOs;
+            //IEnumerable<AlbumDTO> albumDTOs = new List<AlbumDTO>();
+            //foreach (var album in albuns)
+            //{
+            //    var albumDTO = AlbumDTO.ConverterParaAlbumDTO(album);
+            //    albumDTOs = albumDTOs.Append(albumDTO);
+            //}
+            //return albumDTOs;
+            return albuns.Select(AlbumDTO.ConverterParaAlbumDTO);
         }
 
         public async Task<AlbumDTO> ObterPorId(object id)

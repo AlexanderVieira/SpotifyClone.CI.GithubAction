@@ -1,4 +1,6 @@
-﻿namespace AVS.Banda.Domain.AppServices.DTOs
+﻿using FluentValidation;
+
+namespace AVS.Banda.Domain.AppServices.DTOs
 {
     public class MusicaPlaylistDTO
     {        
@@ -7,10 +9,27 @@
         public PlaylistDTO Playlist { get; set; }
         public MusicaDTO Musica { get; set; }
 
-        //public MusicaPlaylistDTO(Guid playlistId, Guid musicaId)
-        //{
-        //    PlaylistId = playlistId;
-        //    MusicaId = musicaId;
-        //}
+        public bool EhValido()
+        {
+            var validationResult = new MusicaPlaylistDTOValidator().Validate(this);
+            return validationResult.IsValid;
+        }
+
+    }
+
+    public class MusicaPlaylistDTOValidator : AbstractValidator<MusicaPlaylistDTO>
+    {
+        public MusicaPlaylistDTOValidator()
+        {
+            RuleFor(x => x.PlaylistId)
+                .NotEqual(Guid.Empty)
+                .WithMessage("Id da playlist inválido.");
+
+            RuleFor(x => x.MusicaId)
+                .NotEqual(Guid.Empty)
+                .WithMessage("Id da música inválido.");
+
+        }
+
     }
 }

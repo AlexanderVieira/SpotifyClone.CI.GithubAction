@@ -28,13 +28,13 @@ namespace AVS.Banda.Domain.AppServices.DTOs
             
             if (playlist.Musicas != null && playlist.Musicas.Count > 0)
             {                
-                var musicasDTO = playlistDTO.Musicas.Select(x => x.Musica).AsEnumerable();
+                //var musicasDTO = playlistDTO.Musicas.Select(x => x.Musica).AsEnumerable();
                 var musicas = playlist.Musicas.Select(x => x.Musica).AsEnumerable();
                 foreach (var musica in musicas)
                 {
-                    musicasDTO = musicasDTO.Append(new MusicaDTO(musica.Id, musica.AlbumId, musica.Nome, musica.Duracao.Valor));
+                    //musicasDTO = musicasDTO.Append(new MusicaDTO(musica.Id, musica.AlbumId, musica.Nome, musica.Duracao.Valor, musica.Duracao.Formatado));
                     var mp = new MusicaPlaylistDTO { PlaylistId = playlistDTO.Id, MusicaId = musica.Id };
-                    mp.Musica = new MusicaDTO(musica.Id, musica.AlbumId, musica.Nome, musica.Duracao.Valor);
+                    mp.Musica = new MusicaDTO(musica.Id, musica.AlbumId, musica.Nome, musica.Duracao.Valor, musica.Duracao.Formatado);
                     playlistDTO.Musicas.Add(mp);
                 }
             }
@@ -48,10 +48,12 @@ namespace AVS.Banda.Domain.AppServices.DTOs
             if (playlistDTO.Musicas != null && playlistDTO.Musicas.Count > 0)
             {
                 var musicas = new List<Musica>();
-                foreach (var musica in playlistDTO.Musicas)
+                var musicasDTO = playlistDTO.Musicas.Select(x => x.Musica).AsEnumerable();
+                foreach (var musicaDTO in musicasDTO)
                 {
-                    //musicas.Add(new Musica(musica.Id, musica.AlbumId, musica.Nome, musica.Duracao));
-                    //playlist.AtualizarMusicas(musicas);
+                    var mp = new MusicaPlaylist { PlaylistId = playlistDTO.Id, MusicaId = musicaDTO.Id };
+                    mp.Musica = new Musica(musicaDTO.Id, musicaDTO.AlbumId, musicaDTO.Nome, musicaDTO.Duracao);
+                    playlist.Musicas.Add(mp);
                 }
             }
 
@@ -88,9 +90,9 @@ namespace AVS.Banda.Domain.AppServices.DTOs
                 .Length(2, 250)
                 .WithMessage("O Titulo deve ter entre 2 a 250 caracteres.");
 
-            RuleFor(x => x.Foto)
-                .NotEmpty()
-                .WithMessage("Foto é obrigatória.");
+            //RuleFor(x => x.Foto)
+            //    .NotEmpty()
+            //    .WithMessage("Foto é obrigatória.");
         }
 
     }

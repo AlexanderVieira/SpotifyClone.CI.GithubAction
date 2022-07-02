@@ -87,7 +87,7 @@ namespace AVS.Documentacao.API.Controllers
         }
 
         [HttpPost("album/adicionar")]
-        public async Task<IActionResult> AdicionarAlbum(AlbumDTO albumDTO)
+        public async Task<IActionResult> AdicionarAlbum([FromBody] AlbumDTO albumDTO)
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try

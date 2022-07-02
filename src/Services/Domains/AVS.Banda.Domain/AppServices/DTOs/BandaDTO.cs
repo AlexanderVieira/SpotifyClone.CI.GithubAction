@@ -75,7 +75,7 @@ namespace AVS.Banda.Domain.AppServices.DTOs
                         
                         foreach (var musica in album.Musicas)
                         {
-                            var musicaDTO = new MusicaDTO(musica.Id, musica.AlbumId, musica.Nome, musica.Duracao.Valor);                        
+                            var musicaDTO = new MusicaDTO(musica.Id, musica.AlbumId, musica.Nome, musica.Duracao.Valor, musica.Duracao.Formatado);                        
                                                         
                             if (musica.Playlists != null && musica.Playlists.Count > 0)
                             {

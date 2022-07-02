@@ -26,6 +26,7 @@ namespace AVS.Documentacao.API.Configuracao
             services.AddScoped<IPlaylistRepository, PlaylistRepository>();
             services.AddScoped<IBandaRepository, BandaRepository>();
             services.AddScoped<IAlbumRepository, AlbumRepository>();
+            services.AddScoped<IMusicaRepository, MusicaRepository>();
             services.AddScoped<IMusicaPlaylistRepository, MusicaPlaylistRepository>();
 
             //Service
@@ -33,6 +34,7 @@ namespace AVS.Documentacao.API.Configuracao
             services.AddScoped<IPlaylistService, PlaylistService>();
             services.AddScoped<IBandaService, BandaService>();
             services.AddScoped<IAlbumService, AlbumService>();
+            services.AddScoped<IMusicaService, MusicaService>();
             services.AddScoped<IMusicaPlaylistService, MusicaPlaylistService>();
 
             //Application
@@ -40,6 +42,7 @@ namespace AVS.Documentacao.API.Configuracao
             services.AddScoped<IPlaylistAppService, PlaylistAppService>();
             services.AddScoped<IBandaAppService, BandaAppService>();
             services.AddScoped<IAlbumAppService, AlbumAppService>();
+            services.AddScoped<IMusicaAppService, MusicaAppService>();
             services.AddScoped<IMusicaPlaylistAppService, MusicaPlaylistAppService>();
         }
     }

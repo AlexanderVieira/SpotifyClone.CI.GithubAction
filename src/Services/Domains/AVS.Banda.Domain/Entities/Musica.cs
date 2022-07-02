@@ -9,7 +9,7 @@ namespace AVS.Banda.Domain.Entities
         public string Nome { get; private set; }
         public Duracao Duracao { get; private set; }
         public Guid AlbumId { get; private set; }
-        public virtual Album Album { get; private set; }
+        public virtual Album Album { get; set; }
         public virtual IList<MusicaPlaylist> Playlists { get; private set; }
 
         protected Musica()

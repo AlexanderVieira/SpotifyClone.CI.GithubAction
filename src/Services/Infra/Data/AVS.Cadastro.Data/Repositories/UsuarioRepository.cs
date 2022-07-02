@@ -20,14 +20,5 @@ namespace AVS.Cadastro.Data.Repositories
                             .Where(u => u.Ativo == true)
                             .ToListAsync();
         }
-
-        //public async Task<Usuario> ObterPorId(Guid id)
-        //{
-        //    return await _context.Usuarios
-        //                         .Include(u => u.Playlists)
-        //                         .ThenInclude(m => m.Musicas)
-        //                         .FirstOrDefaultAsync(u => u.Id == id);
-        //}              
-
     }
 }

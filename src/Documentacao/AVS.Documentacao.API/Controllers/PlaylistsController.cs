@@ -136,20 +136,44 @@ namespace AVS.Documentacao.API.Controllers
 
         }
 
-        [HttpPost("playlist/adicionar/musica")]
-        public async Task<IActionResult> AdicionarMusicaPlaylist([FromBody] MusicaPlaylistDTO musicaPlaylistDTO)
-        {            
-            await _musicaPlaylistAppService.Salvar(musicaPlaylistDTO);
-            AdicionaMensagemSucesso("Música adicionada a playlist com sucesso.");
-            return RespostaPersonalizada(StatusCodes.Status201Created);
+        [HttpPost("playlist/adicionar/musica/{playlistId}/{musicaId}")]
+        public async Task<IActionResult> AdicionarMusicaPlaylist(Guid playlistId, Guid musicaId)
+        {
+            if (!ModelState.IsValid) return RespostaPersonalizada(ModelState);
+            try
+            {
+                var musicaPlaylistDTO = new MusicaPlaylistDTO { PlaylistId = playlistId, MusicaId = musicaId };
+                if (!ExecutarValidacao(new MusicaPlaylistDTOValidator(), musicaPlaylistDTO)) return RespostaPersonalizada(ValidationResult);
+                await _musicaPlaylistAppService.Salvar(musicaPlaylistDTO);
+                AdicionaMensagemSucesso("Música adicionada a playlist com sucesso.");
+                return RespostaPersonalizada(StatusCodes.Status201Created);
+            }
+            catch (Exception ex)
+            {
+                AdicionarErroProcessamento(ex.Message);
+                return RespostaPersonalizada();
+            }
+            
         }
 
-        [HttpPost("playlist/excluir/musica")]
-        public async Task<IActionResult> ExcluirMusicaPlaylist([FromBody] MusicaPlaylistDTO musicaPlaylistDTO)
+        [HttpPost("playlist/excluir/musica/{playlistId}/{musicaId}")]
+        public async Task<IActionResult> ExcluirMusicaPlaylist(Guid playlistId, Guid musicaId)
         {
-            await _musicaPlaylistAppService.Exluir(musicaPlaylistDTO);
-            AdicionaMensagemSucesso("Música excluída da playlist com sucesso.");
-            return RespostaPersonalizada(StatusCodes.Status204NoContent);
+            if (!ModelState.IsValid) return RespostaPersonalizada(ModelState);
+            try
+            {
+                var musicaPlaylistDTO = new MusicaPlaylistDTO { PlaylistId = playlistId, MusicaId = musicaId };
+                if (!ExecutarValidacao(new MusicaPlaylistDTOValidator(), musicaPlaylistDTO)) return RespostaPersonalizada(ValidationResult);
+                await _musicaPlaylistAppService.Exluir(musicaPlaylistDTO);
+                AdicionaMensagemSucesso("Música excluída da playlist com sucesso.");
+                return RespostaPersonalizada(StatusCodes.Status204NoContent);
+            }
+            catch (Exception ex)
+            {
+                AdicionarErroProcessamento(ex.Message);
+                return RespostaPersonalizada();
+            }
+            
         }
 
         protected override bool ExecutarValidacao<TV, TE>(TV validacao, TE entidade)

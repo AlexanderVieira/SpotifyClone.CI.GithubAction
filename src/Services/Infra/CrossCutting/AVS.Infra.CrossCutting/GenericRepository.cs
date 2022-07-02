@@ -9,14 +9,17 @@ namespace AVS.Infra.CrossCutting
 {
     public class GenericRepository<T> : IRepository<T> where T : class
     {        
-        public IUnitOfWork UnitOfWork => (IUnitOfWork)Context;
+        public IUnitOfWork UnitOfWork => _context;
         protected DbSet<T> Query { get; set; }
-        protected DbContext Context { get; set; }
+        
+        //protected DbContext Context { get; set; }
+        
+        private readonly SpotifyCloneContext _context;
 
         public GenericRepository(SpotifyCloneContext context)
         {
-            Context = context;
-            Query = Context.Set<T>();
+            _context = context;
+            Query = _context.Set<T>();
         }
 
         public async Task<IEnumerable<T>> ObterTodos()
@@ -49,34 +52,34 @@ namespace AVS.Infra.CrossCutting
         public async Task Salvar(T entity)
         {
             await Query.AddAsync(entity);
-            await Context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         public async Task Atualizar(T entity)
         {
             Query.Update(entity);
-            await Context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         public async Task Exluir(T entity)
         {
             Query.Remove(entity);
-            await Context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IDbContextTransaction> CriarTransacao()
         {
-            return await Context.Database.BeginTransactionAsync();
+            return await _context.Database.BeginTransactionAsync();
         }
 
         public async Task<IDbContextTransaction> CriarTransacao(IsolationLevel isolation)
         {
-            return await Context.Database.BeginTransactionAsync(isolation);
+            return await _context.Database.BeginTransactionAsync(isolation);
         }
 
         public void Dispose()
         {
-            Context.Dispose();
+            _context.Dispose();
         }
     }
 }

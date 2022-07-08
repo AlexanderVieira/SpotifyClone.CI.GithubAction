@@ -1,5 +1,8 @@
-﻿using AVS.Cadastro.Application.DTOs;
+﻿using AVS.Cadastro.Application.Commands;
+using AVS.Cadastro.Application.DTOs;
 using AVS.Cadastro.Application.Interfaces;
+using AVS.Cadastro.Application.Queries;
+using AVS.Core.Comunicacao.Mediator;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,20 +12,22 @@ namespace AVS.Documentacao.API.Controllers
     public class UsuariosController : PrincipalController
     {
         private readonly IUsuarioAppService _usuarioAppService;
+        private readonly IMediatorHandler _mediatorHandler;
 
-        public UsuariosController(IUsuarioAppService usuarioAppService)
+        public UsuariosController(IUsuarioAppService usuarioAppService, IMediatorHandler mediatorHandler)
         {
             _usuarioAppService = usuarioAppService;
+            _mediatorHandler = mediatorHandler;
         }
 
         [HttpGet("usuarios")]
         public async Task<IActionResult> ObterTodosUsuarios()
         {
             try
-            {
-                var usuarios = await _usuarioAppService.ObterTodos();
-                return usuarios == null || (!usuarios.Any()) ? ProcessarRespostaMensagem(
-                    StatusCodes.Status404NotFound, "Não existem dados para exibição.") : RespostaPersonalizada(usuarios.ToArray());
+            {                
+                var response = (ObterTodosUsuariosQueryResponse) await _mediatorHandler.EnviarQuery(new ObterTodosUsuariosQuery());                
+                return response.Usuarios == null || (!response.Usuarios.Any()) ? ProcessarRespostaMensagem(
+                    StatusCodes.Status404NotFound, "Não existem dados para exibição.") : RespostaPersonalizada(response.Usuarios.ToArray());
             }
             catch (Exception ex)
             {
@@ -67,14 +72,15 @@ namespace AVS.Documentacao.API.Controllers
         }
 
         [HttpPost("usuario/adicionar")]
-        public async Task<IActionResult> AdicionarUsuario([FromBody] UsuarioDTO usuarioDTO)
+        public async Task<IActionResult> AdicionarUsuario([FromBody] UsuarioRequestDto request)
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try
             {
-                if (usuarioDTO == null) return RespostaPersonalizada();                
-                if (!ExecutarValidacao(new UsuarioDTOValidator(), usuarioDTO)) return RespostaPersonalizada(ValidationResult);
-                await _usuarioAppService.Salvar(usuarioDTO);
+                if (request == null) return RespostaPersonalizada();                
+                var comando = new AdicionarUsuarioCommand(request);
+                ValidationResult = await _mediatorHandler.EnviarComando(comando);
+                if (!ValidationResult.IsValid) return RespostaPersonalizada(ValidationResult);
                 AdicionaMensagemSucesso("Usuario adicionado com sucesso.");
                 return RespostaPersonalizada(StatusCodes.Status201Created);
             }
@@ -87,14 +93,14 @@ namespace AVS.Documentacao.API.Controllers
         }
 
         [HttpPut("usuario/atualizar")]
-        public async Task<IActionResult> AtualizarUsuario([FromBody] UsuarioDTO usuarioDTO)
+        public async Task<IActionResult> AtualizarUsuario([FromBody] UsuarioRequestDto request)
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try
             {
-                if (usuarioDTO == null) return RespostaPersonalizada();
-                if (!ExecutarValidacao(new UsuarioDTOValidator(), usuarioDTO)) return RespostaPersonalizada(ValidationResult);
-                await _usuarioAppService.Atualizar(usuarioDTO);
+                if (request == null) return RespostaPersonalizada();
+                var comando = new AtualizarUsuarioCommand(request);
+                ValidationResult = await _mediatorHandler.EnviarComando(comando);
                 AdicionaMensagemSucesso("Usuario atualizado com sucesso.");
                 return RespostaPersonalizada(StatusCodes.Status200OK);
             }
@@ -107,14 +113,14 @@ namespace AVS.Documentacao.API.Controllers
         }
 
         [HttpDelete("usuario/excluir")]
-        public async Task<IActionResult> ExcluirUsuario([FromBody] UsuarioDTO usuarioDTO)
+        public async Task<IActionResult> ExcluirUsuario([FromBody] UsuarioRequestDto request)
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try
             {
-                if (usuarioDTO == null) return RespostaPersonalizada();
-                if (!ExecutarValidacao(new UsuarioDTOValidator(), usuarioDTO)) return RespostaPersonalizada(ValidationResult);
-                await _usuarioAppService.Exluir(usuarioDTO);
+                if (request == null) return RespostaPersonalizada();
+                var comando = new ExcluirUsuarioCommand(request);
+                ValidationResult = await _mediatorHandler.EnviarComando(comando);
                 AdicionaMensagemSucesso("Usuario excluído com sucesso.");
                 return RespostaPersonalizada(StatusCodes.Status204NoContent);
             }
@@ -127,15 +133,16 @@ namespace AVS.Documentacao.API.Controllers
         }
 
         [HttpPut("usuario/ativar")]
-        public async Task<IActionResult> AtivarUsuario([FromBody] UsuarioDTO usuarioDTO)
+        public async Task<IActionResult> AtivarUsuario([FromBody] UsuarioRequestDto request)
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try
             {
-                if (usuarioDTO == null) return RespostaPersonalizada();
-                if (!ExecutarValidacao(new UsuarioDTOValidator(), usuarioDTO)) return RespostaPersonalizada(ValidationResult);                
-                await _usuarioAppService.Ativar(usuarioDTO);
-                return RespostaPersonalizada();
+                if (request == null) return RespostaPersonalizada();
+                var comando = new AtivarUsuarioCommand(request);
+                ValidationResult = await _mediatorHandler.EnviarComando(comando);
+                AdicionaMensagemSucesso("Usuario ativado com sucesso.");
+                return RespostaPersonalizada(StatusCodes.Status200OK);
             }
             catch (Exception ex)
             {
@@ -146,15 +153,16 @@ namespace AVS.Documentacao.API.Controllers
         }
 
         [HttpPut("usuario/inativar")]
-        public async Task<IActionResult> InativarUsuario([FromBody] UsuarioDTO usuarioDTO)
+        public async Task<IActionResult> InativarUsuario([FromBody] UsuarioRequestDto request)
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try
             {
-                if (usuarioDTO == null) return RespostaPersonalizada();
-                if (!ExecutarValidacao(new UsuarioDTOValidator(), usuarioDTO)) return RespostaPersonalizada(ValidationResult);                
-                await _usuarioAppService.Inativar(usuarioDTO);
-                return RespostaPersonalizada();
+                if (request == null) return RespostaPersonalizada();
+                var comando = new InativarUsuarioCommand(request);
+                ValidationResult = await _mediatorHandler.EnviarComando(comando);
+                AdicionaMensagemSucesso("Usuario inativado com sucesso.");
+                return RespostaPersonalizada(StatusCodes.Status200OK);
             }
             catch (Exception ex)
             {
@@ -162,15 +170,6 @@ namespace AVS.Documentacao.API.Controllers
                 return RespostaPersonalizada();
             }
 
-        }               
-
-        protected override bool ExecutarValidacao<TV, TE>(TV validacao, TE entidade)
-        {
-            ValidationResult = validacao.Validate(entidade);
-            if (ValidationResult.IsValid) return true;
-
-            return false;
-        }        
-
+        }
     }
 }

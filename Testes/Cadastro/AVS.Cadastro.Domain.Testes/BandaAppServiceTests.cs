@@ -1,5 +1,6 @@
-﻿using AVS.Banda.Domain.AppServices;
-using AVS.Banda.Domain.AppServices.DTOs;
+﻿using AutoMapper;
+using AVS.Banda.Application.AppServices;
+using AVS.Banda.Application.DTOs;
 using AVS.Banda.Domain.Entities;
 using AVS.Banda.Domain.Interfaces.Services;
 using Moq;
@@ -24,23 +25,24 @@ namespace AVS.Cadastro.Domain.Testes
         [Trait("Categoria", "Banda AppService Mock Tests")]
         public async Task BandaAppService_Adicionar_DeveExecutarComSucesso()
         {
-            //Arrange
-            //var usuario = _usuarioTestsFixture.CriarUsuarioValido();
+            //Arrange            
             var banda = new Banda.Domain.Entities.Banda(Guid.NewGuid(), "Biquini Cavadao", "Sucesso!", "http://url.com.br");
             var musica = new Musica(Guid.NewGuid(), Guid.NewGuid(), "Vento. Ventania", 300);            
             var musicas = new List<Musica>();
             musicas.Add(musica);
             banda.CriarAlbum(
                 Guid.NewGuid(), Guid.NewGuid(), "Top 10", "As dez melhores!", "http://url.com.br", musicas);
+            var request = new BandaRequestDto(banda.Id, banda.Nome, banda.Descricao, banda.Foto);
             var bandaService = new Mock<IBandaService>();
-            var bandaAppService = new BandaAppService(bandaService.Object);
-            var bandaDTO = BandaDTO.ConverterParaBandaDTO(banda);
+            var automapper = new Mock<IMapper>();
+            var bandaAppService = new BandaAppService(bandaService.Object, automapper.Object);
+            automapper.Setup(x => x.Map<Banda.Domain.Entities.Banda>(request)).Returns(banda);
 
             //Act
-            await bandaAppService.Salvar(bandaDTO);
+            await bandaAppService.Salvar(request);
 
             //Asset
-            Assert.True(bandaDTO.EhValido());
+            //Assert.True(bandaDTO.EhValido());
             bandaService.Verify(r => r.Salvar(banda), Times.Once());
         }
 

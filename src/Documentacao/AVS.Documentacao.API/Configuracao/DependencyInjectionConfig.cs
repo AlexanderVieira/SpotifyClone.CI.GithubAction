@@ -1,17 +1,24 @@
-﻿using AVS.Banda.Data.Repositories;
-using AVS.Banda.Domain.AppServices;
-using AVS.Banda.Domain.Interfaces.AppServices;
+﻿using AVS.Banda.Application.AppServices;
+using AVS.Banda.Application.AutoMapper;
+using AVS.Banda.Application.Interfaces;
+using AVS.Banda.Data.Repositories;
 using AVS.Banda.Domain.Interfaces.Repositories;
 using AVS.Banda.Domain.Interfaces.Services;
 using AVS.Banda.Domain.Services;
 using AVS.Cadastro.Application.AppServices;
+using AVS.Cadastro.Application.Commands;
+using AVS.Cadastro.Application.Commands.Handlers;
 using AVS.Cadastro.Application.Interfaces;
+using AVS.Cadastro.Application.Queries;
 using AVS.Cadastro.Data.Repositories;
 using AVS.Cadastro.Domain.Interfaces.Repositories;
 using AVS.Cadastro.Domain.Interfaces.Services;
 using AVS.Cadastro.Domain.Services;
+using AVS.Core.Comunicacao.Mediator;
 using AVS.Infra.CrossCutting;
 using AVS.Infra.Data;
+using FluentValidation.Results;
+using MediatR;
 
 namespace AVS.Documentacao.API.Configuracao
 {
@@ -19,6 +26,19 @@ namespace AVS.Documentacao.API.Configuracao
     {
         public static void RegisterServices(this IServiceCollection services)
         {
+            // Mediator
+            services.AddScoped<IMediatorHandler, MediatorHandler>();
+
+            //Usuario Comandos
+            services.AddScoped<IRequestHandler<AdicionarUsuarioCommand, ValidationResult>, UsuarioCommandHandler>();
+            services.AddScoped<IRequestHandler<AtualizarUsuarioCommand, ValidationResult>, UsuarioCommandHandler>();
+            services.AddScoped<IRequestHandler<ExcluirUsuarioCommand, ValidationResult>, UsuarioCommandHandler>();
+            services.AddScoped<IRequestHandler<AtivarUsuarioCommand, ValidationResult>, UsuarioCommandHandler>();
+            services.AddScoped<IRequestHandler<InativarUsuarioCommand, ValidationResult>, UsuarioCommandHandler>();
+
+            //Usuario Queries 
+            services.AddScoped<IRequestHandler<ObterTodosUsuariosQuery, ObterTodosUsuariosQueryResponse>, UsuarioQueryHandler>();
+
             //Data
             services.AddScoped<SpotifyCloneContext>();
             services.AddScoped(typeof(GenericRepository<>));
@@ -44,6 +64,10 @@ namespace AVS.Documentacao.API.Configuracao
             services.AddScoped<IAlbumAppService, AlbumAppService>();
             services.AddScoped<IMusicaAppService, MusicaAppService>();
             services.AddScoped<IMusicaPlaylistAppService, MusicaPlaylistAppService>();
+
+            //AutoMapper
+            services.AddAutoMapper(typeof(DomainToDtoMappingProfile).Assembly);
+            services.AddAutoMapper(typeof(Cadastro.Application.AutoMapper.DomainToDtoMappingProfile).Assembly);
         }
     }
 }

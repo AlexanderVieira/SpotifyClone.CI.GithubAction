@@ -1,5 +1,4 @@
-﻿using AVS.Banda.Domain.AppServices.DTOs;
-using AVS.Banda.Domain.Entities;
+﻿using AVS.Banda.Domain.Entities;
 using AVS.Banda.Domain.Interfaces.Repositories;
 using AVS.Banda.Domain.Interfaces.Services;
 using AVS.Core.Services;

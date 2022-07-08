@@ -4,8 +4,8 @@ namespace AVS.Core.ObjDoinio
 {
     public abstract class Entity
     {
-        public virtual Guid Id { get; protected set; }
-        public ValidationResult ValidationResult { get; protected set; }
+        public Guid Id { get; set; }
+        public ValidationResult ValidationResult { get; set; }
         public Entity()
         {
             Id = Guid.NewGuid();

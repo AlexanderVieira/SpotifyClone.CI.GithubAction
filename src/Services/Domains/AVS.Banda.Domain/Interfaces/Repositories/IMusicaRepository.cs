@@ -1,5 +1,4 @@
-﻿using AVS.Banda.Domain.AppServices.DTOs;
-using AVS.Banda.Domain.ConsultasProjetadas;
+﻿using AVS.Banda.Domain.ConsultasProjetadas;
 using AVS.Banda.Domain.Entities;
 using AVS.Core.Data;
 using System.Linq.Expressions;

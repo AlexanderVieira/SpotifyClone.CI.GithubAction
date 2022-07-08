@@ -16,7 +16,7 @@ namespace AVS.Cadastro.Data.Repositories
         {
             return await Query                            
                             .Include(u => u.Playlists)
-                            .ThenInclude(m => m.Musicas)
+                            //.ThenInclude(m => m.Musicas)
                             .Where(u => u.Ativo == true)
                             .ToListAsync();
         }

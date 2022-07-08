@@ -1,5 +1,5 @@
-﻿using AVS.Banda.Domain.AppServices.DTOs;
-using AVS.Banda.Domain.Interfaces.AppServices;
+﻿using AVS.Banda.Application.DTOs;
+using AVS.Banda.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -87,13 +87,13 @@ namespace AVS.Documentacao.API.Controllers
         }
 
         [HttpPost("album/adicionar")]
-        public async Task<IActionResult> AdicionarAlbum([FromBody] AlbumDTO albumDTO)
+        public async Task<IActionResult> AdicionarAlbum([FromBody] AlbumRequestDto albumDTO)
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try
             {
                 if (albumDTO == null) return RespostaPersonalizada();
-                if (!ExecutarValidacao(new AlbumDTOValidator(), albumDTO)) return RespostaPersonalizada(ValidationResult);
+                //if (!ExecutarValidacao(new AlbumDTOValidator(), albumDTO)) return RespostaPersonalizada(ValidationResult);
                 await _albumAppService.Salvar(albumDTO);
                 AdicionaMensagemSucesso("Album adicionado com sucesso.");
                 return RespostaPersonalizada(StatusCodes.Status201Created);
@@ -106,13 +106,13 @@ namespace AVS.Documentacao.API.Controllers
         }
 
         [HttpPut("album/atualizar")]
-        public async Task<IActionResult> AtualizarAlbum([FromBody] AlbumDTO albumDTO)
+        public async Task<IActionResult> AtualizarAlbum([FromBody] AlbumRequestDto albumDTO)
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try
             {
                 if (albumDTO == null) return RespostaPersonalizada();
-                if (!ExecutarValidacao(new AlbumDTOValidator(), albumDTO)) return RespostaPersonalizada(ValidationResult);
+                //if (!ExecutarValidacao(new AlbumDTOValidator(), albumDTO)) return RespostaPersonalizada(ValidationResult);
                 await _albumAppService.Atualizar(albumDTO);
                 AdicionaMensagemSucesso("Album atualizado com sucesso.");
                 return RespostaPersonalizada(StatusCodes.Status200OK);
@@ -126,13 +126,13 @@ namespace AVS.Documentacao.API.Controllers
         }        
 
         [HttpDelete("album/excluir")]
-        public async Task<IActionResult> ExcluirAlbum([FromBody] AlbumDTO albumDTO)
+        public async Task<IActionResult> ExcluirAlbum([FromBody] AlbumRequestDto albumDTO)
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try
             {
                 if (albumDTO == null) return RespostaPersonalizada();
-                if (!ExecutarValidacao(new AlbumDTOValidator(), albumDTO)) return RespostaPersonalizada(ValidationResult);
+                //if (!ExecutarValidacao(new AlbumDTOValidator(), albumDTO)) return RespostaPersonalizada(ValidationResult);
                 await _albumAppService.Exluir(albumDTO);
                 AdicionaMensagemSucesso("Album excluído com sucesso.");
                 return RespostaPersonalizada(StatusCodes.Status204NoContent);

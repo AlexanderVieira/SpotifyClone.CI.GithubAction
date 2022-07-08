@@ -1,12 +1,16 @@
 ﻿using AVS.Cadastro.Application.DTOs;
-using AVS.Core.Services;
 
 namespace AVS.Cadastro.Application.Interfaces
 {
-    public interface IUsuarioAppService : IAppService<UsuarioDTO>
-    {        
-        Task<IEnumerable<UsuarioDTO>> ObterTodosAtivos();
-        Task Ativar(UsuarioDTO usuario);
-        Task Inativar(UsuarioDTO usuario);        
+    public interface IUsuarioAppService
+    {
+        Task Ativar(UsuarioRequestDto request);
+        Task Atualizar(UsuarioRequestDto request);
+        Task Exluir(UsuarioRequestDto request);
+        Task Inativar(UsuarioRequestDto request);
+        Task<UsuarioResponseDto> ObterPorId(object id);
+        Task<IEnumerable<UsuarioResponseDto>> ObterTodos();
+        Task<IEnumerable<UsuarioResponseDto>> ObterTodosAtivos();
+        Task Salvar(UsuarioRequestDto request);
     }
 }

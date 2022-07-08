@@ -1,5 +1,5 @@
-﻿using AVS.Banda.Domain.AppServices.DTOs;
-using AVS.Banda.Domain.Interfaces.AppServices;
+﻿using AVS.Banda.Application.DTOs;
+using AVS.Banda.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AVS.Documentacao.API.Controllers
@@ -85,13 +85,13 @@ namespace AVS.Documentacao.API.Controllers
         }
 
         [HttpPost("musica/adicionar")]
-        public async Task<IActionResult> AdicionarMusica([FromBody] MusicaDTO musicaDTO)
+        public async Task<IActionResult> AdicionarMusica([FromBody] MusicaRequestDto musicaDTO)
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try
             {
                 if (musicaDTO == null) return RespostaPersonalizada();
-                if (!ExecutarValidacao(new MusicaDTOValidator(), musicaDTO)) return RespostaPersonalizada(ValidationResult);
+                //if (!ExecutarValidacao(new MusicaDTOValidator(), musicaDTO)) return RespostaPersonalizada(ValidationResult);
                 await _musicaAppService.Salvar(musicaDTO);
                 AdicionaMensagemSucesso("Música adicionada com sucesso.");
                 return RespostaPersonalizada(StatusCodes.Status201Created);
@@ -104,13 +104,13 @@ namespace AVS.Documentacao.API.Controllers
         }
 
         [HttpPut("musica/atualizar")]
-        public async Task<IActionResult> AtualizarMusica([FromBody] MusicaDTO musicaDTO)
+        public async Task<IActionResult> AtualizarMusica([FromBody] MusicaRequestDto musicaDTO)
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try
             {
                 if (musicaDTO == null) return RespostaPersonalizada();
-                if (!ExecutarValidacao(new MusicaDTOValidator(), musicaDTO)) return RespostaPersonalizada(ValidationResult);
+                //if (!ExecutarValidacao(new MusicaDTOValidator(), musicaDTO)) return RespostaPersonalizada(ValidationResult);
                 await _musicaAppService.Atualizar(musicaDTO);
                 AdicionaMensagemSucesso("Música atualizada com sucesso.");
                 return RespostaPersonalizada(StatusCodes.Status200OK);
@@ -124,13 +124,13 @@ namespace AVS.Documentacao.API.Controllers
         }        
 
         [HttpDelete("musica/excluir")]
-        public async Task<IActionResult> ExcluirMusica([FromBody] MusicaDTO musicaDTO)
+        public async Task<IActionResult> ExcluirMusica([FromBody] MusicaRequestDto musicaDTO)
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try
             {
                 if (musicaDTO == null) return RespostaPersonalizada();
-                if (!ExecutarValidacao(new MusicaDTOValidator(), musicaDTO)) return RespostaPersonalizada(ValidationResult);
+                //if (!ExecutarValidacao(new MusicaDTOValidator(), musicaDTO)) return RespostaPersonalizada(ValidationResult);
                 await _musicaAppService.Exluir(musicaDTO);
                 AdicionaMensagemSucesso("Música excluída com sucesso.");
                 return RespostaPersonalizada(StatusCodes.Status204NoContent);

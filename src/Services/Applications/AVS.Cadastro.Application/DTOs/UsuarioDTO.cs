@@ -1,5 +1,4 @@
-﻿using AVS.Banda.Domain;
-using AVS.Banda.Domain.AppServices.DTOs;
+﻿using AVS.Banda.Domain.AppServices.DTOs;
 using AVS.Banda.Domain.Entities;
 using AVS.Cadastro.Domain.Entities;
 using FluentValidation;

@@ -38,6 +38,8 @@ namespace AVS.Documentacao.API.Configuracao
 
             //Usuario Queries 
             services.AddScoped<IRequestHandler<ObterTodosUsuariosQuery, ObterTodosUsuariosQueryResponse>, UsuarioQueryHandler>();
+            services.AddScoped<IRequestHandler<ObterTodosUsuariosAtivosQuery, ObterTodosUsuariosQueryResponse>, UsuarioQueryHandler>();
+            services.AddScoped<IRequestHandler<ObterDetalheUsuarioQuery, ObterDetalheUsuarioQueryResponse>, UsuarioQueryHandler>();
 
             //Data
             services.AddScoped<SpotifyCloneContext>();

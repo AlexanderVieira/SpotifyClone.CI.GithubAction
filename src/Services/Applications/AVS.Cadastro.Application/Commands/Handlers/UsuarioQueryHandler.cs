@@ -4,7 +4,9 @@ using MediatR;
 
 namespace AVS.Cadastro.Application.Commands.Handlers
 {
-    public class UsuarioQueryHandler : IRequestHandler<ObterTodosUsuariosQuery, ObterTodosUsuariosQueryResponse>
+    public class UsuarioQueryHandler : IRequestHandler<ObterTodosUsuariosQuery, ObterTodosUsuariosQueryResponse>,
+                                       IRequestHandler<ObterTodosUsuariosAtivosQuery, ObterTodosUsuariosQueryResponse>,
+                                       IRequestHandler<ObterDetalheUsuarioQuery, ObterDetalheUsuarioQueryResponse>
     {
         private readonly IUsuarioAppService _usuarioAppeService;
 
@@ -17,6 +19,18 @@ namespace AVS.Cadastro.Application.Commands.Handlers
         {
             var usuariosResponse = await _usuarioAppeService.ObterTodos();
             return new ObterTodosUsuariosQueryResponse(usuariosResponse);
+        }
+
+        public async Task<ObterTodosUsuariosQueryResponse> Handle(ObterTodosUsuariosAtivosQuery request, CancellationToken cancellationToken)
+        {
+            var usuariosResponse = await _usuarioAppeService.ObterTodosAtivos();
+            return new ObterTodosUsuariosQueryResponse(usuariosResponse);
+        }
+
+        public async Task<ObterDetalheUsuarioQueryResponse> Handle(ObterDetalheUsuarioQuery request, CancellationToken cancellationToken)
+        {
+            var usuarioResponse = await _usuarioAppeService.ObterPorId(request.Id);
+            return new ObterDetalheUsuarioQueryResponse(usuarioResponse);
         }
     }
 }

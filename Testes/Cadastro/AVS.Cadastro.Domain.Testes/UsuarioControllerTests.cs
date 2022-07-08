@@ -1,4 +1,5 @@
-﻿using AVS.Cadastro.Application.Commands;
+﻿using AVS.Banda.Application.DTOs;
+using AVS.Cadastro.Application.Commands;
 using AVS.Cadastro.Application.DTOs;
 using AVS.Cadastro.Application.Interfaces;
 using AVS.Cadastro.Application.Queries;
@@ -27,19 +28,19 @@ namespace AVS.Cadastro.Domain.Testes
         {
             //Arrange
             var usuario = _usuarioTestsFixture.CriarUsuarioValido();
-            var usuarioAppService = new Mock<IUsuarioAppService>();
+            //var usuarioAppService = new Mock<IUsuarioAppService>();
             var mediatorHandler = new Mock<IMediatorHandler>();
-            var usuarioController = new UsuariosController(usuarioAppService.Object, mediatorHandler.Object);
+            var usuarioController = new UsuariosController(mediatorHandler.Object);
             mediatorHandler.Setup(x => x.EnviarComando(It.IsAny<AdicionarUsuarioCommand>()))
                                         .Returns(Task.FromResult(new FluentValidation.Results.ValidationResult()));            
 
             //Act
             await usuarioController.AdicionarUsuario(new UsuarioRequestDto(usuario.Id,
-                                                                         usuario.Nome,
-                                                                         usuario.Email.Address,
-                                                                         usuario.Cpf.Numero,
-                                                                         usuario.Ativo,
-                                                                         usuario.Foto));
+                                                                           usuario.Nome,
+                                                                           usuario.Email.Address,
+                                                                           usuario.Cpf.Numero,
+                                                                           usuario.Ativo,
+                                                                           usuario.Foto));
 
             //Asset            
             mediatorHandler.Verify(r => r.EnviarComando(It.IsAny<AdicionarUsuarioCommand>()), Times.Once());
@@ -51,19 +52,19 @@ namespace AVS.Cadastro.Domain.Testes
         {            
             //Arrange
             var usuario = _usuarioTestsFixture.CriarUsuarioValido();
-            var usuarioAppService = new Mock<IUsuarioAppService>();
+            //var usuarioAppService = new Mock<IUsuarioAppService>();
             var mediatorHandler = new Mock<IMediatorHandler>();
-            var usuarioController = new UsuariosController(usuarioAppService.Object, mediatorHandler.Object);
+            var usuarioController = new UsuariosController(mediatorHandler.Object);
             mediatorHandler.Setup(x => x.EnviarComando(It.IsAny<AtualizarUsuarioCommand>()))
                                         .Returns(Task.FromResult(new FluentValidation.Results.ValidationResult()));            
 
             //Act
             await usuarioController.AtualizarUsuario(new UsuarioRequestDto(usuario.Id,
-                                                                         usuario.Nome,
-                                                                         usuario.Email.Address,
-                                                                         usuario.Cpf.Numero,
-                                                                         usuario.Ativo,
-                                                                         usuario.Foto));
+                                                                           usuario.Nome,
+                                                                           usuario.Email.Address,
+                                                                           usuario.Cpf.Numero,
+                                                                           usuario.Ativo,
+                                                                           usuario.Foto));
 
             //Asset            
             mediatorHandler.Verify(r => r.EnviarComando(It.IsAny<AtualizarUsuarioCommand>()), Times.Once());
@@ -75,9 +76,9 @@ namespace AVS.Cadastro.Domain.Testes
         {
             //Arrange
             var usuario = _usuarioTestsFixture.CriarUsuarioValido();
-            var usuarioAppService = new Mock<IUsuarioAppService>();
+            //var usuarioAppService = new Mock<IUsuarioAppService>();
             var mediatorHandler = new Mock<IMediatorHandler>();
-            var usuarioController = new UsuariosController(usuarioAppService.Object, mediatorHandler.Object);
+            var usuarioController = new UsuariosController(mediatorHandler.Object);
             mediatorHandler.Setup(x => x.EnviarComando(It.IsAny<ExcluirUsuarioCommand>()))
                                         .Returns(Task.FromResult(new FluentValidation.Results.ValidationResult()));
 
@@ -98,9 +99,9 @@ namespace AVS.Cadastro.Domain.Testes
         public async Task UsuariosController_ObterTodos_DeveExecutarComSucesso()
         {
             //Arrange            
-            var usuarioAppService = new Mock<IUsuarioAppService>();
+            //var usuarioAppService = new Mock<IUsuarioAppService>();
             var mediatorHandler = new Mock<IMediatorHandler>();
-            var usuarioController = new UsuariosController(usuarioAppService.Object, mediatorHandler.Object);
+            var usuarioController = new UsuariosController(mediatorHandler.Object);
             var usuariosResponse = new ObterTodosUsuariosQueryResponse(new List<UsuarioResponseDto>());
             mediatorHandler.Setup(x => x.EnviarQuery(It.IsAny<ObterTodosUsuariosQuery>()))
                                         .Returns(Task.FromResult((object)usuariosResponse));
@@ -117,16 +118,18 @@ namespace AVS.Cadastro.Domain.Testes
         public async Task UsuariosController_ObterTodosAtivos_DeveExecutarComSucesso()
         {
             //Arrange            
-            var usuarioAppService = new Mock<IUsuarioAppService>();
+            //var usuarioAppService = new Mock<IUsuarioAppService>();
             var mediatorHandler = new Mock<IMediatorHandler>();
-            var usuarioController = new UsuariosController(usuarioAppService.Object, mediatorHandler.Object);
-            var usuariosResponse = new ObterTodosUsuariosQueryResponse(new List<UsuarioResponseDto>());            
+            var usuarioController = new UsuariosController(mediatorHandler.Object);
+            var usuariosResponse = new ObterTodosUsuariosQueryResponse(new List<UsuarioResponseDto>());
+            mediatorHandler.Setup(x => x.EnviarQuery(It.IsAny<ObterTodosUsuariosAtivosQuery>()))
+                                        .Returns(Task.FromResult((object)usuariosResponse));
 
             //Act
             await usuarioController.ObterTodosUsuariosAtivos();
 
             //Asset            
-            usuarioAppService.Verify(r => r.ObterTodosAtivos(), Times.Once());
+            mediatorHandler.Verify(x => x.EnviarQuery(It.IsAny<ObterTodosUsuariosAtivosQuery>()), Times.Once());
         }
 
         [Fact(DisplayName = "Obter Usuario por ID com Sucesso")]
@@ -135,17 +138,28 @@ namespace AVS.Cadastro.Domain.Testes
         {
             //Arrange
             var usuario = _usuarioTestsFixture.CriarUsuarioValido();
-            var usuarioAppService = new Mock<IUsuarioAppService>();
+            //var usuarioAppService = new Mock<IUsuarioAppService>();
             var mediatorHandler = new Mock<IMediatorHandler>();
-            var usuarioController = new UsuariosController(usuarioAppService.Object, mediatorHandler.Object);
-            var usuarioDTO = UsuarioDTO.ConverterParaUsuarioDTO(usuario);
+            var usuarioController = new UsuariosController(mediatorHandler.Object);
+            var usuarioResponseDto = new UsuarioResponseDto(usuario.Id, 
+                                                            usuario.Nome, 
+                                                            usuario.Email.Address, 
+                                                            usuario.Cpf.Numero, 
+                                                            usuario.Ativo, 
+                                                            usuario.Foto, 
+                                                            new List<PlaylistResponseDto>());
+            var usuariosDetalheResponse = new ObterDetalheUsuarioQueryResponse(usuarioResponseDto);
+            mediatorHandler.Setup(x => x.EnviarQuery(It.IsAny<ObterDetalheUsuarioQuery>()))
+                                        .Returns(Task.FromResult((object)usuariosDetalheResponse));
+            //var usuarioDTO = UsuarioDTO.ConverterParaUsuarioDTO(usuario);
 
             //Act
-            await usuarioController.ObterUsuarioPorId(usuarioDTO.Id);
+            await usuarioController.ObterUsuarioPorId(usuarioResponseDto.Id);
 
             //Asset
-            Assert.True(usuarioDTO.EhValido());
-            usuarioAppService.Verify(r => r.ObterPorId(usuarioDTO.Id), Times.Once());
+            //Assert.True(usuarioDTO.EhValido());
+            //usuarioAppService.Verify(r => r.ObterPorId(usuarioDTO.Id), Times.Once());
+            mediatorHandler.Verify(x => x.EnviarQuery(It.IsAny<ObterDetalheUsuarioQuery>()), Times.Once());
         }
 
         [Fact(DisplayName = "Ativar Usuario com Sucesso")]
@@ -154,19 +168,19 @@ namespace AVS.Cadastro.Domain.Testes
         {
             //Arrange
             var usuario = _usuarioTestsFixture.CriarUsuarioValido();
-            var usuarioAppService = new Mock<IUsuarioAppService>();
+            //var usuarioAppService = new Mock<IUsuarioAppService>();
             var mediatorHandler = new Mock<IMediatorHandler>();
-            var usuarioController = new UsuariosController(usuarioAppService.Object, mediatorHandler.Object);
+            var usuarioController = new UsuariosController(mediatorHandler.Object);
             mediatorHandler.Setup(x => x.EnviarComando(It.IsAny<AtivarUsuarioCommand>()))
                                         .Returns(Task.FromResult(new FluentValidation.Results.ValidationResult()));            
 
             //Act
             await usuarioController.AtivarUsuario(new UsuarioRequestDto(usuario.Id,
-                                                                         usuario.Nome,
-                                                                         usuario.Email.Address,
-                                                                         usuario.Cpf.Numero,
-                                                                         usuario.Ativo,
-                                                                         usuario.Foto));
+                                                                        usuario.Nome,
+                                                                        usuario.Email.Address,
+                                                                        usuario.Cpf.Numero,
+                                                                        usuario.Ativo,
+                                                                        usuario.Foto));
 
             //Asset            
             mediatorHandler.Verify(r => r.EnviarComando(It.IsAny<AtivarUsuarioCommand>()), Times.Once());
@@ -178,19 +192,19 @@ namespace AVS.Cadastro.Domain.Testes
         {
             //Arrange
             var usuario = _usuarioTestsFixture.CriarUsuarioValido();
-            var usuarioAppService = new Mock<IUsuarioAppService>();
+            //var usuarioAppService = new Mock<IUsuarioAppService>();
             var mediatorHandler = new Mock<IMediatorHandler>();
-            var usuarioController = new UsuariosController(usuarioAppService.Object, mediatorHandler.Object);
+            var usuarioController = new UsuariosController(mediatorHandler.Object);
             mediatorHandler.Setup(x => x.EnviarComando(It.IsAny<InativarUsuarioCommand>()))
                                         .Returns(Task.FromResult(new FluentValidation.Results.ValidationResult()));            
 
             //Act
             await usuarioController.InativarUsuario(new UsuarioRequestDto(usuario.Id,
-                                                                         usuario.Nome,
-                                                                         usuario.Email.Address,
-                                                                         usuario.Cpf.Numero,
-                                                                         usuario.Ativo,
-                                                                         usuario.Foto));
+                                                                          usuario.Nome,
+                                                                          usuario.Email.Address,
+                                                                          usuario.Cpf.Numero,
+                                                                          usuario.Ativo,
+                                                                          usuario.Foto));
 
             //Asset            
             mediatorHandler.Verify(r => r.EnviarComando(It.IsAny<InativarUsuarioCommand>()), Times.Once());

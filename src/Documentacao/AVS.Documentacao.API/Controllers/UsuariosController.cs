@@ -1,6 +1,5 @@
 ﻿using AVS.Cadastro.Application.Commands;
 using AVS.Cadastro.Application.DTOs;
-using AVS.Cadastro.Application.Interfaces;
 using AVS.Cadastro.Application.Queries;
 using AVS.Core.Comunicacao.Mediator;
 using FluentValidation.Results;
@@ -10,13 +9,11 @@ namespace AVS.Documentacao.API.Controllers
 {
     [Route("api")]    
     public class UsuariosController : PrincipalController
-    {
-        private readonly IUsuarioAppService _usuarioAppService;
+    {        
         private readonly IMediatorHandler _mediatorHandler;
 
-        public UsuariosController(IUsuarioAppService usuarioAppService, IMediatorHandler mediatorHandler)
+        public UsuariosController(IMediatorHandler mediatorHandler)
         {
-            _usuarioAppService = usuarioAppService;
             _mediatorHandler = mediatorHandler;
         }
 
@@ -25,7 +22,8 @@ namespace AVS.Documentacao.API.Controllers
         {
             try
             {                
-                var response = (ObterTodosUsuariosQueryResponse) await _mediatorHandler.EnviarQuery(new ObterTodosUsuariosQuery());                
+                var response = (ObterTodosUsuariosQueryResponse) await _mediatorHandler
+                                                                        .EnviarQuery(new ObterTodosUsuariosQuery());                
                 return response.Usuarios == null || (!response.Usuarios.Any()) ? ProcessarRespostaMensagem(
                     StatusCodes.Status404NotFound, "Não existem dados para exibição.") : RespostaPersonalizada(response.Usuarios.ToArray());
             }
@@ -42,9 +40,10 @@ namespace AVS.Documentacao.API.Controllers
         {
             try
             {
-                var usuarios = await _usuarioAppService.ObterTodosAtivos();
-                return usuarios == null || (!usuarios.Any()) ? ProcessarRespostaMensagem(
-                    StatusCodes.Status404NotFound, "Não existem dados para exibição.") : RespostaPersonalizada(usuarios.ToArray());
+                var response = (ObterTodosUsuariosQueryResponse)await _mediatorHandler
+                                                                       .EnviarQuery(new ObterTodosUsuariosAtivosQuery());                
+                return response.Usuarios == null || (!response.Usuarios.Any()) ? ProcessarRespostaMensagem(
+                    StatusCodes.Status404NotFound, "Não existem dados para exibição.") : RespostaPersonalizada(response.Usuarios.ToArray());
             }
             catch (Exception ex)
             {
@@ -58,10 +57,11 @@ namespace AVS.Documentacao.API.Controllers
         public async Task<IActionResult> ObterUsuarioPorId(Guid id)
         {
             try
-            {
-                var usuario = await _usuarioAppService.ObterPorId(id);
-                return usuario == null ? ProcessarRespostaMensagem(
-                    StatusCodes.Status404NotFound, "Usuario não encontrado.") : RespostaPersonalizada(usuario);
+            {                
+                var response = (ObterDetalheUsuarioQueryResponse)await _mediatorHandler
+                                                                        .EnviarQuery(new ObterDetalheUsuarioQuery { Id = id });                
+                return response.Usuario == null ? ProcessarRespostaMensagem(
+                    StatusCodes.Status404NotFound, "Usuario não encontrado.") : RespostaPersonalizada(response.Usuario);
             }
             catch (Exception ex)
             {

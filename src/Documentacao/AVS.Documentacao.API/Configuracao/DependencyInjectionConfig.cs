@@ -1,6 +1,9 @@
 ﻿using AVS.Banda.Application.AppServices;
 using AVS.Banda.Application.AutoMapper;
+using AVS.Banda.Application.Commands;
+using AVS.Banda.Application.Commands.Handlers;
 using AVS.Banda.Application.Interfaces;
+using AVS.Banda.Application.Queries;
 using AVS.Banda.Data.Repositories;
 using AVS.Banda.Domain.Interfaces.Repositories;
 using AVS.Banda.Domain.Interfaces.Services;
@@ -40,6 +43,17 @@ namespace AVS.Documentacao.API.Configuracao
             services.AddScoped<IRequestHandler<ObterTodosUsuariosQuery, ObterTodosUsuariosQueryResponse>, UsuarioQueryHandler>();
             services.AddScoped<IRequestHandler<ObterTodosUsuariosAtivosQuery, ObterTodosUsuariosQueryResponse>, UsuarioQueryHandler>();
             services.AddScoped<IRequestHandler<ObterDetalheUsuarioQuery, ObterDetalheUsuarioQueryResponse>, UsuarioQueryHandler>();
+
+            //Banda Comandos
+            services.AddScoped<IRequestHandler<AdicionarBandaCommand, ValidationResult>, BandaCommandHandler>();
+            services.AddScoped<IRequestHandler<AtualizarBandaCommand, ValidationResult>, BandaCommandHandler>();
+            services.AddScoped<IRequestHandler<ExcluirBandaCommand, ValidationResult>, BandaCommandHandler>();
+
+            //Banda Queries
+            services.AddScoped<IRequestHandler<ObterTodasBandasQuery, ObterTodasBandasQueryResponse>, BandaQueryHandler>();
+            services.AddScoped<IRequestHandler<ObterTodasBandasPorNomeQuery, ObterTodasBandasQueryResponse>, BandaQueryHandler>();
+            services.AddScoped<IRequestHandler<ObterDetalheBandaQuery, ObterDetalheBandaQueryResponse>, BandaQueryHandler>();
+            services.AddScoped<IRequestHandler<ObterBandaPorIdQuery, ObterBandaPorIdQueryResponse>, BandaQueryHandler>();
 
             //Data
             services.AddScoped<SpotifyCloneContext>();

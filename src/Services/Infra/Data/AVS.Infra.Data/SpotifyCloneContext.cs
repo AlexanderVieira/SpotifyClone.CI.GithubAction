@@ -17,8 +17,8 @@ namespace AVS.Infra.Data
 
         public SpotifyCloneContext(DbContextOptions<SpotifyCloneContext> options) : base(options)
         {
-            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTrackingWithIdentityResolution;
-            ChangeTracker.AutoDetectChangesEnabled = false;
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
+            ChangeTracker.AutoDetectChangesEnabled = true;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

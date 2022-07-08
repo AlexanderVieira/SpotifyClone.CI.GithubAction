@@ -8,8 +8,10 @@ namespace AVS.Banda.Application.AutoMapper
     {
         public DomainToDtoMappingProfile()
         {
-            CreateMap<Domain.Entities.Banda, BandaResponseDto>()               
+            CreateMap<Domain.Entities.Banda, BandaResponseDto>()
                 .ForMember(x => x.Albuns, opt => opt.MapFrom(s => s.Albuns));
+                //.ForMember(x => x.Albuns.Select(x => x.Musicas), opt => opt.MapFrom(s => s.Albuns.Select(x => x.Musicas)));
+
 
             CreateMap<Playlist, PlaylistResponseDto>();
             //.ForMember(x => x.Musicas, opt => opt.MapFrom(x => x.Musicas));

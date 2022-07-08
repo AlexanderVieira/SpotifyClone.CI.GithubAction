@@ -5,5 +5,5 @@ namespace AVS.Cadastro.Application.Queries
 {
     public class ObterTodosUsuariosAtivosQuery : Query, IRequest<ObterTodosUsuariosQueryResponse>
     {
-    }    
+    }   
 }

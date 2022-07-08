@@ -1,4 +1,4 @@
 ﻿namespace AVS.Banda.Application.DTOs
 {
-    public record BandaRequestDto(Guid Id, string Titulo, string Descricao, string? Foto);
+    public record BandaRequestDto(Guid Id, string Nome, string Descricao, string? Foto);
 }

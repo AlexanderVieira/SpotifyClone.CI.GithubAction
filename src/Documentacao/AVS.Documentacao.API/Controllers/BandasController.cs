@@ -1,27 +1,30 @@
-﻿using AVS.Banda.Application.DTOs;
-using AVS.Banda.Application.Interfaces;
+﻿using AVS.Banda.Application.Commands;
+using AVS.Banda.Application.DTOs;
+using AVS.Banda.Application.Queries;
+using AVS.Core.Comunicacao.Mediator;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AVS.Documentacao.API.Controllers
 {
     [Route("api")]    
     public class BandasController : PrincipalController
-    {
-        private readonly IBandaAppService _bandaAppService;
+    {        
+        private readonly IMediatorHandler _mediatorHandler;
 
-        public BandasController(IBandaAppService bandaAppService)
+        public BandasController(IMediatorHandler mediatorHandler)
         {
-            _bandaAppService = bandaAppService;
+            _mediatorHandler = mediatorHandler;
         }
-        
+
         [HttpGet("bandas")]
         public async Task<IActionResult> ObterTodasBandas()
         {
             try
-            {
-                var response = await _bandaAppService.ObterTodos();
-                return response == null || (!response.Any()) ? ProcessarRespostaMensagem(
-                    StatusCodes.Status404NotFound, "Não existem dados para exibição.") : RespostaPersonalizada(response.ToArray());
+            {               
+                var response = (ObterTodasBandasQueryResponse) await _mediatorHandler
+                                                                        .EnviarQuery(new ObterTodasBandasQuery());
+                return response.Bandas == null || (!response.Bandas.Any()) ? ProcessarRespostaMensagem(
+                    StatusCodes.Status404NotFound, "Não existem dados para exibição.") : RespostaPersonalizada(response.Bandas.ToArray());
             }
             catch (Exception ex)
             {
@@ -35,11 +38,11 @@ namespace AVS.Documentacao.API.Controllers
         public async Task<IActionResult> ObterTodasBandas(string filtro)
         {
             try
-            {
-                //EF.Functions.Like(b.Nome, $"%{filtro}%")
-                var response = await _bandaAppService.BuscarTodosPorCriterio(b => b.Nome.ToLower().Contains(filtro.ToLower()));
-                return response == null || (!response.Any()) ? ProcessarRespostaMensagem(
-                    StatusCodes.Status404NotFound, "Não existem dados para exibição.") : RespostaPersonalizada(response.ToArray());
+            {                
+                var response = (ObterTodasBandasQueryResponse)await _mediatorHandler
+                                                                        .EnviarQuery(new ObterTodasBandasPorNomeQuery { Filtro = filtro });
+                return response.Bandas == null || (!response.Bandas.Any()) ? ProcessarRespostaMensagem(
+                    StatusCodes.Status404NotFound, "Não existem dados para exibição.") : RespostaPersonalizada(response.Bandas.ToArray());
             }
             catch (Exception ex)
             {
@@ -54,10 +57,11 @@ namespace AVS.Documentacao.API.Controllers
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try
-            {
-                var response = await _bandaAppService.BuscarPorCriterio(b => b.Id == id);
-                return response == null ? ProcessarRespostaMensagem(
-                    StatusCodes.Status404NotFound, "Banda não encontrada.") : RespostaPersonalizada(response);
+            {                
+                var response = (ObterDetalheBandaQueryResponse)await _mediatorHandler
+                                                                        .EnviarQuery(new ObterDetalheBandaQuery { Id = id });
+                return response.Banda == null ? ProcessarRespostaMensagem(
+                    StatusCodes.Status404NotFound, "Banda não encontrada.") : RespostaPersonalizada(response.Banda);
             }
             catch (Exception ex)
             {
@@ -72,10 +76,11 @@ namespace AVS.Documentacao.API.Controllers
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try
-            {
-                var response = await _bandaAppService.ObterPorId(id);
-                return response == null ? ProcessarRespostaMensagem(
-                    StatusCodes.Status404NotFound, "Banda não encontrada.") : RespostaPersonalizada(response);
+            {                
+                var response = (ObterBandaPorIdQueryResponse)await _mediatorHandler
+                                                                        .EnviarQuery(new ObterBandaPorIdQuery { Id = id });
+                return response.Banda == null ? ProcessarRespostaMensagem(
+                    StatusCodes.Status404NotFound, "Banda não encontrada.") : RespostaPersonalizada(response.Banda);
             }
             catch (Exception ex)
             {
@@ -92,8 +97,9 @@ namespace AVS.Documentacao.API.Controllers
             try
             {
                 if (request == null) return RespostaPersonalizada();
-                //if (!ExecutarValidacao(new requestValidator(), request)) return RespostaPersonalizada(ValidationResult);
-                await _bandaAppService.Salvar(request);
+                var comando = new AdicionarBandaCommand(request);
+                ValidationResult = await _mediatorHandler.EnviarComando(comando);
+                if (!ValidationResult.IsValid) return RespostaPersonalizada(ValidationResult);
                 AdicionaMensagemSucesso("Banda adicionada com sucesso.");
                 return RespostaPersonalizada(StatusCodes.Status201Created);
             }
@@ -111,8 +117,8 @@ namespace AVS.Documentacao.API.Controllers
             try
             {
                 if (request == null) return RespostaPersonalizada();
-                //if (!ExecutarValidacao(new requestValidator(), request)) return RespostaPersonalizada(ValidationResult);
-                await _bandaAppService.Atualizar(request);
+                var comando = new AtualizarBandaCommand(request);
+                ValidationResult = await _mediatorHandler.EnviarComando(comando);
                 AdicionaMensagemSucesso("Banda atualizada com sucesso.");
                 return RespostaPersonalizada(StatusCodes.Status200OK);
             }
@@ -131,8 +137,8 @@ namespace AVS.Documentacao.API.Controllers
             try
             {
                 if (request == null) return RespostaPersonalizada();
-                //if (!ExecutarValidacao(new requestValidator(), request)) return RespostaPersonalizada(ValidationResult);
-                await _bandaAppService.Exluir(request);
+                var comando = new ExcluirBandaCommand(request);
+                ValidationResult = await _mediatorHandler.EnviarComando(comando);
                 AdicionaMensagemSucesso("Banda excluída com sucesso.");
                 return RespostaPersonalizada(StatusCodes.Status204NoContent);
             }
@@ -142,14 +148,6 @@ namespace AVS.Documentacao.API.Controllers
                 return RespostaPersonalizada();
             }
 
-        }
-
-        protected override bool ExecutarValidacao<TV, TE>(TV validacao, TE entidade)
-        {
-            ValidationResult = validacao.Validate(entidade);
-            if (ValidationResult.IsValid) return true;
-
-            return false;
-        }
+        }       
     }
 }

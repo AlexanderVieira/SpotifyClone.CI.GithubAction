@@ -23,7 +23,7 @@ namespace AVS.Documentacao.API.Controllers
             {               
                 var response = (ObterTodasBandasQueryResponse) await _mediatorHandler
                                                                         .EnviarQuery(new ObterTodasBandasQuery());
-                return response.Bandas == null || (!response.Bandas.Any()) ? ProcessarRespostaMensagem(
+                return response.Bandas.ToList() == null || (!response.Bandas.ToList().Any()) ? ProcessarRespostaMensagem(
                     StatusCodes.Status404NotFound, "Não existem dados para exibição.") : RespostaPersonalizada(response.Bandas.ToArray());
             }
             catch (Exception ex)

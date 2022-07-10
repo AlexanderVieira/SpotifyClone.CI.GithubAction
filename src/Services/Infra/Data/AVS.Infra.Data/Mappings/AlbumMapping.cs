@@ -28,6 +28,8 @@ namespace AVS.Infra.Data.Mappings
                 .WithOne(m => m.Album)
                 .HasForeignKey(m => m.AlbumId);
 
+            //builder.Navigation(a=> a.Musicas).AutoInclude();            
+
             builder.ToTable("ALBUNS");
 
         }

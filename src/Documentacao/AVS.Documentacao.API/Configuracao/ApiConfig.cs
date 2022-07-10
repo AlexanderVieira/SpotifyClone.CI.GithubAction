@@ -8,7 +8,7 @@ namespace AVS.Documentacao.API.Configuracao
         public static void AddApiConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<SpotifyCloneContext>(options =>
-                    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")).UseLazyLoadingProxies());
 
             services.AddControllers();
             services.AddEndpointsApiExplorer();

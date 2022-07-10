@@ -11,7 +11,7 @@ namespace AVS.Banda.Domain.Entities
         public string Descricao { get; private set; }
         public virtual IList<Album> Albuns { get; private set; }
 
-        public Banda()
+        protected Banda()
         {
         }
 

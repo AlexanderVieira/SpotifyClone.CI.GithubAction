@@ -12,8 +12,6 @@ namespace AVS.Infra.CrossCutting
         public IUnitOfWork UnitOfWork => _context;
         protected DbSet<T> Query { get; set; }
         
-        //protected DbContext Context { get; set; }
-        
         private readonly SpotifyCloneContext _context;
 
         public GenericRepository(SpotifyCloneContext context)
@@ -25,14 +23,14 @@ namespace AVS.Infra.CrossCutting
         public async Task<IEnumerable<T>> ObterTodos()
         {
             return await Query
-                            .AsNoTrackingWithIdentityResolution()
-                            .ToListAsync();
+                            //.AsNoTrackingWithIdentityResolution()
+                            .ToListAsync();                            
         }
 
         public async Task<IEnumerable<T>> BuscarTodosPorCriterio(Expression<Func<T, bool>> expression)
         {
             return await Query
-                             .AsNoTrackingWithIdentityResolution()                             
+                             //.AsNoTrackingWithIdentityResolution()                             
                              .Where(expression)
                              .ToListAsync();
         }
@@ -40,7 +38,7 @@ namespace AVS.Infra.CrossCutting
         public async Task<T> BuscarPorCriterio(Expression<Func<T, bool>> expression)
         {
             return await Query
-                             .AsNoTrackingWithIdentityResolution()
+                             //.AsNoTrackingWithIdentityResolution()
                              .FirstOrDefaultAsync(expression);
         }
 

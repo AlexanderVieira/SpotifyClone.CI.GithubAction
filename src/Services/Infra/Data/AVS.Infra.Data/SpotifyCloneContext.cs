@@ -17,8 +17,8 @@ namespace AVS.Infra.Data
 
         public SpotifyCloneContext(DbContextOptions<SpotifyCloneContext> options) : base(options)
         {
-            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
-            ChangeTracker.AutoDetectChangesEnabled = true;
+            //ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
+            //ChangeTracker.AutoDetectChangesEnabled = true;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -30,8 +30,8 @@ namespace AVS.Infra.Data
             }
             
             modelBuilder.Ignore<ValidationResult>();
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(SpotifyCloneContext).Assembly);
-
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(SpotifyCloneContext).Assembly);            
+            
             foreach(var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 relationship.DeleteBehavior = DeleteBehavior.ClientCascade;

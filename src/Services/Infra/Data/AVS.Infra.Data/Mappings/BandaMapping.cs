@@ -26,9 +26,11 @@ namespace AVS.Infra.Data.Mappings
             builder.HasMany(b => b.Albuns)
                 .WithOne(a => a.Banda)
                 .HasForeignKey(a => a.BandaId);
-            
-            builder.ToTable("BANDAS");
 
+            //builder.Navigation(b => b.Albuns).AutoInclude();
+
+            builder.ToTable("BANDAS");
+            
         }
     }
 }

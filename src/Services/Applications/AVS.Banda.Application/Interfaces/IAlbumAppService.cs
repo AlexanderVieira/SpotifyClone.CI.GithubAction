@@ -6,14 +6,12 @@ namespace AVS.Banda.Application.Interfaces
 {
     public interface IAlbumAppService
     {
-        Task Atualizar(AlbumRequestDto request);
-        //Task<AlbumResponseDto> BuscarPorCriterio(Expression<Func<Album, bool>> expression);
-        Task<AlbumResponseDto> BuscarPorCriterio(Expression<Func<AlbumRequestDto, bool>> expression);
-        //Task<IEnumerable<AlbumResponseDto>> BuscarTodosPorCriterio(Expression<Func<Album, bool>> expression);
-        Task<IEnumerable<AlbumResponseDto>> BuscarTodosPorCriterio(Expression<Func<AlbumRequestDto, bool>> expression);
-        Task Exluir(AlbumRequestDto request);
-        Task<AlbumResponseDto> ObterPorId(object id);
-        Task<IEnumerable<AlbumResponseDto>> ObterTodos();
+        Task<IEnumerable<AlbumResponseDto>> ObterTodos();        
+        Task<IEnumerable<AlbumResponseDto>> BuscarTodosPorCriterio(Expression<Func<Album, bool>> expression);
+        Task<AlbumResponseDto> BuscarPorCriterio(Expression<Func<Album, bool>> expression);
+        Task<AlbumResponseDto> ObterPorId(object id);        
         Task Salvar(AlbumRequestDto request);
+        Task Atualizar(AlbumRequestDto request);
+        Task Exluir(AlbumRequestDto request);
     }
 }

@@ -14,9 +14,8 @@ namespace AVS.Cadastro.Data.Repositories
 
         public async Task<IEnumerable<Usuario>> ObterTodosAtivos()
         {
-            return await Query                            
-                            .Include(u => u.Playlists)
-                            //.ThenInclude(m => m.Musicas)
+            return await Query                                                        
+                            .Include(u => u.Playlists)                            
                             .Where(u => u.Ativo == true)
                             .ToListAsync();
         }

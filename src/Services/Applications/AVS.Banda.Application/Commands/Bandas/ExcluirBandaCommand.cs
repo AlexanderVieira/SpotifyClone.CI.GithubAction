@@ -2,27 +2,27 @@
 using AVS.Core.Mensagens;
 using FluentValidation;
 
-namespace AVS.Banda.Application.Commands
+namespace AVS.Banda.Application.Commands.Bandas
 {
-    public class AtualizarBandaCommand : Comando
+    public class ExcluirBandaCommand : Comando
     {
         public BandaRequestDto BandaRequest { get; set; }
 
-        public AtualizarBandaCommand(BandaRequestDto bandaRequest)
+        public ExcluirBandaCommand(BandaRequestDto bandaRequest)
         {
             BandaRequest = bandaRequest;
         }
 
         public override bool EhValido()
         {
-            ValidationResult = new AtualizarBandaValidator().Validate(this);
+            ValidationResult = new ExcluirBandaValidator().Validate(this);
             return ValidationResult.IsValid;
         }
     }
 
-    public class AtualizarBandaValidator : AbstractValidator<AtualizarBandaCommand>
+    public class ExcluirBandaValidator : AbstractValidator<ExcluirBandaCommand>
     {
-        public AtualizarBandaValidator()
+        public ExcluirBandaValidator()
         {
             RuleFor(x => x.BandaRequest.Id)
                 .NotEqual(Guid.Empty)

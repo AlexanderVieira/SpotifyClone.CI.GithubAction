@@ -10,6 +10,7 @@ namespace AVS.Banda.Domain.Services
     public class MusicaService : GenericService<Musica>, IMusicaService
     {
         private readonly IMusicaRepository _musicaRepository;
+        
         public MusicaService(IMusicaRepository musicaRepository) : base(musicaRepository)
         {
             _musicaRepository = musicaRepository;
@@ -18,6 +19,11 @@ namespace AVS.Banda.Domain.Services
         public async Task<IEnumerable<MusicaAlbumQueryAnonima>> BuscarTodosPorCriterio(Expression<Func<Musica, bool>> expression)
         {
             return await _musicaRepository.BuscarTodosPorCriterio(expression);
+        }
+
+        public async Task<MusicaAlbumQueryAnonima> BuscarPorCriterio(Expression<Func<Musica, bool>> expression)
+        {
+            return await _musicaRepository.BuscarPorCriterio(expression);
         }
     }
 }

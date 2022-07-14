@@ -1,28 +1,30 @@
-﻿using AVS.Banda.Application.DTOs;
-using AVS.Banda.Application.Interfaces;
+﻿using AVS.Banda.Application.Commands.Albuns;
+using AVS.Banda.Application.DTOs;
+using AVS.Banda.Application.Queries.Albuns;
+using AVS.Core.Comunicacao.Mediator;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace AVS.Documentacao.API.Controllers
 {
     [Route("api")]    
     public class AlbunsController : PrincipalController
-    {
-        private readonly IAlbumAppService _albumAppService;
+    {        
+        private readonly IMediatorHandler _mediatorHandler;
 
-        public AlbunsController(IAlbumAppService albumAppService)
+        public AlbunsController(IMediatorHandler mediatorHandler)
         {
-            _albumAppService = albumAppService;
+            _mediatorHandler = mediatorHandler;
         }
-        
+
         [HttpGet("albuns")]
         public async Task<IActionResult> ObterTodosAlbuns()
         {
             try
             {
-                var albuns = await _albumAppService.ObterTodos();
-                return albuns == null || (!albuns.Any()) ? ProcessarRespostaMensagem(
-                    StatusCodes.Status404NotFound, "Não existem dados para exibição.") : RespostaPersonalizada(albuns.ToArray());
+                var response = (ObterTodosAlbunsQueryResponse)await _mediatorHandler
+                                                                        .EnviarQuery(new ObterTodosAlbunsQuery());
+                return response.Albuns == null || (!response.Albuns.Any()) ? ProcessarRespostaMensagem(
+                    StatusCodes.Status404NotFound, "Não existem dados para exibição.") : RespostaPersonalizada(response.Albuns.ToArray());
             }
             catch (Exception ex)
             {
@@ -33,14 +35,14 @@ namespace AVS.Documentacao.API.Controllers
         }
 
         [HttpGet("albuns/{filtro}")]
-        public async Task<IActionResult> ObterTodosAlbuns(string filtro)
+        public async Task<IActionResult> ObterTodosAlbunsPorNome(string filtro)
         {
             try
-            {
-                //EF.Functions.Like(b.Nome, $"%{filtro}%")
-                var albuns = await _albumAppService.BuscarTodosPorCriterio(a => EF.Functions.Like(a.Titulo.ToLower(), $"%{filtro.ToLower()}%"));
-                return albuns == null || (!albuns.Any()) ? ProcessarRespostaMensagem(
-                    StatusCodes.Status404NotFound, "Não existem dados para exibição.") : RespostaPersonalizada(albuns.ToArray());
+            {                
+                var response = (ObterTodosAlbunsQueryResponse)await _mediatorHandler
+                                                                        .EnviarQuery(new ObterTodosAlbunsPorNomeQuery { Filtro = filtro});
+                return response.Albuns == null || (!response.Albuns.Any()) ? ProcessarRespostaMensagem(
+                    StatusCodes.Status404NotFound, "Não existem dados para exibição.") : RespostaPersonalizada(response.Albuns.ToArray());
             }
             catch (Exception ex)
             {
@@ -55,10 +57,11 @@ namespace AVS.Documentacao.API.Controllers
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try
-            {
-                var album = await _albumAppService.BuscarPorCriterio(b => b.Id == id);
-                return album == null ? ProcessarRespostaMensagem(
-                    StatusCodes.Status404NotFound, "Banda não encontrada.") : RespostaPersonalizada(album);
+            {                
+                var response = (ObterDetalheAlbumQueryResponse)await _mediatorHandler
+                                                                        .EnviarQuery(new ObterDetalheAlbumQuery { Id = id});
+                return response.Album == null ? ProcessarRespostaMensagem(
+                    StatusCodes.Status404NotFound, "Album não encontrado.") : RespostaPersonalizada(response.Album);
             }
             catch (Exception ex)
             {
@@ -73,10 +76,11 @@ namespace AVS.Documentacao.API.Controllers
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try
-            {
-                var album = await _albumAppService.ObterPorId(id);
-                return album == null ? ProcessarRespostaMensagem(
-                    StatusCodes.Status404NotFound, "Album não encontrado.") : RespostaPersonalizada(album);
+            {                
+                var response = (ObterAlbumPorIdQueryResponse)await _mediatorHandler
+                                                                        .EnviarQuery(new ObterAlbumPorIdQuery { Id = id });
+                return response.Album == null ? ProcessarRespostaMensagem(
+                    StatusCodes.Status404NotFound, "Album não encontrado.") : RespostaPersonalizada(response.Album);
             }
             catch (Exception ex)
             {
@@ -87,14 +91,15 @@ namespace AVS.Documentacao.API.Controllers
         }
 
         [HttpPost("album/adicionar")]
-        public async Task<IActionResult> AdicionarAlbum([FromBody] AlbumRequestDto albumDTO)
+        public async Task<IActionResult> AdicionarAlbum([FromBody] AlbumRequestDto request)
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try
             {
-                if (albumDTO == null) return RespostaPersonalizada();
-                //if (!ExecutarValidacao(new AlbumDTOValidator(), albumDTO)) return RespostaPersonalizada(ValidationResult);
-                await _albumAppService.Salvar(albumDTO);
+                if (request == null) return RespostaPersonalizada();
+                var comando = new AdicionarAlbumCommand(request);
+                ValidationResult = await _mediatorHandler.EnviarComando(comando);
+                if (!ValidationResult.IsValid) return RespostaPersonalizada(ValidationResult);
                 AdicionaMensagemSucesso("Album adicionado com sucesso.");
                 return RespostaPersonalizada(StatusCodes.Status201Created);
             }
@@ -106,14 +111,15 @@ namespace AVS.Documentacao.API.Controllers
         }
 
         [HttpPut("album/atualizar")]
-        public async Task<IActionResult> AtualizarAlbum([FromBody] AlbumRequestDto albumDTO)
+        public async Task<IActionResult> AtualizarAlbum([FromBody] AlbumRequestDto request)
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try
             {
-                if (albumDTO == null) return RespostaPersonalizada();
-                //if (!ExecutarValidacao(new AlbumDTOValidator(), albumDTO)) return RespostaPersonalizada(ValidationResult);
-                await _albumAppService.Atualizar(albumDTO);
+                if (request == null) return RespostaPersonalizada();
+                var comando = new AtualizarAlbumCommand(request);
+                ValidationResult = await _mediatorHandler.EnviarComando(comando);
+                if (!ValidationResult.IsValid) return RespostaPersonalizada(ValidationResult);
                 AdicionaMensagemSucesso("Album atualizado com sucesso.");
                 return RespostaPersonalizada(StatusCodes.Status200OK);
             }
@@ -126,14 +132,15 @@ namespace AVS.Documentacao.API.Controllers
         }        
 
         [HttpDelete("album/excluir")]
-        public async Task<IActionResult> ExcluirAlbum([FromBody] AlbumRequestDto albumDTO)
+        public async Task<IActionResult> ExcluirAlbum([FromBody] AlbumRequestDto request)
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try
             {
-                if (albumDTO == null) return RespostaPersonalizada();
-                //if (!ExecutarValidacao(new AlbumDTOValidator(), albumDTO)) return RespostaPersonalizada(ValidationResult);
-                await _albumAppService.Exluir(albumDTO);
+                if (request == null) return RespostaPersonalizada();
+                var comando = new ExcluirAlbumCommand(request);
+                ValidationResult = await _mediatorHandler.EnviarComando(comando);
+                if (!ValidationResult.IsValid) return RespostaPersonalizada(ValidationResult);
                 AdicionaMensagemSucesso("Album excluído com sucesso.");
                 return RespostaPersonalizada(StatusCodes.Status204NoContent);
             }
@@ -141,16 +148,7 @@ namespace AVS.Documentacao.API.Controllers
             {
                 AdicionarErroProcessamento(ex.Message);
                 return RespostaPersonalizada();
-            }
-
-        }
-
-        protected override bool ExecutarValidacao<TV, TE>(TV validacao, TE entidade)
-        {
-            ValidationResult = validacao.Validate(entidade);
-            if (ValidationResult.IsValid) return true;
-
-            return false;
-        }
+            } 
+        }       
     }
 }

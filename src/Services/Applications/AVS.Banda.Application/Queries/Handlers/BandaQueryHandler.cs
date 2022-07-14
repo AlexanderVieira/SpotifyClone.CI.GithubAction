@@ -1,8 +1,8 @@
 ﻿using AVS.Banda.Application.Interfaces;
-using AVS.Banda.Application.Queries;
+using AVS.Banda.Application.Queries.Bandas;
 using MediatR;
 
-namespace AVS.Banda.Application.Commands.Handlers
+namespace AVS.Banda.Application.Queries.Handlers
 {
     public class BandaQueryHandler : IRequestHandler<ObterTodasBandasQuery, ObterTodasBandasQueryResponse>,
                                      IRequestHandler<ObterTodasBandasPorNomeQuery, ObterTodasBandasQueryResponse>,
@@ -26,7 +26,7 @@ namespace AVS.Banda.Application.Commands.Handlers
         {
             var bandasResponse = await _bandaAppService
                 .BuscarTodosPorCriterio(b => b.Nome.ToLower().Contains(request.Filtro.ToLower()));
-            return new ObterTodasBandasQueryResponse(bandasResponse);            
+            return new ObterTodasBandasQueryResponse(bandasResponse);
         }
 
         public async Task<ObterDetalheBandaQueryResponse> Handle(ObterDetalheBandaQuery request, CancellationToken cancellationToken)

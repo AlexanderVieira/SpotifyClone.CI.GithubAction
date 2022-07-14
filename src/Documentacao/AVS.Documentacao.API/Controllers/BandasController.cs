@@ -1,6 +1,6 @@
-﻿using AVS.Banda.Application.Commands;
+﻿using AVS.Banda.Application.Commands.Bandas;
 using AVS.Banda.Application.DTOs;
-using AVS.Banda.Application.Queries;
+using AVS.Banda.Application.Queries.Bandas;
 using AVS.Core.Comunicacao.Mediator;
 using Microsoft.AspNetCore.Mvc;
 

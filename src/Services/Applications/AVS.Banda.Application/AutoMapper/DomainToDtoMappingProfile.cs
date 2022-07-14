@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AVS.Banda.Application.DTOs;
+using AVS.Banda.Domain.ConsultasProjetadas;
 using AVS.Banda.Domain.Entities;
 
 namespace AVS.Banda.Application.AutoMapper
@@ -16,13 +17,17 @@ namespace AVS.Banda.Application.AutoMapper
             //.ForMember(x => x.Musicas, opt => opt.MapFrom(x => x.Musicas));
 
             CreateMap<Album, AlbumResponseDto>();
-            //.ForMember(x => x.Musicas, opt => opt.MapFrom(x => x.Musicas));
+                //.ForMember(x => x.Musicas, opt => opt.MapFrom(x => x.Musicas));
 
             CreateMap<Musica, MusicaResponseDto>()
                 .ForPath(x => x.DuracaoFormatada, x => x.MapFrom(x => x.Duracao.Formatado));
             //.ForMember(x => x.Playlists, opt => opt.MapFrom(x => x.Playlists));
 
             CreateMap<MusicaPlaylist, MusicaPlaylistResponseDto>();
+
+            CreateMap<MusicaAlbumQueryAnonima, MusicaAlbumResponseDto>();
+
+            CreateMap<PlaylistMusicasQueryAnomima, PlaylistMusicasQueryAnonimaResponseDto>();
         }
     }
 }

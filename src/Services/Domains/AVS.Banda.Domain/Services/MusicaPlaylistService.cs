@@ -1,7 +1,6 @@
 ﻿using AVS.Banda.Domain.Entities;
 using AVS.Banda.Domain.Interfaces.Repositories;
 using AVS.Banda.Domain.Interfaces.Services;
-using AVS.Core.Data;
 using AVS.Core.Services;
 
 namespace AVS.Banda.Domain.Services
@@ -23,5 +22,11 @@ namespace AVS.Banda.Domain.Services
         {
             await _musicaPlaylistRepository.Salvar(entity);
         }
+
+        public async Task<bool> Commit()
+        {
+            return await _musicaPlaylistRepository.UnitOfWork.Commit();
+        }
+
     }
 }

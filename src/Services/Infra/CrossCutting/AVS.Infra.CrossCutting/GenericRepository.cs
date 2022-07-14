@@ -10,8 +10,8 @@ namespace AVS.Infra.CrossCutting
     public class GenericRepository<T> : IRepository<T> where T : class
     {        
         public IUnitOfWork UnitOfWork => _context;
-        protected DbSet<T> Query { get; set; }
-        
+        protected DbSet<T> Query { get; set; }               
+
         private readonly SpotifyCloneContext _context;
 
         public GenericRepository(SpotifyCloneContext context)

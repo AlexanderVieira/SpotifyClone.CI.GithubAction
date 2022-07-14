@@ -2,27 +2,27 @@
 using AVS.Core.Mensagens;
 using FluentValidation;
 
-namespace AVS.Banda.Application.Commands
+namespace AVS.Banda.Application.Commands.Bandas
 {
-    public class AdicionarBandaCommand : Comando
+    public class AtualizarBandaCommand : Comando
     {
         public BandaRequestDto BandaRequest { get; set; }
 
-        public AdicionarBandaCommand(BandaRequestDto bandaRequest)
+        public AtualizarBandaCommand(BandaRequestDto bandaRequest)
         {
             BandaRequest = bandaRequest;
         }
 
         public override bool EhValido()
         {
-            ValidationResult = new AdicionarBandaValidator().Validate(this);
-            return ValidationResult.IsValid;            
+            ValidationResult = new AtualizarBandaValidator().Validate(this);
+            return ValidationResult.IsValid;
         }
     }
 
-    public class AdicionarBandaValidator : AbstractValidator<AdicionarBandaCommand>
+    public class AtualizarBandaValidator : AbstractValidator<AtualizarBandaCommand>
     {
-        public AdicionarBandaValidator()
+        public AtualizarBandaValidator()
         {
             RuleFor(x => x.BandaRequest.Id)
                 .NotEqual(Guid.Empty)
@@ -39,7 +39,7 @@ namespace AVS.Banda.Application.Commands
                 .WithMessage("Descrição é obrigatório.")
                 .Length(2, 250)
                 .WithMessage("A Descrição deve ter entre 2 a 250 caracteres.");
-            
+
         }
 
     }

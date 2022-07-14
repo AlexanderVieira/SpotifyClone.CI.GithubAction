@@ -2,10 +2,10 @@
 using AVS.Core.Mensagens;
 using MediatR;
 
-namespace AVS.Banda.Application.Queries
+namespace AVS.Banda.Application.Queries.Bandas
 {
     public class ObterTodasBandasPorNomeQuery : Query, IRequest<ObterTodasBandasQueryResponse>
     {
         public string Filtro { get; set; }
-    }   
+    }
 }

@@ -1,27 +1,31 @@
-﻿using AVS.Banda.Application.DTOs;
+﻿using AVS.Banda.Application.Commands.Musicas;
+using AVS.Banda.Application.DTOs;
 using AVS.Banda.Application.Interfaces;
+using AVS.Banda.Application.Queries.Musicas;
+using AVS.Core.Comunicacao.Mediator;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AVS.Documentacao.API.Controllers
 {
     [Route("api")]    
     public class MusicasController : PrincipalController
-    {
-        private readonly IMusicaAppService _musicaAppService;
+    {        
+        private readonly IMediatorHandler _mediatorHandler;
 
-        public MusicasController(IMusicaAppService musicaAppService)
-        {
-            _musicaAppService = musicaAppService;
+        public MusicasController(IMediatorHandler mediatorHandler)
+        {            
+            _mediatorHandler = mediatorHandler;
         }
-        
+
         [HttpGet("musicas")]
         public async Task<IActionResult> ObterTodasMusicas()
         {
             try
             {
-                var musicas = await _musicaAppService.ObterTodos();
-                return musicas == null || (!musicas.Any()) ? ProcessarRespostaMensagem(
-                    StatusCodes.Status404NotFound, "Não existem dados para exibição.") : RespostaPersonalizada(musicas.ToArray());
+                var response = (ObterTodasMusicasQueryResponse)await _mediatorHandler
+                                                                        .EnviarQuery(new ObterTodasMusicasQuery());
+                return response.Musicas == null || (!response.Musicas.Any()) ? ProcessarRespostaMensagem(
+                    StatusCodes.Status404NotFound, "Não existem dados para exibição.") : RespostaPersonalizada(response.Musicas.ToArray());
             }
             catch (Exception ex)
             {
@@ -35,10 +39,11 @@ namespace AVS.Documentacao.API.Controllers
         public async Task<IActionResult> ObterMusicasPorNome(string filtro)
         {
             try
-            {                
-                var musicas = await _musicaAppService.BuscarTodosPorCriterio(b => b.Nome.ToLower().Contains(filtro.ToLower()));
-                return musicas == null || (!musicas.Any()) ? ProcessarRespostaMensagem(
-                    StatusCodes.Status404NotFound, "Não existem dados para exibição.") : RespostaPersonalizada(musicas.ToArray());
+            {   
+                var response = (ObterTodasMusicasPorNomeQueryResponse)await _mediatorHandler
+                                                                        .EnviarQuery(new ObterTodasMusicasPorNomeQuery { Filtro = filtro });
+                return response.Musicas == null || (!response.Musicas.Any()) ? ProcessarRespostaMensagem(
+                    StatusCodes.Status404NotFound, "Não existem dados para exibição.") : RespostaPersonalizada(response.Musicas.ToArray());
             }
             catch (Exception ex)
             {
@@ -53,10 +58,11 @@ namespace AVS.Documentacao.API.Controllers
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try
-            {
-                var musica = await _musicaAppService.BuscarPorCriterio(b => b.Id == id);
-                return musica == null ? ProcessarRespostaMensagem(
-                    StatusCodes.Status404NotFound, "Música não encontrada.") : RespostaPersonalizada(musica);
+            {                
+                var response = (ObterDetalheMusicaQueryResponse)await _mediatorHandler
+                                                                        .EnviarQuery(new ObterDetalheMusicaQuery { Id = id });
+                return response.Musica == null ? ProcessarRespostaMensagem(
+                    StatusCodes.Status404NotFound, "Música não encontrada.") : RespostaPersonalizada(response.Musica);
             }
             catch (Exception ex)
             {
@@ -71,10 +77,11 @@ namespace AVS.Documentacao.API.Controllers
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try
-            {
-                var musica = await _musicaAppService.ObterPorId(id);
-                return musica == null ? ProcessarRespostaMensagem(
-                    StatusCodes.Status404NotFound, "Música não encontrada.") : RespostaPersonalizada(musica);
+            {                
+                var response = (ObterMusicaPorIdQueryResponse)await _mediatorHandler
+                                                                        .EnviarQuery(new ObterMusicaPorIdQuery { Id = id });
+                return response.Musica == null ? ProcessarRespostaMensagem(
+                    StatusCodes.Status404NotFound, "Música não encontrada.") : RespostaPersonalizada(response.Musica);
             }
             catch (Exception ex)
             {
@@ -85,14 +92,15 @@ namespace AVS.Documentacao.API.Controllers
         }
 
         [HttpPost("musica/adicionar")]
-        public async Task<IActionResult> AdicionarMusica([FromBody] MusicaRequestDto musicaDTO)
+        public async Task<IActionResult> AdicionarMusica([FromBody] MusicaRequestDto request)
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try
             {
-                if (musicaDTO == null) return RespostaPersonalizada();
-                //if (!ExecutarValidacao(new MusicaDTOValidator(), musicaDTO)) return RespostaPersonalizada(ValidationResult);
-                await _musicaAppService.Salvar(musicaDTO);
+                if (request == null) return RespostaPersonalizada();
+                var comando = new AdicionarMusicaCommand(request);
+                ValidationResult = await _mediatorHandler.EnviarComando(comando);
+                if (!ValidationResult.IsValid) return RespostaPersonalizada(ValidationResult);
                 AdicionaMensagemSucesso("Música adicionada com sucesso.");
                 return RespostaPersonalizada(StatusCodes.Status201Created);
             }
@@ -104,14 +112,15 @@ namespace AVS.Documentacao.API.Controllers
         }
 
         [HttpPut("musica/atualizar")]
-        public async Task<IActionResult> AtualizarMusica([FromBody] MusicaRequestDto musicaDTO)
+        public async Task<IActionResult> AtualizarMusica([FromBody] MusicaRequestDto request)
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try
             {
-                if (musicaDTO == null) return RespostaPersonalizada();
-                //if (!ExecutarValidacao(new MusicaDTOValidator(), musicaDTO)) return RespostaPersonalizada(ValidationResult);
-                await _musicaAppService.Atualizar(musicaDTO);
+                if (request == null) return RespostaPersonalizada();
+                var comando = new AtualizarMusicaCommand(request);
+                ValidationResult = await _mediatorHandler.EnviarComando(comando);
+                if (!ValidationResult.IsValid) return RespostaPersonalizada(ValidationResult);
                 AdicionaMensagemSucesso("Música atualizada com sucesso.");
                 return RespostaPersonalizada(StatusCodes.Status200OK);
             }
@@ -124,14 +133,15 @@ namespace AVS.Documentacao.API.Controllers
         }        
 
         [HttpDelete("musica/excluir")]
-        public async Task<IActionResult> ExcluirMusica([FromBody] MusicaRequestDto musicaDTO)
+        public async Task<IActionResult> ExcluirMusica([FromBody] MusicaRequestDto request)
         {
             if (!ModelState.IsValid) return RespostaPersonalizada();
             try
             {
-                if (musicaDTO == null) return RespostaPersonalizada();
-                //if (!ExecutarValidacao(new MusicaDTOValidator(), musicaDTO)) return RespostaPersonalizada(ValidationResult);
-                await _musicaAppService.Exluir(musicaDTO);
+                if (request == null) return RespostaPersonalizada();
+                var comando = new ExcluirMusicaCommand(request);
+                ValidationResult = await _mediatorHandler.EnviarComando(comando);
+                if (!ValidationResult.IsValid) return RespostaPersonalizada(ValidationResult);
                 AdicionaMensagemSucesso("Música excluída com sucesso.");
                 return RespostaPersonalizada(StatusCodes.Status204NoContent);
             }
@@ -141,14 +151,6 @@ namespace AVS.Documentacao.API.Controllers
                 return RespostaPersonalizada();
             }
 
-        }
-
-        protected override bool ExecutarValidacao<TV, TE>(TV validacao, TE entidade)
-        {
-            ValidationResult = validacao.Validate(entidade);
-            if (ValidationResult.IsValid) return true;
-
-            return false;
-        }
+        }        
     }
 }

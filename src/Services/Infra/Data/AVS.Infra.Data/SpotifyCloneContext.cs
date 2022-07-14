@@ -55,8 +55,8 @@ namespace AVS.Infra.Data
             //        entry.Property("DataCadastro").IsModified = false;
             //    }
             //}
-            var sucesso = await base.SaveChangesAsync() > 0;            
-            return sucesso;
+            
+            return await base.SaveChangesAsync() > 0; ;
         }
     }
 }

@@ -8,5 +8,6 @@ namespace AVS.Banda.Domain.Interfaces.Repositories
     public interface IMusicaRepository : IRepository<Musica>
     {
         Task<IEnumerable<MusicaAlbumQueryAnonima>> BuscarTodosPorCriterio(Expression<Func<Musica, bool>> expression);
+        Task<MusicaAlbumQueryAnonima> BuscarPorCriterio(Expression<Func<Musica, bool>> expression);
     }
 }

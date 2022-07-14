@@ -24,11 +24,28 @@ namespace AVS.Banda.Data.Repositories
                     Id = p.Id,                    
                     AlbumId = p.AlbumId, 
                     Nome = p.Nome, 
-                    Duracao = p.Duracao.Valor, 
+                    //Duracao = p.Duracao.Valor, 
                     DuracaoFormatada = p.Duracao.Formatado,
-                    AlbumTitulo = p.Album.Titulo
+                    TituloAlbum = p.Album.Titulo
                 })
                 .ToListAsync();
+        }
+
+        public async Task<MusicaAlbumQueryAnonima> BuscarPorCriterio(Expression<Func<Musica, bool>> expression)
+        {
+            return await Query
+                .Where(expression)
+                .AsNoTrackingWithIdentityResolution()
+                .Select(p => new MusicaAlbumQueryAnonima
+                {
+                    Id = p.Id,
+                    AlbumId = p.AlbumId,
+                    Nome = p.Nome,
+                    //Duracao = p.Duracao.Valor, 
+                    DuracaoFormatada = p.Duracao.Formatado,
+                    TituloAlbum = p.Album.Titulo
+                })
+                .FirstOrDefaultAsync();
         }
     }
 }

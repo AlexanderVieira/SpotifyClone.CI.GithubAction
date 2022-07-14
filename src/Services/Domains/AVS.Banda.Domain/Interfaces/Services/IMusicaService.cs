@@ -8,5 +8,6 @@ namespace AVS.Banda.Domain.Interfaces.Services
     public interface IMusicaService : IAppService<Musica>
     {
         Task<IEnumerable<MusicaAlbumQueryAnonima>> BuscarTodosPorCriterio(Expression<Func<Musica, bool>> expression);
+        Task<MusicaAlbumQueryAnonima> BuscarPorCriterio(Expression<Func<Musica, bool>> expression);
     }
 }

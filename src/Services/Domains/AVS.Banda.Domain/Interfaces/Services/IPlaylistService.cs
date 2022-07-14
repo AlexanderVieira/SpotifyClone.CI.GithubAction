@@ -7,6 +7,7 @@ namespace AVS.Banda.Domain.Interfaces.Services
 {
     public interface IPlaylistService : IAppService<Playlist>
     {
-        Task<PlaylistMusicasQueryAnomima> BuscarMusicasPlaylist(Expression<Func<Playlist, bool>> expression);        
+        Task<PlaylistMusicasQueryAnomima> BuscarPlaylistComMusicas(Expression<Func<Playlist, bool>> expression);
+        Task<IEnumerable<PlaylistMusicasQueryAnomima>> BuscarPlaylistsPorCriterio(Expression<Func<Playlist, bool>> expression);
     }
 }

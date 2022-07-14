@@ -1,4 +1,5 @@
-﻿using AVS.Banda.Application.Interfaces;
+﻿using AVS.Banda.Application.Commands.Bandas;
+using AVS.Banda.Application.Interfaces;
 using AVS.Core.Mensagens;
 using FluentValidation.Results;
 using MediatR;
@@ -29,18 +30,7 @@ namespace AVS.Banda.Application.Commands.Handlers
             }
             AdicionarErroProcessamento(mensagem, "Ocorreu um erro ao tentar adicionar banda.");
             return mensagem.ValidationResult;
-        }
-
-        private bool ValidarComando(Comando mensagem)
-        {
-            if (mensagem.EhValido()) return true;            
-            return false;
-        }
-
-        protected void AdicionarErroProcessamento(Comando mensagem, string mensagemErro)
-        {
-            mensagem.ValidationResult.Errors.Add(new ValidationFailure(mensagem.TipoMensagem, mensagemErro));
-        }
+        }        
 
         public async Task<ValidationResult> Handle(AtualizarBandaCommand mensagem, CancellationToken cancellationToken)
         {
@@ -68,6 +58,17 @@ namespace AVS.Banda.Application.Commands.Handlers
             }
             AdicionarErroProcessamento(mensagem, "Ocorreu um erro ao tentar excluir banda.");
             return mensagem.ValidationResult;
+        }
+
+        private static bool ValidarComando(Comando mensagem)
+        {
+            if (mensagem.EhValido()) return true;
+            return false;
+        }
+
+        protected static void AdicionarErroProcessamento(Comando mensagem, string mensagemErro)
+        {
+            mensagem.ValidationResult.Errors.Add(new ValidationFailure(mensagem.TipoMensagem, mensagemErro));
         }
     }
 }

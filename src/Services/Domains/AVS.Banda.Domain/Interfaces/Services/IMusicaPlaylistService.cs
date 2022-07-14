@@ -5,5 +5,6 @@ namespace AVS.Banda.Domain.Interfaces.Services
 {
     public interface IMusicaPlaylistService : IAppService<MusicaPlaylist>
     {
+        Task<bool> Commit();
     }
 }

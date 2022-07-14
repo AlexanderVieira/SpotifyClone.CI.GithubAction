@@ -1,31 +1,49 @@
-﻿using AVS.Banda.Application.DTOs;
-using AVS.Banda.Application.Interfaces;
-using AVS.Banda.Domain.AppServices.DTOs;
+﻿using AVS.Banda.Application.Commands.Playlists;
+using AVS.Banda.Application.DTOs;
+using AVS.Banda.Application.Queries.Playlists;
+using AVS.Core.Comunicacao.Mediator;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AVS.Documentacao.API.Controllers
 {
     [Route("api")]    
     public class PlaylistsController : PrincipalController
-    {
-        private readonly IPlaylistAppService _playlistAppService;
-        private readonly IMusicaPlaylistAppService _musicaPlaylistAppService;
+    {        
+        private readonly IMediatorHandler _mediatorHandler;
 
-        public PlaylistsController(IPlaylistAppService playlistAppService, 
-                                   IMusicaPlaylistAppService musicaPlaylistAppService)
+        public PlaylistsController(IMediatorHandler mediatorHandler)
         {
-            _playlistAppService = playlistAppService;
-            _musicaPlaylistAppService = musicaPlaylistAppService;
+            _mediatorHandler = mediatorHandler;
         }
-        
+
         [HttpGet("playlists")]
         public async Task<IActionResult> ObterTodasPlaylists()
         {
             try
             {
-                var playlists = await _playlistAppService.ObterTodos();
-                return playlists == null || (!playlists.Any()) ? ProcessarRespostaMensagem(
-                    StatusCodes.Status404NotFound, "Não existem dados para exibição.") : RespostaPersonalizada(playlists.ToArray());
+                //var playlists = await _playlistAppService.ObterTodos();
+                var response = (ObterTodasPlaylistsQueryResponse)await _mediatorHandler
+                                                                        .EnviarQuery(new ObterTodasPlaylistsQuery());
+                return response.Playlists == null || (!response.Playlists.Any()) ? ProcessarRespostaMensagem(
+                    StatusCodes.Status404NotFound, "Não existem dados para exibição.") : RespostaPersonalizada(response.Playlists.ToArray());
+            }
+            catch (Exception ex)
+            {
+                AdicionarErroProcessamento(ex.Message);
+                return RespostaPersonalizada();
+            }
+
+        }
+
+        [HttpGet("playlists/usuario/{filtro}")]
+        public async Task<IActionResult> ObterPlaylistsPorNome(string filtro)
+        {
+            try
+            {
+                var response = (ObterTodasPlaylistsPorNomeQueryResponse)await _mediatorHandler
+                                                                        .EnviarQuery(new ObterTodasPlaylistsPorNomeQuery { Filtro = filtro, UsuarioId = UsuarioId });
+                return response.Playlists == null || (!response.Playlists.Any()) ? ProcessarRespostaMensagem(
+                    StatusCodes.Status404NotFound, "Não existem dados para exibição.") : RespostaPersonalizada(response.Playlists.ToArray());
             }
             catch (Exception ex)
             {
@@ -36,14 +54,16 @@ namespace AVS.Documentacao.API.Controllers
         }
 
         [HttpGet("playlist/minhas-musicas")]
-        public async Task<IActionResult> ObterMusicas()
+        public async Task<IActionResult> ObterPlaylistComMusicas()
         {
             try
             {
-                var playlistExistente = await _playlistAppService
-                    .BuscarMusicasPlaylist(x => x.UsuarioId == UsuarioId);
-                return playlistExistente == null ? ProcessarRespostaMensagem(
-                    StatusCodes.Status404NotFound, "Não existem dados para exibição.") : RespostaPersonalizada(playlistExistente);
+                //var playlistExistente = await _playlistAppService
+                //    .BuscarMusicasPlaylist(x => x.UsuarioId == UsuarioId);
+                var response = (ObterPlaylistComMusicasQueryResponse)await _mediatorHandler
+                                                                        .EnviarQuery(new ObterPlaylistComMusicasQuery { UsuarioId = UsuarioId });
+                return response.Playlist == null ? ProcessarRespostaMensagem(
+                    StatusCodes.Status404NotFound, "Não existem dados para exibição.") : RespostaPersonalizada(response.Playlist);
             }
             catch (Exception ex)
             {
@@ -54,13 +74,15 @@ namespace AVS.Documentacao.API.Controllers
         }
 
         [HttpGet("playlist/detalhe/{id}")]
-        public async Task<IActionResult> ObterPlaylistPorId(Guid id)
+        public async Task<IActionResult> ObterDetalhePlaylist(Guid id)
         {
             try
             {
-                var playlist = await _playlistAppService.ObterPorId(id);
-                return playlist == null ? ProcessarRespostaMensagem(
-                    StatusCodes.Status404NotFound, "Playlist não encontrada.") : RespostaPersonalizada(playlist);
+                //var playlist = await _playlistAppService.ObterPorId(id);
+                var response = (ObterDetalhePlaylistQueryResponse)await _mediatorHandler
+                                                                        .EnviarQuery(new ObterDetalhePlaylistQuery { Id = id });
+                return response.Playlist == null ? ProcessarRespostaMensagem(
+                    StatusCodes.Status404NotFound, "Playlist não encontrada.") : RespostaPersonalizada(response.Playlist);
             }
             catch (Exception ex)
             {
@@ -75,17 +97,29 @@ namespace AVS.Documentacao.API.Controllers
         {            
             try
             {
-                var numero = 0;
-                var playlistsExistentes = await _playlistAppService.BuscarTodosPorCriterio(x => x.UsuarioId == UsuarioId);                
-                if (playlistsExistentes != null || (!playlistsExistentes.Any())) { numero = playlistsExistentes.Count(); }
-                var playlistDTO = new PlaylistRequestDto(                     
-                    UsuarioId, $"Minha Playlist nº{++numero}", 
-                    "Preencha sua descrição", 
-                    "http://uri.com.br"
-                    );
-                if (playlistDTO == null) return RespostaPersonalizada();
+                //var numero = 0;
+                //var playlistsExistentes = await _playlistAppService.BuscarTodosPorCriterio(x => x.UsuarioId == UsuarioId);                
+                //if (playlistsExistentes != null || (!playlistsExistentes.Any())) { numero = playlistsExistentes.Count(); }
+                //var playlistDTO = new PlaylistRequestDto(                     
+                //    UsuarioId, $"Minha Playlist nº{++numero}", 
+                //    "Preencha sua descrição", 
+                //    "http://uri.com.br"
+                //    );
+                //if (playlistDTO == null) return RespostaPersonalizada();
                 //if (!ExecutarValidacao(new PlaylistDTOValidator(), playlistDTO)) return RespostaPersonalizada(ValidationResult);
-                await _playlistAppService.Salvar(playlistDTO);
+                //await _playlistAppService.Salvar(playlistDTO);
+
+                var comando = new AdicionarPlaylistCommand(
+                    new PlaylistRequestDto 
+                    { 
+                        Id = Guid.NewGuid(), 
+                        UsuarioId = UsuarioId, 
+                        Titulo = "Preencha o título", 
+                        Descricao = "Preencha sua descrição", 
+                        Foto = null 
+                    });
+                ValidationResult = await _mediatorHandler.EnviarComando(comando);
+                if (!ValidationResult.IsValid) return RespostaPersonalizada(ValidationResult);
                 AdicionaMensagemSucesso("Playlist adicionada com sucesso.");
                 return RespostaPersonalizada(StatusCodes.Status201Created);
             }
@@ -97,14 +131,17 @@ namespace AVS.Documentacao.API.Controllers
         }        
 
         [HttpPut("playlist/atualizar")]
-        public async Task<IActionResult> AtualizarPlaylist([FromBody] PlaylistRequestDto playlistDTO)
+        public async Task<IActionResult> AtualizarPlaylist([FromBody] PlaylistRequestDto request)
         {
             if (!ModelState.IsValid) return RespostaPersonalizada(ModelState);
             try
             {
-                if (playlistDTO == null) return RespostaPersonalizada();
+                if (request == null) return RespostaPersonalizada();
                 //if (!ExecutarValidacao(new PlaylistDTOValidator(), playlistDTO)) return RespostaPersonalizada(ValidationResult);
-                await _playlistAppService.Atualizar(playlistDTO);
+                //await _playlistAppService.Atualizar(playlistDTO);
+                var comando = new AtualizarPlaylistCommand(request);
+                ValidationResult = await _mediatorHandler.EnviarComando(comando);
+                if (!ValidationResult.IsValid) return RespostaPersonalizada(ValidationResult);
                 AdicionaMensagemSucesso("Playlist atualizada com sucesso.");
                 return RespostaPersonalizada(StatusCodes.Status200OK);
             }
@@ -117,14 +154,17 @@ namespace AVS.Documentacao.API.Controllers
         }        
 
         [HttpDelete("playlist/excluir")]
-        public async Task<IActionResult> ExcluirPlaylist([FromBody] PlaylistRequestDto playlistDTO)
+        public async Task<IActionResult> ExcluirPlaylist([FromBody] PlaylistRequestDto request)
         {
             if (!ModelState.IsValid) return RespostaPersonalizada(ModelState);
             try
             {
-                if (playlistDTO == null) return RespostaPersonalizada();
+                if (request == null) return RespostaPersonalizada();
                 //if (!ExecutarValidacao(new PlaylistDTOValidator(), playlistDTO)) return RespostaPersonalizada(ValidationResult);
-                await _playlistAppService.Exluir(playlistDTO);
+                //await _playlistAppService.Exluir(playlistDTO);
+                var comando = new ExcluirPlaylistCommand(request);
+                ValidationResult = await _mediatorHandler.EnviarComando(comando);
+                if (!ValidationResult.IsValid) return RespostaPersonalizada(ValidationResult);
                 AdicionaMensagemSucesso("Playlist excluída com sucesso.");
                 return RespostaPersonalizada(StatusCodes.Status204NoContent);
             }
@@ -142,9 +182,12 @@ namespace AVS.Documentacao.API.Controllers
             if (!ModelState.IsValid) return RespostaPersonalizada(ModelState);
             try
             {
-                var musicaPlaylistDTO = new MusicaPlaylistRequestDto(playlistId, musicaId);
+                var request = new MusicaPlaylistRequestDto(playlistId, musicaId);
                 //if (!ExecutarValidacao(new MusicaPlaylistDTOValidator(), musicaPlaylistDTO)) return RespostaPersonalizada(ValidationResult);
-                await _musicaPlaylistAppService.Salvar(musicaPlaylistDTO);
+                //await _musicaPlaylistAppService.Salvar(musicaPlaylistDTO);
+                var comando = new AdicionarMusicaPlaylistCommand(request);
+                ValidationResult = await _mediatorHandler.EnviarComando(comando);
+                if (!ValidationResult.IsValid) return RespostaPersonalizada(ValidationResult);
                 AdicionaMensagemSucesso("Música adicionada a playlist com sucesso.");
                 return RespostaPersonalizada(StatusCodes.Status201Created);
             }
@@ -162,9 +205,12 @@ namespace AVS.Documentacao.API.Controllers
             if (!ModelState.IsValid) return RespostaPersonalizada(ModelState);
             try
             {
-                var musicaPlaylistDTO = new MusicaPlaylistRequestDto(playlistId, musicaId);
+                var request = new MusicaPlaylistRequestDto(playlistId, musicaId);
                 //if (!ExecutarValidacao(new MusicaPlaylistDTOValidator(), musicaPlaylistDTO)) return RespostaPersonalizada(ValidationResult);
-                await _musicaPlaylistAppService.Exluir(musicaPlaylistDTO);
+                //await _musicaPlaylistAppService.Exluir(musicaPlaylistDTO);
+                var comando = new ExcluirMusicaPlaylistCommand(request);
+                ValidationResult = await _mediatorHandler.EnviarComando(comando);
+                if (!ValidationResult.IsValid) return RespostaPersonalizada(ValidationResult);
                 AdicionaMensagemSucesso("Música excluída da playlist com sucesso.");
                 return RespostaPersonalizada(StatusCodes.Status204NoContent);
             }
@@ -174,14 +220,6 @@ namespace AVS.Documentacao.API.Controllers
                 return RespostaPersonalizada();
             }
             
-        }
-
-        protected override bool ExecutarValidacao<TV, TE>(TV validacao, TE entidade)
-        {
-            ValidationResult = validacao.Validate(entidade);
-            if (ValidationResult.IsValid) return true;
-
-            return false;
         }
     }
 }

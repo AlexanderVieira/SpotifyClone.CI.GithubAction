@@ -17,11 +17,11 @@ namespace AVS.Banda.Data.Repositories
         public async Task<Domain.Entities.Banda> BuscarPorCriterio(Expression<Func<Domain.Entities.Banda, bool>> expression)
         {
             return await _context.Bandas
-                .AsNoTrackingWithIdentityResolution()
+                .Where(expression)                
                 .Include(b => b.Albuns.OrderBy(x => x.Titulo))
                 .ThenInclude(a => a.Musicas.OrderBy(m => m.Nome))
                 .ThenInclude(m => m.Playlists)
-                .FirstOrDefaultAsync(expression);            
+                .FirstOrDefaultAsync();            
         }
 
     }

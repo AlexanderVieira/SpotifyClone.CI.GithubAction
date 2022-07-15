@@ -18,7 +18,7 @@ namespace AVS.Infra.Data
         public SpotifyCloneContext(DbContextOptions<SpotifyCloneContext> options) : base(options)
         {
             //ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
-            //ChangeTracker.AutoDetectChangesEnabled = true;
+            //ChangeTracker.AutoDetectChangesEnabled = false;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -41,21 +41,7 @@ namespace AVS.Infra.Data
         }
 
         public async Task<bool> Commit()
-        {
-            //foreach (var entry in ChangeTracker.Entries()
-            //    .Where(e => e.Entity.GetType().GetProperty("DataCadastro") != null))
-            //{
-            //    if (entry.State == EntityState.Added)
-            //    {
-            //        entry.Property("DataCadastro").CurrentValue = DateTime.Now;
-            //    }
-
-            //    if (entry.State == EntityState.Modified)
-            //    {
-            //        entry.Property("DataCadastro").IsModified = false;
-            //    }
-            //}
-            
+        {   
             return await base.SaveChangesAsync() > 0; ;
         }
     }

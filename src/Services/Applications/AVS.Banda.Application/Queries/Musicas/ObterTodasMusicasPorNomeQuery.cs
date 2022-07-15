@@ -10,9 +10,9 @@ namespace AVS.Banda.Application.Queries.Musicas
     }
     public class ObterTodasMusicasPorNomeQueryResponse
     {
-        public IEnumerable<MusicaAlbumResponseDto> Musicas { get; set; }
+        public IEnumerable<MusicaQueryAnonimaResponseDto> Musicas { get; set; }
 
-        public ObterTodasMusicasPorNomeQueryResponse(IEnumerable<MusicaAlbumResponseDto> musicas)
+        public ObterTodasMusicasPorNomeQueryResponse(IEnumerable<MusicaQueryAnonimaResponseDto> musicas)
         {
             Musicas = musicas;
         }

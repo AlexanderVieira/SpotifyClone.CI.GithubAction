@@ -8,5 +8,9 @@
         //public int Duracao { get; set; }
         public string DuracaoFormatada { get; set; }
         public string TituloAlbum { get; set; }
+
+        public MusicaAlbumQueryAnonima()
+        {
+        }
     }
 }

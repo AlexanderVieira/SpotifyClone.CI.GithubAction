@@ -26,19 +26,19 @@ namespace AVS.Banda.Application.AppServices
             return response;
         }
 
-        public async Task<IEnumerable<MusicaAlbumResponseDto>> BuscarTodosPorCriterio(Expression<Func<Musica, bool>> expression)
+        public async Task<IEnumerable<MusicaQueryAnonimaResponseDto>> BuscarTodosPorCriterio(Expression<Func<Musica, bool>> expression)
         {
             var musicas = await _musicaService.BuscarTodosPorCriterio(expression);
             if (musicas == null) return null;
-            var response = _mapper.Map<IList<MusicaAlbumResponseDto>>(musicas);
+            var response = _mapper.Map<IList<MusicaQueryAnonimaResponseDto>>(musicas);
             return response;            
         }
 
-        public async Task<MusicaAlbumResponseDto> BuscarPorCriterio(Expression<Func<Musica, bool>> expression)
+        public async Task<MusicaQueryAnonimaResponseDto> BuscarPorCriterio(Expression<Func<Musica, bool>> expression)
         {
             var musica = await _musicaService.BuscarPorCriterio(expression);
             if (musica == null) return null;
-            var response = _mapper.Map<MusicaAlbumResponseDto>(musica);
+            var response = _mapper.Map<MusicaQueryAnonimaResponseDto>(musica);
             return response;
         }
 

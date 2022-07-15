@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace AVS.Banda.Domain.Entities
 {
-    public class MusicaPlaylist : Entity
+    public class MusicaPlaylist
     {
         public Guid PlaylistId { get; set; }
         public Guid MusicaId { get; set; }
@@ -14,12 +14,12 @@ namespace AVS.Banda.Domain.Entities
         {
         }
 
-        public override bool EhValido()
+        public bool EhValido()
         {
             var validationResult = new MusicaPlaylistValidator().Validate(this);
             return validationResult.IsValid;
         }
-        public override void Validar() =>
+        public void Validar() =>
             new MusicaPlaylistValidator().ValidateAndThrow(this);
 
     }

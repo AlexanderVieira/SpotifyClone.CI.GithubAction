@@ -16,12 +16,12 @@ namespace AVS.Banda.Domain.Services
             _musicaRepository = musicaRepository;
         }
 
-        public async Task<IEnumerable<MusicaAlbumQueryAnonima>> BuscarTodosPorCriterio(Expression<Func<Musica, bool>> expression)
+        public async Task<IEnumerable<MusicaQueryAnonima>> BuscarTodosPorCriterio(Expression<Func<Musica, bool>> expression)
         {
             return await _musicaRepository.BuscarTodosPorCriterio(expression);
         }
 
-        public async Task<MusicaAlbumQueryAnonima> BuscarPorCriterio(Expression<Func<Musica, bool>> expression)
+        public async Task<MusicaQueryAnonima> BuscarPorCriterio(Expression<Func<Musica, bool>> expression)
         {
             return await _musicaRepository.BuscarPorCriterio(expression);
         }

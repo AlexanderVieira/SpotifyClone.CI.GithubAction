@@ -27,7 +27,9 @@ namespace AVS.Banda.Application.AutoMapper
 
             CreateMap<MusicaAlbumQueryAnonima, MusicaAlbumResponseDto>();
 
-            CreateMap<PlaylistMusicasQueryAnomima, PlaylistMusicasQueryAnonimaResponseDto>();
+            CreateMap<PlaylistMusicasQueryAnonima, PlaylistMusicasQueryAnonimaResponseDto>();
+
+            CreateMap<MusicaQueryAnonima, MusicaQueryAnonimaResponseDto>();
         }
     }
 }

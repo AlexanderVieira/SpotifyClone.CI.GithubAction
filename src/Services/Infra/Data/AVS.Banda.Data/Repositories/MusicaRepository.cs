@@ -14,34 +14,32 @@ namespace AVS.Banda.Data.Repositories
         {
         }
 
-        public async Task<IEnumerable<MusicaAlbumQueryAnonima>> BuscarTodosPorCriterio(Expression<Func<Musica, bool>> expression)
+        public async Task<IEnumerable<MusicaQueryAnonima>> BuscarTodosPorCriterio(Expression<Func<Musica, bool>> expression)
         {
             return await Query
                 .Where(expression)
                 .AsNoTrackingWithIdentityResolution()                
-                .Select(p => new MusicaAlbumQueryAnonima
+                .Select(p => new MusicaQueryAnonima
                 {
                     Id = p.Id,                    
                     AlbumId = p.AlbumId, 
-                    Nome = p.Nome, 
-                    //Duracao = p.Duracao.Valor, 
+                    Nome = p.Nome,                     
                     DuracaoFormatada = p.Duracao.Formatado,
                     TituloAlbum = p.Album.Titulo
                 })
                 .ToListAsync();
         }
 
-        public async Task<MusicaAlbumQueryAnonima> BuscarPorCriterio(Expression<Func<Musica, bool>> expression)
+        public async Task<MusicaQueryAnonima> BuscarPorCriterio(Expression<Func<Musica, bool>> expression)
         {
             return await Query
                 .Where(expression)
                 .AsNoTrackingWithIdentityResolution()
-                .Select(p => new MusicaAlbumQueryAnonima
+                .Select(p => new MusicaQueryAnonima
                 {
                     Id = p.Id,
                     AlbumId = p.AlbumId,
-                    Nome = p.Nome,
-                    //Duracao = p.Duracao.Valor, 
+                    Nome = p.Nome,                    
                     DuracaoFormatada = p.Duracao.Formatado,
                     TituloAlbum = p.Album.Titulo
                 })

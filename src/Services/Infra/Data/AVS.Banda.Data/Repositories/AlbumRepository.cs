@@ -17,9 +17,7 @@ namespace AVS.Banda.Data.Repositories
 
         public async Task<Album> BuscarPorCriterio(Expression<Func<Album, bool>> expression)
         {
-            return await _context.Albuns
-                .AsNoTrackingWithIdentityResolution()
-                //.Where(expression)                
+            return await _context.Albuns                                
                 .Include(b => b.Musicas.OrderBy(m => m.Nome))
                 .FirstOrDefaultAsync(expression);            
         }

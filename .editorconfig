@@ -23,3 +23,12 @@ dotnet_diagnostic.CS8602.severity = none
 
 # CS8601: Possível atribuição de referência nula.
 dotnet_diagnostic.CS8601.severity = none
+
+# CA2012: Usar ValueTasks corretamente
+dotnet_diagnostic.CA2012.severity = none
+
+# CS8620: O argumento não pode ser usado para o parâmetro devido a diferenças na nulidade dos tipos de referência.
+dotnet_diagnostic.CS8620.severity = none
+
+# IDE0058: O valor da expressão nunca é usado
+dotnet_diagnostic.IDE0058.severity = none

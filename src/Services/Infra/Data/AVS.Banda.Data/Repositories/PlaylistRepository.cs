@@ -16,42 +16,11 @@ namespace AVS.Banda.Data.Repositories
             _context = context;
         }       
 
-        public async Task<PlaylistMusicasQueryAnomima> BuscarPlaylistComMusicas(Expression<Func<Playlist, bool>> expression)
+        public async Task<PlaylistMusicasQueryAnonima> BuscarPlaylistComMusicas(Expression<Func<Playlist, bool>> expression)
         {
-            //var query = await _context.Playlists
-            //    .Where(expression)
-            //    .Select(p => new {
-            //        p.Id,
-            //        p.UsuarioId,
-            //        p.Titulo,
-            //        p.Descricao,
-            //        p.Foto,
-            //        Musicas = p.Musicas
-            //    .Select(m => new { m.Musica.Id, m.Musica.Nome, m.Musica.Duracao, m.Musica.AlbumId, m.Musica.Album.Titulo })
-            //    .AsEnumerable()
-            //    }).FirstOrDefaultAsync();
-
-            //var plt = new PlaylistMusicasQueryAnomima(query.Id, query.UsuarioId, query.Titulo, query.Descricao, query.Foto);
-            //var musicas = query.Musicas;
-
-            //foreach (var item in musicas)
-            //{
-            //    var musicaTransporte = new MusicaQueryAnonima
-            //    {
-            //        Id = item.Id,
-            //        Nome = item.Nome,
-            //        Duracao = item.Duracao.Formatado,
-            //        AlbumId = item.AlbumId,
-            //        TituloAlbum = item.Titulo
-            //    };
-            //    plt.Musicas.Add(musicaTransporte);
-            //}
-
-            //return plt;
-
             var query = await _context.Playlists
                 .Where(expression)
-                .Select(p => new PlaylistMusicasQueryAnomima
+                .Select(p => new PlaylistMusicasQueryAnonima
                 {
                     Id = p.Id,
                     UsuarioId = p.UsuarioId,
@@ -64,7 +33,7 @@ namespace AVS.Banda.Data.Repositories
                         Id = x.Musica.Id,
                         AlbumId = x.Musica.AlbumId,
                         Nome = x.Musica.Nome,
-                        Duracao = x.Musica.Duracao.Formatado,
+                        DuracaoFormatada = x.Musica.Duracao.Formatado,
                         TituloAlbum = x.Musica.Album.Titulo
                     })
                 }).FirstOrDefaultAsync();
@@ -73,11 +42,11 @@ namespace AVS.Banda.Data.Repositories
 
         }                
 
-        public async Task<IEnumerable<PlaylistMusicasQueryAnomima>> BuscarPlaylistsPorCriterio(Expression<Func<Playlist, bool>> expression)
+        public async Task<IEnumerable<PlaylistMusicasQueryAnonima>> BuscarPlaylistsPorCriterio(Expression<Func<Playlist, bool>> expression)
         {
             var query = await _context.Playlists
                 .Where(expression)
-                .Select(p => new PlaylistMusicasQueryAnomima 
+                .Select(p => new PlaylistMusicasQueryAnonima 
                 { 
                     Id = p.Id, 
                     UsuarioId = p.UsuarioId, 
@@ -90,7 +59,7 @@ namespace AVS.Banda.Data.Repositories
                             Id = x.Musica.Id, 
                             AlbumId = x.Musica.AlbumId, 
                             Nome = x.Musica.Nome, 
-                            Duracao = x.Musica.Duracao.Formatado, 
+                            DuracaoFormatada = x.Musica.Duracao.Formatado, 
                             TituloAlbum = x.Musica.Album.Titulo
                         })
                 }).ToListAsync();            

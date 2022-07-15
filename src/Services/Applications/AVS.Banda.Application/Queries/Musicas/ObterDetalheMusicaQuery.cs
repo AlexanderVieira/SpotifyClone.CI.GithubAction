@@ -11,9 +11,9 @@ namespace AVS.Banda.Application.Queries.Musicas
 
     public class ObterDetalheMusicaQueryResponse
     {
-        public MusicaAlbumResponseDto Musica { get; set; }
+        public MusicaQueryAnonimaResponseDto Musica { get; set; }
 
-        public ObterDetalheMusicaQueryResponse(MusicaAlbumResponseDto musica)
+        public ObterDetalheMusicaQueryResponse(MusicaQueryAnonimaResponseDto musica)
         {
             Musica = musica;
         }

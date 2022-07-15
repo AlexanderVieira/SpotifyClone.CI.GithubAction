@@ -6,11 +6,9 @@ using AVS.Infra.Data;
 namespace AVS.Banda.Data.Repositories
 {
     public class MusicaPlaylistRepository : GenericRepository<MusicaPlaylist>, IMusicaPlaylistRepository
-    {
-        //private readonly SpotifyCloneContext _context;
+    {        
         public MusicaPlaylistRepository(SpotifyCloneContext context) : base(context)
-        {
-            //_context = context;            
+        {            
         }
 
     }

@@ -69,17 +69,5 @@ namespace AVS.Banda.Application.AppServices
             banda.Validar();
             await _bandaService.Exluir(banda);
         }       
-    }
-
-    public static class LambdaExpressionExtensions
-    {
-        public static Expression<Func<Domain.Entities.Banda, bool>> ToUntypedPropertyExpression<TInput, TOutput>(this Expression<Func<TInput, TOutput>> expression)
-        {
-            //var memberName = ((MemberExpression)expression.Body).Member.Name;
-
-            var param = Expression.Parameter(typeof(Domain.Entities.Banda));
-            //var field = Expression.Property(param, memberName);
-            return Expression.Lambda<Func<Domain.Entities.Banda, bool>>(expression.Body, param);
-        }
-    }
+    }    
 }

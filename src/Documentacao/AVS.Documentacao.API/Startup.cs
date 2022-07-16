@@ -1,4 +1,5 @@
 ﻿using AVS.Documentacao.API.Configuracao;
+using AVS.Infra.Data;
 using MediatR;
 
 namespace AVS.Documentacao.API
@@ -24,7 +25,7 @@ namespace AVS.Documentacao.API
 
         public void ConfigureServices(IServiceCollection services)
         {   
-            services.AddApiConfiguration(Configuration);
+            services.AddApiConfiguration(Configuration);            
             services.AddSwaggerGen();
             services.AddMediatR(typeof(Startup));
             services.RegisterServices();

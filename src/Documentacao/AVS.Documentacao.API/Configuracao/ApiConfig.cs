@@ -1,4 +1,5 @@
-﻿ using AVS.Infra.Data;
+﻿using AVS.Core.Extensions;
+using AVS.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace AVS.Documentacao.API.Configuracao
@@ -9,7 +10,7 @@ namespace AVS.Documentacao.API.Configuracao
         {
             services.AddDbContext<SpotifyCloneContext>(options =>
                     options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")).UseLazyLoadingProxies());
-
+            services.AddScoped<PopulaBanco>();
             services.AddControllers();
             services.AddEndpointsApiExplorer();
 
@@ -31,6 +32,7 @@ namespace AVS.Documentacao.API.Configuracao
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+                app.UseItToSeedSqlServer();
             }
 
             app.UseHttpsRedirection();

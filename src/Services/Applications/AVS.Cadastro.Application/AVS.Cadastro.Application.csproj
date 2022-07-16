@@ -6,4 +6,15 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\AVS.Core\AVS.Core.csproj" />
+    <ProjectReference Include="..\..\Domains\AVS.Cadastro.Domain\AVS.Cadastro.Domain.csproj" />
+    <ProjectReference Include="..\AVS.Banda.Application\AVS.Banda.Application.csproj" />
+  </ItemGroup>
+
 </Project>

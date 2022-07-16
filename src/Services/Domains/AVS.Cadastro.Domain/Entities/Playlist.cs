@@ -1,4 +1,5 @@
-﻿using AVS.Core.ObjDoinio;
+﻿using AVS.Banda.Domain;
+using AVS.Core.ObjDoinio;
 using FluentValidation;
 
 namespace AVS.Cadastro.Domain.Entities
@@ -7,16 +8,43 @@ namespace AVS.Cadastro.Domain.Entities
     {
         public string Titulo { get; set; }
         public string Descricao { get; set; }
-        public string Foto { get; set; }
+        public string? Foto { get; set; }
+        public Guid UsuarioId { get; set; }
+        public List<Musica> Musicas {  get; set;}
+        //public IReadOnlyCollection<Musica> Musicas => _musicas.AsReadOnly();
 
         protected Playlist()
         {
         }
 
-        public Playlist(string titulo, string descricao)
+        public Playlist(Guid id, Guid usuarioId, string titulo, string descricao, string? foto = null)
         {
+            Id = id;
             Titulo = titulo;
-            Descricao = descricao;            
+            Descricao = descricao;
+            Foto = foto;
+            UsuarioId = usuarioId;
+            Musicas = new List<Musica>();
+        }
+
+        public void AdicionarMusica(Musica musica)
+        {
+            Musicas ??= new List<Musica>();
+            Musicas.Add(musica);
+        }
+
+        public void AtualizarMusicas(List<Musica> musicas)
+        {
+            Musicas = musicas;
+        }
+
+        public void RemoverMusica(Musica musica)
+        {
+            Musicas.Remove(musica);
+        }
+        public void RemoverMusicas()
+        {
+            Musicas.Clear();
         }
 
         public override bool EhValido()

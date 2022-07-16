@@ -1,3 +1,5 @@
+[![Build status](https://dev.azure.com/alexandersilva/SpotifyClone/_apis/build/status/SpotifyClone-CI)](https://dev.azure.com/alexandersilva/SpotifyClone/_build/latest?definitionId=1)
+
 # Introduction 
 TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
 

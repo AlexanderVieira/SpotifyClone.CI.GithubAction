@@ -7,11 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Entities\Playlist.cs" />
+    <Compile Remove="Interfaces\Repositories\IPlaylistRepository.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\AVS.Core\AVS.Core.csproj" />
+    <ProjectReference Include="..\AVS.Banda.Domain\AVS.Banda.Domain.csproj" />
   </ItemGroup>
 
 </Project>

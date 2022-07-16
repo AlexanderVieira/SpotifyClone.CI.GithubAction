@@ -25,7 +25,7 @@ namespace AVS.Core.ObjDoinio
             var tamnho = valor.Trim().Length;
             if (tamnho < minimo || tamnho > maximo) throw new DomainException(mensagem);
         }
-
+                
         public static void ValidarSeNuloVazio(string valor, string mensagem)
         {
             if (string.IsNullOrEmpty(valor)) throw new DomainException(mensagem);
@@ -96,7 +96,7 @@ namespace AVS.Core.ObjDoinio
             if (param) throw new DomainException(mensagem);
         }
 
-        public static void ValidarSeExiste(List<Object> objs, string mensagem)
+        public static void ValidarSeExiste(List<object> objs, string mensagem)
         {
             if (!objs.Any()) throw new DomainException(mensagem);
         }

@@ -7,11 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\..\..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Compilers" Version="4.2.0" />
     <PackageReference Include="Microsoft.Net.Compilers" Version="4.2.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Services\Applications\AVS.Cadastro.Application\AVS.Cadastro.Application.csproj" />
+    <ProjectReference Include="..\..\Services\Domains\AVS.Cadastro.Domain\AVS.Cadastro.Domain.csproj" />
+    <ProjectReference Include="..\..\Services\Infra\Data\AVS.Cadastro.Data\AVS.Cadastro.Data.csproj" />
   </ItemGroup>
 
 </Project>

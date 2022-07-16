@@ -43,6 +43,4 @@ namespace AVS.Cadastro.Domain.Testes
             dbSetMock.Verify(x => x.FindAsync(testObject.Id), Times.Once());
         }
     }
-
-
 }

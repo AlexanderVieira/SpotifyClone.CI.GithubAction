@@ -1,12 +1,14 @@
 ﻿using AVS.Banda.Domain.Entities;
 using AVS.Cadastro.Domain.Entities;
+using System.Diagnostics;
 
 namespace AVS.Infra.Data
 {
     public class PopulaBanco
     {        
-        public static async void Popular(SpotifyCloneContext _context)
+        public static void Popular(SpotifyCloneContext _context)
         {
+            bool sucess = false;
             ArgumentNullException.ThrowIfNull(_context, nameof(_context));
             _context.Database.EnsureCreated();
 
@@ -44,8 +46,8 @@ namespace AVS.Infra.Data
                         true)
                 };
 
-                await _context.Usuarios.AddRangeAsync(usuarios);
-                await _context.SaveChangesAsync();
+                _context.Usuarios.AddRange(usuarios);
+                sucess = _context.SaveChanges() > 0;
             }
 
             if (!_context.Playlists.Any())
@@ -72,8 +74,8 @@ namespace AVS.Infra.Data
                         "http://uri.com.br")
                 };
 
-                await _context.Playlists.AddRangeAsync(playlists);
-                await _context.SaveChangesAsync();
+                _context.Playlists.AddRange(playlists);
+                sucess = _context.SaveChanges() > 0;
 
             }
 
@@ -86,15 +88,15 @@ namespace AVS.Infra.Data
                                "Vento Ventania", 300)
                 };                
                 
-                var m2 = new List<Musica>() 
-                {
-                    new Musica(Guid.Parse("682068cf-c21e-4a36-b843-63b9d181f1bf"),
-                               Guid.Parse("e190530d-667e-42f1-9bb3-c69a117244dd"),
-                               "Vento Ventania", 600),
-                    new Musica(Guid.Parse("682068cf-c21e-4a36-b843-63b9d181f1cf"),
-                               Guid.Parse("e190530d-667e-42f1-9bb3-c69a117244dd"),
-                               "Você Não Soube Me Amar", 300)
-                };
+                //var m2 = new List<Musica>() 
+                //{
+                //    new Musica(Guid.Parse("682068cf-c21e-4a36-b843-63b9d181f1bf"),
+                //               Guid.Parse("e190530d-667e-42f1-9bb3-c69a117244dd"),
+                //               "Vento Ventania", 600),
+                //    new Musica(Guid.Parse("682068cf-c21e-4a36-b843-63b9d181f1cf"),
+                //               Guid.Parse("e190530d-667e-42f1-9bb3-c69a117244dd"),
+                //               "Você Não Soube Me Amar", 300)
+                //};
                 
 
                 var b1 = new Banda.Domain.Entities.Banda(
@@ -104,24 +106,24 @@ namespace AVS.Infra.Data
                             "Artista verificado");
                 
                 b1.CriarAlbum(
-                    Guid.Parse("e190530d-667e-42f1-9bb3-c69a117244dd"),
-                    Guid.Parse("cee1c9d0-84c6-4f45-8408-a756211e1c32"),
-                    "A Dois Passos do Paraíso",
+                    Guid.Parse("e190530d-667e-42f1-9bb3-c69a117244de"),
+                    Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa1"),
+                    "Vento Ventania",
                     "Ano: 2010",
                     "http://myurl.com", m1);
 
-                var b2 = new Banda.Domain.Entities.Banda(
-                            Guid.Parse("cee1c9d0-84c6-4f45-8408-a756211e1c32"),
-                            "Blitz",
-                            "http://myurl.com",
-                            "Artista verificado");
+                //var b2 = new Banda.Domain.Entities.Banda(
+                //            Guid.Parse("cee1c9d0-84c6-4f45-8408-a756211e1c32"),
+                //            "Blitz",
+                //            "http://myurl.com",
+                //            "Artista verificado");
 
-                b2.CriarAlbum(
-                    Guid.Parse("e190530d-667e-42f1-9bb3-c69a117244dd"),
-                    Guid.Parse("cee1c9d0-84c6-4f45-8408-a756211e1c32"),
-                    "A Dois Passos do Paraíso",
-                    "Ano: 2010",
-                    "http://myurl.com", m2);
+                //b2.CriarAlbum(
+                //    Guid.Parse("e190530d-667e-42f1-9bb3-c69a117244dd"),
+                //    Guid.Parse("cee1c9d0-84c6-4f45-8408-a756211e1c32"),
+                //    "A Dois Passos do Paraíso",
+                //    "Ano: 2010",
+                //    "http://myurl.com", m2);
 
                 var bandas = new List<Banda.Domain.Entities.Banda>()
                 {                    
@@ -142,10 +144,10 @@ namespace AVS.Infra.Data
                 };
 
                 bandas.Add(b1);
-                bandas.Add(b2);
+                //bandas.Add(b2);
 
-                await _context.AddRangeAsync(bandas);
-                await _context.SaveChangesAsync();
+                _context.AddRange(bandas);
+                sucess = _context.SaveChanges() > 0;
             }
 
             if (!_context.MusicaPlaylists.Any())
@@ -164,9 +166,10 @@ namespace AVS.Infra.Data
                     }
                 };
 
-                await _context.AddRangeAsync(associacoes);
-                await _context.SaveChangesAsync();
-            }
+                _context.AddRange(associacoes);
+                sucess = _context.SaveChanges() > 0;
+            } 
+            Debug.Write($"INFO POLULABANCO(): {sucess}");
         }
     }
 }

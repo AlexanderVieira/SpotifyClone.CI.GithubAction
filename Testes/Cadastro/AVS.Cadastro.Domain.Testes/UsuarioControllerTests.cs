@@ -1,7 +1,6 @@
 ﻿using AVS.Banda.Application.DTOs;
 using AVS.Cadastro.Application.Commands;
 using AVS.Cadastro.Application.DTOs;
-using AVS.Cadastro.Application.Interfaces;
 using AVS.Cadastro.Application.Queries;
 using AVS.Core.Comunicacao.Mediator;
 using AVS.Documentacao.API.Controllers;

@@ -1,6 +1,7 @@
 ﻿using AVS.Infra.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics;
 
 namespace AVS.Core.Extensions
 {
@@ -16,8 +17,9 @@ namespace AVS.Core.Extensions
                 var ctx = services.GetRequiredService<SpotifyCloneContext>();
                 PopulaBanco.Popular(ctx);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Debug.Write(ex.ToString());
                 throw;
             }
 

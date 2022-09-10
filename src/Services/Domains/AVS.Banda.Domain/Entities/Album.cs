@@ -36,6 +36,11 @@ namespace AVS.Banda.Domain.Entities
             Musicas = musicas;
         }
 
+        public void AtualizarFoto(string foto)
+        {
+            Foto = foto;
+        }
+
         public override bool EhValido()
         {
             var validationResult = new AlbumValidator().Validate(this);

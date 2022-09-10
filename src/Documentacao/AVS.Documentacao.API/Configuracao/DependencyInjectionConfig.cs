@@ -26,6 +26,8 @@ using AVS.Cadastro.Domain.Interfaces.Services;
 using AVS.Cadastro.Domain.Services;
 using AVS.Core.Comunicacao.Mediator;
 using AVS.Infra.CrossCutting;
+using AVS.Infra.CrossCutting.AzureBlob;
+using AVS.Infra.CrossCutting.Interfaces;
 using AVS.Infra.Data;
 using FluentValidation.Results;
 using MediatR;
@@ -139,6 +141,10 @@ namespace AVS.Documentacao.API.Configuracao
             services.AddScoped<IAlbumService, AlbumService>();
             services.AddScoped<IMusicaService, MusicaService>();
             services.AddScoped<IMusicaPlaylistService, MusicaPlaylistService>();
+            #endregion
+
+            #region Service externo
+            services.AddScoped<IAzureBlobStorage, AzureBlobStorage>();
             #endregion
 
             #region Application

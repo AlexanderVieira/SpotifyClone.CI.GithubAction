@@ -13,6 +13,7 @@ namespace AVS.Documentacao.API.Configuracao
             services.AddScoped<PopulaBanco>();
             services.AddControllers();
             services.AddEndpointsApiExplorer();
+            services.AddHttpClient();
 
             services.AddCors(options =>
             {

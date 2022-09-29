@@ -54,7 +54,7 @@ namespace AVS.Infra.CrossCutting
         }
 
         public async Task Atualizar(T entity)
-        {
+        {            
             Query.Update(entity);
             await _context.SaveChangesAsync();
         }

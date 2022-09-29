@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  avs.documentacao.api:
+    image: ${DOCKER_REGISTRY-}avs.documentacao.api:latest
+    build:
+      context: .
+      dockerfile: src/Documentacao/AVS.Documentacao.API/Dockerfile

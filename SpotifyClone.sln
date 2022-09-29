@@ -84,7 +84,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVS.Infra.Data", "src\Servi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVS.Banda.Data", "src\Services\Infra\Data\AVS.Banda.Data\AVS.Banda.Data.csproj", "{29DF1C4C-83FF-4B44-A8B2-4495F4DA340D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVS.Banda.Application", "src\Services\Applications\AVS.Banda.Application\AVS.Banda.Application.csproj", "{65F22485-1B30-4D64-BB47-DA4F4A541F92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVS.Banda.Application", "src\Services\Applications\AVS.Banda.Application\AVS.Banda.Application.csproj", "{65F22485-1B30-4D64-BB47-DA4F4A541F92}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{4CDA0EBC-2181-4FBF-B4C7-E6DC2A03491B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -192,6 +194,10 @@ Global
 		{65F22485-1B30-4D64-BB47-DA4F4A541F92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65F22485-1B30-4D64-BB47-DA4F4A541F92}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{65F22485-1B30-4D64-BB47-DA4F4A541F92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CDA0EBC-2181-4FBF-B4C7-E6DC2A03491B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CDA0EBC-2181-4FBF-B4C7-E6DC2A03491B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CDA0EBC-2181-4FBF-B4C7-E6DC2A03491B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CDA0EBC-2181-4FBF-B4C7-E6DC2A03491B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

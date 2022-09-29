@@ -3,6 +3,7 @@ using AVS.Banda.Application.DTOs;
 using AVS.Banda.Application.Interfaces;
 using AVS.Banda.Domain.Entities;
 using AVS.Banda.Domain.Interfaces.Services;
+using AVS.Infra.CrossCutting.Interfaces;
 using System.Linq.Expressions;
 
 namespace AVS.Banda.Application.AppServices
@@ -10,11 +11,18 @@ namespace AVS.Banda.Application.AppServices
     public class AlbumAppService : IAlbumAppService
     {
         private readonly IAlbumService _albumService;
+        private readonly IAzureBlobStorage _azureBlobStorage;
+        private readonly IHttpClientFactory _httpClientFactory;
         private readonly IMapper _mapper;
 
-        public AlbumAppService(IAlbumService albumService, IMapper mapper)
+        public AlbumAppService(IAlbumService albumService, 
+                               IAzureBlobStorage azureBlobStorage, 
+                               IHttpClientFactory httpClientFactory, 
+                               IMapper mapper)
         {
             _albumService = albumService;
+            _azureBlobStorage = azureBlobStorage;
+            _httpClientFactory = httpClientFactory;
             _mapper = mapper;
         }
 
@@ -54,6 +62,18 @@ namespace AVS.Banda.Application.AppServices
         {
             var album = _mapper.Map<Album>(request);
             album.Validar();
+            
+            HttpClient httpClient = _httpClientFactory.CreateClient();
+            using var response = await httpClient.GetAsync(request.Foto);
+
+            if (response.IsSuccessStatusCode)
+            {
+                using var stream = await response.Content.ReadAsStreamAsync();
+                var fileName = $"{Guid.NewGuid()}.jpg";
+                var pathStorage = await _azureBlobStorage.UploadFile(fileName, stream);
+
+                album.AtualizarFoto(pathStorage);
+            }
             await _albumService.Salvar(album);
         }
 
@@ -61,7 +81,25 @@ namespace AVS.Banda.Application.AppServices
         {
             var album = _mapper.Map<Album>(request);
             album.Validar();
-            await _albumService.Atualizar(album);
+            HttpClient httpClient = _httpClientFactory.CreateClient();
+            using var response = await httpClient.GetAsync(request.Foto);
+
+            if (response.IsSuccessStatusCode)
+            {
+                using var stream = await response.Content.ReadAsStreamAsync();
+                var fileName = $"{Guid.NewGuid()}.jpg";
+                var pathStorage = await _azureBlobStorage.UploadFile(fileName, stream);
+
+                album.AtualizarFoto(pathStorage);
+            }
+
+            var albumToUpdate = await _albumService.ObterPorId(album.Id);
+
+            albumToUpdate.AtualizarTitulo(album.Titulo);
+            albumToUpdate.AtualizarDescricao(album.Descricao);
+            albumToUpdate.AtualizarFoto(album.Foto);
+
+            await _albumService.Atualizar(albumToUpdate);
         }
 
         public async Task Exluir(AlbumRequestDto request)

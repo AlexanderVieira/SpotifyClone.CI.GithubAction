@@ -81,7 +81,25 @@ namespace AVS.Banda.Application.AppServices
         {
             var album = _mapper.Map<Album>(request);
             album.Validar();
-            await _albumService.Atualizar(album);
+            HttpClient httpClient = _httpClientFactory.CreateClient();
+            using var response = await httpClient.GetAsync(request.Foto);
+
+            if (response.IsSuccessStatusCode)
+            {
+                using var stream = await response.Content.ReadAsStreamAsync();
+                var fileName = $"{Guid.NewGuid()}.jpg";
+                var pathStorage = await _azureBlobStorage.UploadFile(fileName, stream);
+
+                album.AtualizarFoto(pathStorage);
+            }
+
+            var albumToUpdate = await _albumService.ObterPorId(album.Id);
+
+            albumToUpdate.AtualizarTitulo(album.Titulo);
+            albumToUpdate.AtualizarDescricao(album.Descricao);
+            albumToUpdate.AtualizarFoto(album.Foto);
+
+            await _albumService.Atualizar(albumToUpdate);
         }
 
         public async Task Exluir(AlbumRequestDto request)

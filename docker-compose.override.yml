@@ -1,0 +1,18 @@
+version: '3.4'
+
+services:
+  avs.documentacao.api:
+    container_name: avs.documentacao.api
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=@lerCor18#
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/documentacao-api.pfx
+    ports:
+      - "5144:80"
+      - "7144:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ~/.aspnet/https:/https:ro

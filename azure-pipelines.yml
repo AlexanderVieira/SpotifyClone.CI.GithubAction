@@ -7,7 +7,7 @@ trigger:
 - feature/spotifyclone/blobstorage
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'Agent Azure Pipelines (Self-Hosted)'
 
 variables:
   solution: '**/*.sln'

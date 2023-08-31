@@ -52,6 +52,8 @@ steps:
 
 - task: SonarCloudAnalyze@1
   displayName: 'Run SonarCloud analysis'
+  inputs:
+    jdkversion: 'JAVA_HOME'
 
 - task: SonarCloudPublish@1
   displayName: 'Publish results on build summary'

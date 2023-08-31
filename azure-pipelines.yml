@@ -17,6 +17,12 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+
+- task: UseDotNet@2
+  displayName: 'Use .NET Core sdk version: 6.0.413'
+  inputs:
+    packageType: 'sdk'
+    useGlobalJson: true
 - task: NuGetToolInstaller@1
 
 - task: NuGetCommand@2

@@ -34,7 +34,7 @@ namespace AVS.Documentacao.API.Configuracao
 
         public static void UseApiConfiguration(this WebApplication app)
         {
-            if (app.Environment.IsProduction())
+            if (!app.Environment.IsProduction())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();

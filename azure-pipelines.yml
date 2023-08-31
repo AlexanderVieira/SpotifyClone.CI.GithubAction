@@ -7,7 +7,9 @@ trigger:
 - feature/spotifyclone/blobstorage
 
 pool:
-  vmImage: 'Agent Azure Pipelines (Self-Hosted)'
+   name: 'Agent Azure Pipelines (Self-Hosted)'
+   demands: 
+   - Agent.Name -equals DESKTOP-GCGB03L
 
 variables:
   solution: '**/*.sln'
@@ -48,3 +50,15 @@ steps:
   displayName: 'Publish results on build summary'
   inputs:
     pollingTimeoutSec: '300'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    arguments: '--configuration $(BuildConfiguration)  --output $(build.artifactstagingdirectory)'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'

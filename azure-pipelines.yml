@@ -4,10 +4,12 @@
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
 
 trigger:
-- develop
+- feature/spotifyclone/blobstorage
 
 pool:
-  vmImage: 'windows-latest'
+   name: 'Agent Azure Pipelines (Self-Hosted)'
+   demands: 
+   - Agent.Name -equals DESKTOP-GCGB03L
 
 variables:
   solution: '**/*.sln'
@@ -15,6 +17,12 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+
+- task: UseDotNet@2
+  displayName: 'Use .NET Core sdk version: 6.0.413'
+  inputs:
+    packageType: 'sdk'
+    useGlobalJson: true
 - task: NuGetToolInstaller@1
 
 - task: NuGetCommand@2
@@ -25,25 +33,42 @@ steps:
   inputs:
     SonarCloud: 'Sonarcloude Service'
     organization: 'treinamento-key'
-    scannerMode: 'MSBuild'
-    projectKey: 'alexandersilva_SpotifyClone'
-    projectName: 'SpotifyClone'
+    scannerMode: 'CLI'
+    configMode: 'manual'
+    cliProjectKey: 'alexandersilva_SpotifyClone'
+    cliProjectName: 'SpotifyClone'
+    cliSources: '.'
 
-- task: VSBuild@1
+- task: DotNetCoreCLI@2
   inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    command: 'build'
+    projects: '**/AVS.Documentacao.API/*.csproj'
+    arguments: '--configuration $(BuildConfiguration)'
 
-- task: VSTest@2
+- task: DotNetCoreCLI@2
   inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    command: 'test'
+    projects: '**/AVS.Cadastro.Domain.Testes/*.csproj'
+    arguments: '--configuration $(BuildConfiguration)'
+    publishTestResults: false
 
 - task: SonarCloudAnalyze@1
   displayName: 'Run SonarCloud analysis'
+  inputs:
+    jdkversion: 'JAVA_HOME_11_X64'
 - task: SonarCloudPublish@1
   displayName: 'Publish results on build summary'
   inputs:
     pollingTimeoutSec: '300'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    arguments: '--configuration $(BuildConfiguration)  --output $(build.artifactstagingdirectory)'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'

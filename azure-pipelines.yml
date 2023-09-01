@@ -37,6 +37,8 @@ steps:
     projectKey: 'alexandersilva_SpotifyClone'
     projectName: 'SpotifyClone'
 
+
+
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
@@ -54,8 +56,15 @@ steps:
   displayName: 'Run SonarCloud analysis'
   inputs:
     jdkversion: 'JAVA_HOME_11_X64'
-
-- task: SonarCloudPublish@1
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'Sonarcloude Service'
+    organization: 'treinamento-key'
+    scannerMode: 'CLI'
+    configMode: 'manual'
+    cliProjectKey: 'alexandersilva_SpotifyClone'
+    cliProjectName: 'SpotifyClone'
+    cliSources: '.'- task: SonarCloudPublish@1
   displayName: 'Publish results on build summary'
   inputs:
     pollingTimeoutSec: '300'

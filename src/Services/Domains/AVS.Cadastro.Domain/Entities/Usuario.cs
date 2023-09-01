@@ -14,8 +14,6 @@ namespace AVS.Cadastro.Domain.Entities
         public bool Ativo { get; private set; }
         public string? Foto { get; private set; }
         
-        //public Senha Senha { get; private set; }
-        
         public virtual IList<Playlist> Playlists { get; private set; }
 
         protected Usuario()
@@ -37,12 +35,7 @@ namespace AVS.Cadastro.Domain.Entities
         {
             Email = new Email(email);
         }
-
-        //public void DefinirSenha()
-        //{
-        //    this.Senha.Valor = SegurancaUtil.HashSHA1(this.Senha.Valor);
-        //}
-
+        
         public void Ativar() => Ativo = true;
 
         public void Inativar() => Ativo = false;

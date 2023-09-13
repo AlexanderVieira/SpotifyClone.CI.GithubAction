@@ -5,13 +5,13 @@ networks:
     driver: bridge
 
 services:
-  documentacao.api:
-    image: spotifyclone-api:latest
-    container_name: spotifyclone-doc-api
-    hostname: spotifyclone-api
+  documentacao-prod.api:
+    image: spotifyclone-prod-api:latest
+    container_name: spotifyclone-prod-api
+    hostname: spotifyclone-prod-api
     networks:
       - backend
-    build: 
+    build:
       context: ../src
       dockerfile: ./Documentacao/AVS.Documentacao.API/Dockerfile
     restart: always

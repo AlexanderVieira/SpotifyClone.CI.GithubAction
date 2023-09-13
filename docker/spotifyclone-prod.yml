@@ -1,0 +1,22 @@
+version: "3"
+
+networks:
+  backend:
+    driver: bridge
+
+services:
+  documentacao-prod.api:
+    image: spotifyclone-prod-api:latest
+    container_name: spotifyclone-prod-api
+    hostname: spotifyclone-prod-api
+    networks:
+      - backend
+    build:
+      context: ../src
+      dockerfile: ./Documentacao/AVS.Documentacao.API/Dockerfile
+    restart: always
+    ports:
+      - "5145:5145"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://*:5145

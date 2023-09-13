@@ -25,6 +25,10 @@ namespace AVS.Documentacao.API.Configuracao
             })
              .AddInMemoryStorage();
 
+#pragma warning disable CS0618 // O tipo ou membro é obsoleto
+            services.AddApplicationInsightsTelemetry(configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
+#pragma warning restore CS0618 // O tipo ou membro é obsoleto
+
             services.AddDbContext<SpotifyCloneContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));

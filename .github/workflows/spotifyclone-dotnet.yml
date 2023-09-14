@@ -26,5 +26,5 @@ jobs:
       working-directory: src/Documentacao/AVS.Documentacao.API
       run: dotnet build --no-restore
     - name: Test
-      working-directory: src/Documentacao/AVS.Documentacao.API
+      working-directory: Testes/Cadastro/AVS.Cadastro.Domain.Testes
       run: dotnet test --no-build --verbosity normal
